@@ -14,25 +14,25 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.attendee.attendee.exception.MessageResponse;
 import com.attendee.attendee.exception.ValidationException;
-import com.attendee.attendee.model.Company;
-import com.attendee.attendee.service.CompanyService;
+import com.attendee.attendee.model.Posisi;
+import com.attendee.attendee.service.PosisiService;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @Controller
-public class CompanyController {
-	
+public class PosisiController {
+
 	@Autowired
-	private CompanyService companyService;
+	private PosisiService posisiService;
 	
-	@RequestMapping(value = "/company", method = RequestMethod.GET)
-	public ResponseEntity<?> retrieveByFilter(@RequestBody Company company) throws ValidationException
+	@RequestMapping(value = "/posisi", method = RequestMethod.GET)
+	public ResponseEntity<?> retrieveByFilter(@RequestBody Posisi posisi) throws ValidationException
 	{
 		 try 
 		 {
-			 List<Company> companyList=companyService.findByFilter(company);
+			 List<Posisi> posisiList=posisiService.findByFilter(posisi);
 
-			 return ResponseEntity.ok(companyList);
+			 return ResponseEntity.ok(posisiList);
 		 }
 		 
 		 catch(Exception ex) 
@@ -43,10 +43,10 @@ public class CompanyController {
 	}
 
 	
-	@RequestMapping(value = "/company", method = RequestMethod.POST)
-	public ResponseEntity<?> submit(@RequestBody Company company) throws ValidationException{
+	@RequestMapping(value = "/posisi", method = RequestMethod.POST)
+	public ResponseEntity<?> submit(@RequestBody Posisi posisi) throws ValidationException{
 		try {
-			companyService.save(company);
+			posisiService.save(posisi);
 			MessageResponse mg  = new MessageResponse("Success submit");
 			
 			return ResponseEntity.ok(mg);
@@ -62,12 +62,12 @@ public class CompanyController {
 		}
 	}
 	
-	@RequestMapping(value =  "/company", method = RequestMethod.PUT)
-	public ResponseEntity<?> update(@RequestBody Company company) throws Exception
+	@RequestMapping(value =  "/posisi", method = RequestMethod.PUT)
+	public ResponseEntity<?> update(@RequestBody Posisi posisi) throws Exception
 	{
 		 try 
 		 {
-			 companyService.update(company);
+			 posisiService.update(posisi);
 			 MessageResponse mg = new MessageResponse("Success update");
 			 return ResponseEntity.ok(mg);
 		 }

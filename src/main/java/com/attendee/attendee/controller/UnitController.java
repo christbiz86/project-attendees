@@ -14,25 +14,25 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.attendee.attendee.exception.MessageResponse;
 import com.attendee.attendee.exception.ValidationException;
-import com.attendee.attendee.model.Company;
-import com.attendee.attendee.service.CompanyService;
+import com.attendee.attendee.model.Unit;
+import com.attendee.attendee.service.UnitService;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @Controller
-public class CompanyController {
+public class UnitController {
 	
 	@Autowired
-	private CompanyService companyService;
+	private UnitService unitService;
 	
-	@RequestMapping(value = "/company", method = RequestMethod.GET)
-	public ResponseEntity<?> retrieveByFilter(@RequestBody Company company) throws ValidationException
+	@RequestMapping(value = "/unit", method = RequestMethod.GET)
+	public ResponseEntity<?> retrieveByFilter(@RequestBody Unit unit) throws ValidationException
 	{
 		 try 
 		 {
-			 List<Company> companyList=companyService.findByFilter(company);
+			 List<Unit> unitList=unitService.findByFilter(unit);
 
-			 return ResponseEntity.ok(companyList);
+			 return ResponseEntity.ok(unitList);
 		 }
 		 
 		 catch(Exception ex) 
@@ -43,10 +43,10 @@ public class CompanyController {
 	}
 
 	
-	@RequestMapping(value = "/company", method = RequestMethod.POST)
-	public ResponseEntity<?> submit(@RequestBody Company company) throws ValidationException{
+	@RequestMapping(value = "/unit", method = RequestMethod.POST)
+	public ResponseEntity<?> submit(@RequestBody Unit unit) throws ValidationException{
 		try {
-			companyService.save(company);
+			unitService.save(unit);
 			MessageResponse mg  = new MessageResponse("Success submit");
 			
 			return ResponseEntity.ok(mg);
@@ -62,12 +62,12 @@ public class CompanyController {
 		}
 	}
 	
-	@RequestMapping(value =  "/company", method = RequestMethod.PUT)
-	public ResponseEntity<?> update(@RequestBody Company company) throws Exception
+	@RequestMapping(value =  "/unit", method = RequestMethod.PUT)
+	public ResponseEntity<?> update(@RequestBody Unit unit) throws Exception
 	{
 		 try 
 		 {
-			 companyService.update(company);
+			 unitService.update(unit);
 			 MessageResponse mg = new MessageResponse("Success update");
 			 return ResponseEntity.ok(mg);
 		 }
@@ -81,4 +81,5 @@ public class CompanyController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mg);
 		}
 	}
+
 }

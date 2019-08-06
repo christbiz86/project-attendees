@@ -1,5 +1,6 @@
 package com.attendee.attendee.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -85,5 +86,26 @@ public class CompanyDao extends ParentDao{
 		}else {
 			return true;
 		}	 
+	}
+
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public List<Company> findByFilter(Company company) {
+		
+		StringBuilder sb=new StringBuilder("SELECT c.id, c.kode , c.nama , c.jatah_cuti , c.toleransi_keterlambatan , c.created_at , c.updated_at , c.created_by , c.updated_by ");
+		sb.append("FROM company c ");
+		sb.append(" WHERE 1=1 ");		
+
+		if(!company.getNama().equals(null)) {
+			sb.append(" AND c.nama LIKE '%"+company.getNama()+"%' ");
+		}
+					
+		List<Company> list=super.entityManager.createNativeQuery(sb.toString(),Company.class).getResultList();
+		
+		if(list.size()==0) {
+			return new ArrayList<Company>();
+		}else {
+			return list;
+		}
 	}
 }

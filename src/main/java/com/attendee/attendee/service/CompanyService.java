@@ -114,4 +114,7 @@ public class CompanyService {
 		return companyDao.findAll();
 	}
 	
+	public List<Company> findByFilter(Company company){
+		return companyDao.findByFilter(company);
+	}
 }

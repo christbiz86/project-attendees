@@ -106,4 +106,7 @@ public class UnitService {
 		return divisiDao.findAll();
 	}
 	
+	public List<Unit> findByFilter(Unit unit)throws ValidationException{
+		return divisiDao.findByFilter(unit);
+	}
 }

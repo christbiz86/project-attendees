@@ -1,5 +1,6 @@
 package com.attendee.attendee.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -87,4 +88,27 @@ public class UnitDao extends ParentDao{
 		}	 
 	}
 
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public List<Unit> findByFilter(Unit unit) {
+		
+		StringBuilder sb=new StringBuilder("SELECT u.id,u.unit,u.id_status,u.created_at,u.updated_at,u.created_by,u.updated_by ");
+		sb.append("FROM unit u ");
+		sb.append(" WHERE 1=1 ");		
+
+		if(!unit.getUnit().equals(null)) {
+			sb.append(" AND u.unit LIKE '%"+unit.getUnit()+"%' ");
+		}
+		if(!unit.getIdStatus().getStatus().equals(null)) {
+			sb.append(" AND u.id_status LIKE '%"+unit.getIdStatus().getStatus()+"%' ");
+		}
+					
+		List<Unit> list=super.entityManager.createNativeQuery(sb.toString(),Unit.class).getResultList();
+		
+		if(list.size()==0) {
+			return new ArrayList<Unit>();
+		}else {
+			return list;
+		}
+	}
 }

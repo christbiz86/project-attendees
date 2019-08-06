@@ -106,4 +106,8 @@ public class PosisiService {
 		return jabatanDao.findAll();
 	}
 	
+	public List<Posisi> findByFilter(Posisi posisi)throws ValidationException{
+		return jabatanDao.findByFilter(posisi);
+	}
+	
 }

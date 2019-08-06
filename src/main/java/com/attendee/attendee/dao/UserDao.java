@@ -1,5 +1,6 @@
 package com.attendee.attendee.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -87,4 +88,36 @@ public class UserDao extends ParentDao{
 		}	 
 	}
 	
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public List<User> findByFilter(User user) {
+
+		StringBuilder sb=new StringBuilder("SELECT u.id , u.kode , u.nama , u.alamat , u.tgl_lahir , u.telp , u.email , u.username , u.password , u.foto , u.id_status , u.created_at , u.updated_at , u.created_by , u.updated_by ");
+		sb.append("FROM users u ");
+		sb.append(" WHERE 1=1 ");		
+
+		if(user.getNama()!=null) {
+			sb.append(" AND u.nama LIKE '%"+user.getNama()+"%' ");
+		}
+		if(user.getAlamat()!=null) {
+			sb.append(" AND u.alamat LIKE '%"+user.getAlamat()+"%' ");
+		}
+		if(user.getEmail()!=null) {
+			sb.append(" AND u.email LIKE '%"+user.getEmail()+"%' ");
+		}
+		if(user.getUsername()!=null) {
+			sb.append(" AND u.username LIKE '%"+user.getUsername()+"%' ");
+		}
+		if(user.getTelp()!=null) {
+			sb.append(" AND u.telp LIKE '%"+user.getTelp()+"%' ");
+		}
+		
+		List<User> list=super.entityManager.createNativeQuery(sb.toString(),User.class).getResultList();
+		
+		if(list.size()==0) {
+			return new ArrayList<User>();
+		}else {
+			return list;
+		}
+	}
 }

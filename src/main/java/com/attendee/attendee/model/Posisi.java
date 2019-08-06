@@ -1,10 +1,12 @@
 package com.attendee.attendee.model;
 
-import java.util.Date;
+import java.sql.Timestamp;
 import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -18,6 +20,7 @@ public class Posisi {
 
 	@Id
 	@Column(name="id")
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private UUID id;
 	
 	@Column(name="posisi")
@@ -27,13 +30,13 @@ public class Posisi {
 	@OneToOne(optional = false)
 	private Status idStatus;
 	
-	@Temporal(TemporalType.DATE)
+//	@Temporal(TemporalType.DATE)
 	@Column(name="created_at")
-	private Date createdAt;
+	private Timestamp createdAt;
 	
-	@Temporal(TemporalType.DATE)
+//	@Temporal(TemporalType.DATE)
 	@Column(name="updated_at")
-	private Date updatedAt;
+	private Timestamp updatedAt;
 	
 	@JoinColumn(name = "created_by", referencedColumnName = "id")
 	@OneToOne(optional = false)
@@ -67,19 +70,19 @@ public class Posisi {
 		this.idStatus = idStatus;
 	}
 
-	public Date getCreatedAt() {
+	public Timestamp getCreatedAt() {
 		return createdAt;
 	}
 
-	public void setCreatedAt(Date createdAt) {
+	public void setCreatedAt(Timestamp createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	public Date getUpdatedAt() {
+	public Timestamp getUpdatedAt() {
 		return updatedAt;
 	}
 
-	public void setUpdatedAt(Date updatedAt) {
+	public void setUpdatedAt(Timestamp updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 

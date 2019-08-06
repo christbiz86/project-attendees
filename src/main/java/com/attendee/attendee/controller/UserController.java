@@ -14,25 +14,25 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.attendee.attendee.exception.MessageResponse;
 import com.attendee.attendee.exception.ValidationException;
-import com.attendee.attendee.model.Company;
-import com.attendee.attendee.service.CompanyService;
+import com.attendee.attendee.model.User;
+import com.attendee.attendee.service.UserService;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @Controller
-public class CompanyController {
-	
+public class UserController {
+
 	@Autowired
-	private CompanyService companyService;
+	private UserService userService;
 	
-	@RequestMapping(value = "/company", method = RequestMethod.GET)
-	public ResponseEntity<?> retrieveByFilter(@RequestBody Company company) throws ValidationException
+	@RequestMapping(value = "/user", method = RequestMethod.GET)
+	public ResponseEntity<?> retrieveByFilter(@RequestBody User user) throws ValidationException
 	{
 		 try 
 		 {
-			 List<Company> companyList=companyService.findByFilter(company);
+			 List<User> userList=userService.findByFilter(user);
 
-			 return ResponseEntity.ok(companyList);
+			 return ResponseEntity.ok(userList);
 		 }
 		 
 		 catch(Exception ex) 
@@ -43,10 +43,10 @@ public class CompanyController {
 	}
 
 	
-	@RequestMapping(value = "/company", method = RequestMethod.POST)
-	public ResponseEntity<?> submit(@RequestBody Company company) throws ValidationException{
+	@RequestMapping(value = "/user", method = RequestMethod.POST)
+	public ResponseEntity<?> submit(@RequestBody User user) throws ValidationException{
 		try {
-			companyService.save(company);
+			userService.save(user);
 			MessageResponse mg  = new MessageResponse("Success submit");
 			
 			return ResponseEntity.ok(mg);
@@ -57,17 +57,19 @@ public class CompanyController {
 			
 		 }
 		catch (Exception e) {
+			 System.out.println(e);
+
 			MessageResponse mg = new MessageResponse("Failed submit" );
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mg);
 		}
 	}
 	
-	@RequestMapping(value =  "/company", method = RequestMethod.PUT)
-	public ResponseEntity<?> update(@RequestBody Company company) throws Exception
+	@RequestMapping(value =  "/user", method = RequestMethod.PUT)
+	public ResponseEntity<?> update(@RequestBody User user) throws Exception
 	{
 		 try 
 		 {
-			 companyService.update(company);
+			 userService.update(user);
 			 MessageResponse mg = new MessageResponse("Success update");
 			 return ResponseEntity.ok(mg);
 		 }
@@ -80,5 +82,22 @@ public class CompanyController {
 			MessageResponse mg = new MessageResponse("Failed update" );
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mg);
 		}
+	}
+	
+	@RequestMapping(value = "/users", method = RequestMethod.GET)
+	public ResponseEntity<?> retrieveAll() throws ValidationException
+	{
+		 try 
+		 {
+			 List<User> userList=userService.findAll();
+
+			 return ResponseEntity.ok(userList);
+		 }
+		 
+		 catch(Exception ex) 
+		 {
+			 MessageResponse mg = new MessageResponse("Retrieve Failed" );
+		     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mg);
+		 }
 	}
 }

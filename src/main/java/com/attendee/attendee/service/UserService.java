@@ -1,5 +1,6 @@
 package com.attendee.attendee.service;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,21 +18,21 @@ public class UserService {
 	private UserDao userDao;
 	
 	
-	public void valIdExist(UUID id)throws ValidationException{
+	private void valIdExist(UUID id)throws ValidationException{
 		
 		if(!userDao.isExist(id)) {
 			throw new ValidationException("Data tidak ada");
 		}
 	}
 	
-	public void valIdNotNull(User user)throws ValidationException {
+	private void valIdNotNull(User user)throws ValidationException {
 		
 		if(user.getId()==null) {
 			throw new ValidationException("Id tidak boleh kosong");
 		}
 	}
 	
-	public void valNonBk(User user)throws ValidationException{
+	private void valNonBk(User user)throws ValidationException{
 		
 		StringBuilder sb=new StringBuilder();
 		int error=0;
@@ -44,7 +45,7 @@ public class UserService {
 			sb.append("tanggal lahir tidak boleh kosong \n");
 			error++;
 		}
-		if(user.getUserName()==null) {
+		if(user.getUsername()==null) {
 			sb.append("username tidak boleh kosong \n");
 			error++;
 		}
@@ -52,47 +53,47 @@ public class UserService {
 			sb.append("telepon tidak boleh kosong \n");
 			error++;
 		}
-		if(user.getFoto()==null) {
-			sb.append("foto tidak boleh kosong \n");
-			error++;
-		}
+//		if(user.getFoto()==null) {
+//			sb.append("foto tidak boleh kosong \n");
+//			error++;
+//		}
 		if(user.getNama()==null) {
 			sb.append("nama tidak boleh kosong \n");
 			error++;
 		}
-		if(user.getPassword()==null) {
-			sb.append("password tidak boleh kosong \n");
-			error++;
-		}
-		if(user.getCreatedAt()==null) {
-			sb.append("tanggal dibuat tidak boleh kosong \n");
-			error++;
-		}
-		if(user.getCreatedBy()==null) {
-			sb.append("pembuat tidak boleh kosong \n");
-			error++;
-		}
-		if(user.getUpdatedAt()==null) {
-			sb.append("tanggal diedit tidak boleh kosong \n");
-			error++;
-		}
-		if(user.getUpdatedBy()==null) {
-			sb.append("pengedit tidak boleh kosong \n");
-			error++;
-		}
+//		if(user.getPassword()==null) {
+//			sb.append("password tidak boleh kosong \n");
+//			error++;
+//		}
+//		if(user.getCreatedAt()==null) {
+//			sb.append("tanggal dibuat tidak boleh kosong \n");
+//			error++;
+//		}
+//		if(user.getCreatedBy()==null) {
+//			sb.append("pembuat tidak boleh kosong \n");
+//			error++;
+//		}
+//		if(user.getUpdatedAt()==null) {
+//			sb.append("tanggal diedit tidak boleh kosong \n");
+//			error++;
+//		}
+//		if(user.getUpdatedBy()==null) {
+//			sb.append("pengedit tidak boleh kosong \n");
+//			error++;
+//		}
 		
 		if(error>0) {
 			throw new ValidationException(sb.toString());
 		}
 	}
 	
-	public void valBkNotExist(User user)throws ValidationException{
+	private void valBkNotExist(User user)throws ValidationException{
 		if(userDao.isBkExist(user.getKode())) {
 			throw new ValidationException("Data sudah ada");
 		}
 	}	
 	
-	public void valBkNotChange(User user)throws ValidationException{
+	private void valBkNotChange(User user)throws ValidationException{
 		String s=findById(user.getId()).getKode();
 		if(!user.getKode().toString().equals(s.toString())) {
 
@@ -100,7 +101,7 @@ public class UserService {
 		}
 	}
 	
-	public void valBkNotNull(User user) throws ValidationException{
+	private void valBkNotNull(User user) throws ValidationException{
 		
 		if(user.getKode()==null) {
 
@@ -109,6 +110,8 @@ public class UserService {
 	}
 	
 	public void save(User user)throws ValidationException{
+		user.setCreatedAt(getTime());
+//		user.setCreatedBy(user.getId());
 		
 		valBkNotNull(user);
 		valBkNotExist(user);
@@ -117,6 +120,8 @@ public class UserService {
 	}
 	
 	public void update(User user)throws ValidationException{
+		user.setUpdatedAt(getTime());
+//		user.setUpdatedBy(user.getId());
 		
 		valIdNotNull(user);
 		valIdExist(user.getId());
@@ -145,5 +150,12 @@ public class UserService {
 	public List<User> findAll( )throws ValidationException{
 		return userDao.findAll();
 	}
-
+	
+	public List<User> findByFilter(User user )throws ValidationException{
+		return userDao.findByFilter(user);
+	}
+	
+	private Timestamp getTime() {
+		return  new Timestamp(System.currentTimeMillis());
+	}
 }

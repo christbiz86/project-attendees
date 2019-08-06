@@ -17,21 +17,21 @@ public class UserCompanyService {
 	private UserCompanyDao userCompanyDao;
 	
 	
-	public void valIdExist(UUID id)throws ValidationException{
+	private void valIdExist(UUID id)throws ValidationException{
 		
 		if(!userCompanyDao.isExist(id)) {
 			throw new ValidationException("Data tidak ada");
 		}
 	}
 	
-	public void valIdNotNull(UserCompany userCompany)throws ValidationException {
+	private void valIdNotNull(UserCompany userCompany)throws ValidationException {
 		
 		if(userCompany.getId()==null) {
 			throw new ValidationException("Id tidak boleh kosong");
 		}
 	}
 	
-	public void valNonBk(UserCompany userCompany)throws ValidationException{
+	private void valNonBk(UserCompany userCompany)throws ValidationException{
 		
 		StringBuilder sb=new StringBuilder();
 		int error=0;
@@ -50,13 +50,13 @@ public class UserCompanyService {
 		}
 	}
 	
-	public void valBkNotExist(UserCompany userCompany)throws ValidationException{
+	private void valBkNotExist(UserCompany userCompany)throws ValidationException{
 		if(userCompanyDao.isBkExist(userCompany.getIdUser().getId().toString())) {
 			throw new ValidationException("Data sudah ada");
 		}
 	}	
 	
-	public void valBkNotChange(UserCompany userCompany)throws ValidationException{
+	private void valBkNotChange(UserCompany userCompany)throws ValidationException{
 		String s=findById(userCompany.getId()).getIdUser().getId().toString();
 		if(!userCompany.getIdUser().getId().toString().equals(s.toString())) {
 
@@ -64,7 +64,7 @@ public class UserCompanyService {
 		}
 	}
 	
-	public void valBkNotNull(UserCompany userCompany) throws ValidationException{
+	private void valBkNotNull(UserCompany userCompany) throws ValidationException{
 		
 		if(userCompany.getIdUser().getId()==null) {
 

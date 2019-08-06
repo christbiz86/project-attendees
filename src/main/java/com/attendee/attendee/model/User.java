@@ -1,10 +1,13 @@
 package com.attendee.attendee.model;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -12,12 +15,20 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.apache.tomcat.util.security.MD5Encoder;
+import org.postgresql.util.MD5Digest;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
 @Table(name="users")
 public class User {
 	
 	@Id
 	@Column(name="id")
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private UUID id;
 	
 	@Column(name="kode")
@@ -41,21 +52,26 @@ public class User {
 
 	
 	@Column(name="username")
-	private String userName;
+	private String username;
 	
+
 	@Column(name="password")
-	private String password;
+	private MD5Encoder password;
 	
 	@Column(name="foto")
 	private String foto;
 	
-	@Temporal(TemporalType.DATE)
-	@Column(name="created_at")
+
+	
+	@JsonFormat(shape=JsonFormat.Shape.STRING,pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+7")
+	@Column(name = "created_at", nullable = false, updatable = false)
+    @CreatedDate
 	private Date createdAt;
 	
-	@Temporal(TemporalType.DATE)
-	@Column(name="updated_at")
-	private Date updatedAt;
+	@JsonFormat(shape=JsonFormat.Shape.STRING,pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+7")
+	@Column(name = "updated_at", nullable = false)
+    @LastModifiedDate
+	private Timestamp updatedAt;
 	
 	@JoinColumn(name = "created_by", referencedColumnName = "id")
 	@OneToOne(optional = false)
@@ -102,19 +118,19 @@ public class User {
 	}
 
 
-	public String getUserName() {
-		return userName;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
-	public String getPassword() {
+	public MD5Encoder getPassword() {
 		return password;
 	}
 
-	public void setPassword(String password) {
+	public void setPassword(MD5Encoder password) {
 		this.password = password;
 	}
 
@@ -126,6 +142,7 @@ public class User {
 		this.foto = foto;
 	}
 
+	
 	public Date getCreatedAt() {
 		return createdAt;
 	}
@@ -134,11 +151,11 @@ public class User {
 		this.createdAt = createdAt;
 	}
 
-	public Date getUpdatedAt() {
+	public Timestamp getUpdatedAt() {
 		return updatedAt;
 	}
 
-	public void setUpdatedAt(Date updatedAt) {
+	public void setUpdatedAt(Timestamp updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
