@@ -32,7 +32,7 @@ public class Libur {
 	@OneToOne
 	private Status status;
 	
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.DATE) 
 	@Column(name = "created_at")
 	private Date createdAt;
 	
