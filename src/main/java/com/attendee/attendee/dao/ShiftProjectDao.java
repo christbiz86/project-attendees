@@ -58,10 +58,18 @@ public class ShiftProjectDao extends ParentDao {
 	
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public ShiftProject findByBk(String kode) {		
-		List<ShiftProject> list = super.entityManager
-                .createQuery("FROM ShiftProject WHERE kode=:kode")
-                .setParameter("kode", kode)
+	public ShiftProject findByBk(String shift, String project) {		
+//		List<ShiftProject> list = super.entityManager
+//                .createQuery("FROM ShiftProject WHERE project=:project AND shift=:shift")
+//                .setParameter("project", project)
+//                .setParameter("shift", shift)
+//                .getResultList();
+		List<ShiftProject> list = super.entityManager.createNativeQuery("SELECT * "
+				+ "FROM shift_project sp INNER JOIN shift s ON sp.id_shift =s.id "
+				+ "INNER JOIN project p ON sp.id_project = p.id "
+				+ "WHERE s.kode=:shift AND p.kode=:project", ShiftProject.class)
+                .setParameter("shift", shift)
+                .setParameter("project", project)
                 .getResultList();
 
 		if (list.size() == 0) {
@@ -72,8 +80,8 @@ public class ShiftProjectDao extends ParentDao {
 		}
 	}
 
-	public boolean isBkExist(String kode) {
-		if(findByBk(kode).getId()==null) {
+	public boolean isBkExist(String shift, String project) {
+		if(findByBk(shift, project).getId()==null) {
 			return false;
 		}else {
 			return true;

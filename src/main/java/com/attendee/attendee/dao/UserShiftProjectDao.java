@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Repository;
 
+import com.attendee.attendee.model.ShiftProject;
 import com.attendee.attendee.model.UserShiftProject;
 
 @Repository
@@ -58,10 +59,12 @@ public class UserShiftProjectDao extends ParentDao {
 	
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public UserShiftProject findByBk(String kode) {		
-		List<UserShiftProject> list = super.entityManager
-                .createQuery("FROM UserShiftProject WHERE kode=:kode")
-                .setParameter("kode", kode)
+	public UserShiftProject findByBk(UUID userCompany, UUID shiftProject) {		
+		List<UserShiftProject> list = super.entityManager.createNativeQuery("SELECT * "
+				+ "FROM user_shift_project "
+				+ "WHERE id_user_company=:userCompany AND id_shift_project=:shiftProject", UserShiftProject.class)
+                .setParameter("userCompany", userCompany)
+                .setParameter("shiftProject", shiftProject)
                 .getResultList();
 
 		if (list.size() == 0) {
@@ -72,8 +75,8 @@ public class UserShiftProjectDao extends ParentDao {
 		}
 	}
 
-	public boolean isBkExist(String kode) {
-		if(findByBk(kode).getId()==null) {
+	public boolean isBkExist(UUID userCompany, UUID shiftProject) {
+		if(findByBk(userCompany, shiftProject).getId()==null) {
 			return false;
 		}else {
 			return true;
