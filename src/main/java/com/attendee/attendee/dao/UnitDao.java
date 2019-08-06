@@ -6,46 +6,46 @@ import java.util.UUID;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.attendee.attendee.model.Jabatan;
+import com.attendee.attendee.model.Unit;
 
 @Repository
-public class JabatanDao extends ParentDao{
+public class UnitDao extends ParentDao{
 	
 	@Transactional
-	public void save(Jabatan jabatan) {
-		super.entityManager.merge(jabatan);
+	public void save(Unit divisi) {
+		super.entityManager.merge(divisi);
 	}
 	
 	@Transactional
 	public void delete(UUID id) {
-		Jabatan jabatan = findById(id);
-		super.entityManager.remove(jabatan);
+		Unit divisi = findById(id);
+		super.entityManager.remove(divisi);
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Jabatan findById(UUID id) {	
+	public Unit findById(UUID id) {	
 		
-		List<Jabatan> list = super.entityManager
-                .createQuery("from Jabatan where id=:id")
+		List<Unit> list = super.entityManager
+                .createQuery("from Divisi where id=:id")
                 .setParameter("id", id)
                 .getResultList();
 
 		if (list.size() == 0) {
-			return new Jabatan();
+			return new Unit();
 		}
 		else {
-			return (Jabatan)list.get(0);
+			return (Unit)list.get(0);
 		}
 	}
 
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public List<Jabatan> findAll() {	
+	public List<Unit> findAll() {	
 		
-		List<Jabatan> list = super.entityManager
-                .createQuery("from Jabatan ")
+		List<Unit> list = super.entityManager
+                .createQuery("from Divisi ")
                 .getResultList();
 
 		return list;
@@ -62,18 +62,18 @@ public class JabatanDao extends ParentDao{
 	
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Jabatan findByBk(String kode) {	
+	public Unit findByBk(String kode) {	
 		
-		List<Jabatan> list = super.entityManager
-                .createQuery("from Jabatan where kode=:kode")
+		List<Unit> list = super.entityManager
+                .createQuery("from Divisi where kode=:kode")
                 .setParameter("kode", kode)
                 .getResultList();
 
 		if (list.size() == 0) {
-			return new Jabatan();
+			return new Unit();
 		}
 		else {
-			return (Jabatan)list.get(0);
+			return (Unit)list.get(0);
 		}
 	}
 
@@ -86,6 +86,5 @@ public class JabatanDao extends ParentDao{
 			return true;
 		}	 
 	}
-
 
 }

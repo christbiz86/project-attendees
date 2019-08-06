@@ -23,7 +23,7 @@ public class UserCompany {
 
 	@JoinColumn(name = "id_company_divisi_jabatan", referencedColumnName = "id")
 	@OneToOne(optional = false)
-	private CompanyDivisiJabatan idCompanyDivisiJabatan;	
+	private CompanyUnitPosisi idCompanyDivisiJabatan;	
 	
 	@JoinColumn(name = "id_tipe_user", referencedColumnName = "id")
 	@OneToOne(optional = false)
@@ -53,11 +53,11 @@ public class UserCompany {
 		this.idTipeUser = idTipeUser;
 	}
 
-	public CompanyDivisiJabatan getIdCompanyDivisiJabatan() {
+	public CompanyUnitPosisi getIdCompanyDivisiJabatan() {
 		return idCompanyDivisiJabatan;
 	}
 
-	public void setIdCompanyDivisiJabatan(CompanyDivisiJabatan idCompanyDivisiJabatan) {
+	public void setIdCompanyDivisiJabatan(CompanyUnitPosisi idCompanyDivisiJabatan) {
 		this.idCompanyDivisiJabatan = idCompanyDivisiJabatan;
 	}
 	

@@ -13,17 +13,18 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name="divisi")
-public class Divisi {
+@Table(name="jabatan")
+public class Posisi {
 
 	@Id
 	@Column(name="id")
 	private UUID id;
 	
-	@Column(name="divisi")
-	private String divisi;
+	@Column(name="jabatan")
+	private String jabatan;
 	
-	@Column(name="id_status")
+	@JoinColumn(name = "id_status", referencedColumnName = "id")
+	@OneToOne(optional = false)
 	private Status idStatus;
 	
 	@Temporal(TemporalType.DATE)
@@ -50,12 +51,12 @@ public class Divisi {
 		this.id = id;
 	}
 
-	public String getDivisi() {
-		return divisi;
+	public String getJabatan() {
+		return jabatan;
 	}
 
-	public void setDivisi(String divisi) {
-		this.divisi = divisi;
+	public void setJabatan(String jabatan) {
+		this.jabatan = jabatan;
 	}
 
 	public Status getIdStatus() {
@@ -97,4 +98,5 @@ public class Divisi {
 	public void setUpdateBy(User updateBy) {
 		this.updateBy = updateBy;
 	}
+
 }
