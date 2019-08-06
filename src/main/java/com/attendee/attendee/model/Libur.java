@@ -33,7 +33,7 @@ public class Libur {
 	private Status status;
 	
 	@Temporal(TemporalType.DATE)
-	@Column(name = "created_at") 
+	@Column(name = "created_at")
 	private Date createdAt;
 	
 	@Temporal(TemporalType.DATE)
