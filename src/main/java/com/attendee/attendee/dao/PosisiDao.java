@@ -6,45 +6,45 @@ import java.util.UUID;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.attendee.attendee.model.Jabatan;
+import com.attendee.attendee.model.Posisi;
 
 @Repository
-public class JabatanDao extends ParentDao{
+public class PosisiDao extends ParentDao{
 	
 	@Transactional
-	public void save(Jabatan jabatan) {
+	public void save(Posisi jabatan) {
 		super.entityManager.merge(jabatan);
 	}
 	
 	@Transactional
 	public void delete(UUID id) {
-		Jabatan jabatan = findById(id);
+		Posisi jabatan = findById(id);
 		super.entityManager.remove(jabatan);
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Jabatan findById(UUID id) {	
+	public Posisi findById(UUID id) {	
 		
-		List<Jabatan> list = super.entityManager
+		List<Posisi> list = super.entityManager
                 .createQuery("from Jabatan where id=:id")
                 .setParameter("id", id)
                 .getResultList();
 
 		if (list.size() == 0) {
-			return new Jabatan();
+			return new Posisi();
 		}
 		else {
-			return (Jabatan)list.get(0);
+			return (Posisi)list.get(0);
 		}
 	}
 
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public List<Jabatan> findAll() {	
+	public List<Posisi> findAll() {	
 		
-		List<Jabatan> list = super.entityManager
+		List<Posisi> list = super.entityManager
                 .createQuery("from Jabatan ")
                 .getResultList();
 
@@ -62,18 +62,18 @@ public class JabatanDao extends ParentDao{
 	
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Jabatan findByBk(String jabatan) {	
+	public Posisi findByBk(String jabatan) {	
 		
-		List<Jabatan> list = super.entityManager
+		List<Posisi> list = super.entityManager
                 .createQuery("from Jabatan where jabatan=:jabatan")
                 .setParameter("jabatan", jabatan)
                 .getResultList();
 
 		if (list.size() == 0) {
-			return new Jabatan();
+			return new Posisi();
 		}
 		else {
-			return (Jabatan)list.get(0);
+			return (Posisi)list.get(0);
 		}
 	}
 

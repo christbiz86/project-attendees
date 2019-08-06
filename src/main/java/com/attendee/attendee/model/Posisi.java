@@ -14,14 +14,14 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="jabatan")
-public class Jabatan {
+public class Posisi {
 
 	@Id
 	@Column(name="id")
 	private UUID id;
 	
-	@Column(name="jabatan")
-	private String jabatan;
+	@Column(name="posisi")
+	private String posisi;
 	
 	@JoinColumn(name = "id_status", referencedColumnName = "id")
 	@OneToOne(optional = false)
@@ -51,12 +51,12 @@ public class Jabatan {
 		this.id = id;
 	}
 
-	public String getJabatan() {
-		return jabatan;
+	public String getPosisi() {
+		return posisi;
 	}
 
-	public void setJabatan(String jabatan) {
-		this.jabatan = jabatan;
+	public void setPosisi(String posisi) {
+		this.posisi = posisi;
 	}
 
 	public Status getIdStatus() {

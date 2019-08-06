@@ -6,45 +6,45 @@ import java.util.UUID;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.attendee.attendee.model.Divisi;
+import com.attendee.attendee.model.Unit;
 
 @Repository
-public class DivisiDao extends ParentDao{
+public class UnitDao extends ParentDao{
 	
 	@Transactional
-	public void save(Divisi divisi) {
+	public void save(Unit divisi) {
 		super.entityManager.merge(divisi);
 	}
 	
 	@Transactional
 	public void delete(UUID id) {
-		Divisi divisi = findById(id);
+		Unit divisi = findById(id);
 		super.entityManager.remove(divisi);
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Divisi findById(UUID id) {	
+	public Unit findById(UUID id) {	
 		
-		List<Divisi> list = super.entityManager
+		List<Unit> list = super.entityManager
                 .createQuery("from Divisi where id=:id")
                 .setParameter("id", id)
                 .getResultList();
 
 		if (list.size() == 0) {
-			return new Divisi();
+			return new Unit();
 		}
 		else {
-			return (Divisi)list.get(0);
+			return (Unit)list.get(0);
 		}
 	}
 
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public List<Divisi> findAll() {	
+	public List<Unit> findAll() {	
 		
-		List<Divisi> list = super.entityManager
+		List<Unit> list = super.entityManager
                 .createQuery("from Divisi ")
                 .getResultList();
 
@@ -62,18 +62,18 @@ public class DivisiDao extends ParentDao{
 	
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Divisi findByBk(String divisi) {	
+	public Unit findByBk(String divisi) {	
 		
-		List<Divisi> list = super.entityManager
+		List<Unit> list = super.entityManager
                 .createQuery("from Divisi where divisi=:divisi")
                 .setParameter("divisi", divisi)
                 .getResultList();
 
 		if (list.size() == 0) {
-			return new Divisi();
+			return new Unit();
 		}
 		else {
-			return (Divisi)list.get(0);
+			return (Unit)list.get(0);
 		}
 	}
 

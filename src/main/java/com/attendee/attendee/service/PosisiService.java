@@ -6,15 +6,15 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.attendee.attendee.dao.JabatanDao;
+import com.attendee.attendee.dao.PosisiDao;
 import com.attendee.attendee.exception.ValidationException;
-import com.attendee.attendee.model.Jabatan;
+import com.attendee.attendee.model.Posisi;
 
 @Service
-public class JabatanService {
+public class PosisiService {
 
 	@Autowired
-	private JabatanDao jabatanDao;
+	private PosisiDao jabatanDao;
 	
 	
 	public void valIdExist(UUID id)throws ValidationException{
@@ -24,14 +24,14 @@ public class JabatanService {
 		}
 	}
 	
-	public void valIdNotNull(Jabatan jabatan)throws ValidationException {
+	public void valIdNotNull(Posisi jabatan)throws ValidationException {
 		
 		if(jabatan.getId()==null) {
 			throw new ValidationException("Id tidak boleh kosong");
 		}
 	}
 	
-	public void valNonBk(Jabatan jabatan)throws ValidationException{
+	public void valNonBk(Posisi jabatan)throws ValidationException{
 		
 		StringBuilder sb=new StringBuilder();
 		int error=0;
@@ -46,29 +46,29 @@ public class JabatanService {
 		}
 	}
 	
-	public void valBkNotExist(Jabatan jabatan)throws ValidationException{
-		if(jabatanDao.isBkExist(jabatan.getJabatan())) {
+	public void valBkNotExist(Posisi jabatan)throws ValidationException{
+		if(jabatanDao.isBkExist(jabatan.getPosisi())) {
 			throw new ValidationException("Data sudah ada");
 		}
 	}	
 	
-	public void valBkNotChange(Jabatan jabatan)throws ValidationException{
-		String s=findById(jabatan.getId()).getJabatan();
-		if(!jabatan.getJabatan().toString().equals(s.toString())) {
+	public void valBkNotChange(Posisi jabatan)throws ValidationException{
+		String s=findById(jabatan.getId()).getPosisi();
+		if(!jabatan.getPosisi().equals(s)) {
 
 			throw new ValidationException("jabatan tidak boleh berubah");
 		}
 	}
 	
-	public void valBkNotNull(Jabatan jabatan) throws ValidationException{
+	public void valBkNotNull(Posisi jabatan) throws ValidationException{
 		
-		if(jabatan.getJabatan()==null) {
+		if(jabatan.getPosisi()==null) {
 
 			throw new ValidationException("jabatan tidak boleh kosong");
 		}
 	}
 	
-	public void save(Jabatan jabatan)throws ValidationException{
+	public void save(Posisi jabatan)throws ValidationException{
 		
 		valBkNotNull(jabatan);
 		valBkNotExist(jabatan);
@@ -76,7 +76,7 @@ public class JabatanService {
 		jabatanDao.save(jabatan);
 	}
 	
-	public void update(Jabatan jabatan)throws ValidationException{
+	public void update(Posisi jabatan)throws ValidationException{
 		
 		valIdNotNull(jabatan);
 		valIdExist(jabatan.getId());
@@ -92,17 +92,17 @@ public class JabatanService {
 		jabatanDao.delete(id);
 	}
 	
-	public Jabatan findById(UUID id)throws ValidationException{
+	public Posisi findById(UUID id)throws ValidationException{
 
 		return jabatanDao.findById(id);
 	}
 	
-	public Jabatan findByBk(Jabatan jabatan) {
+	public Posisi findByBk(Posisi jabatan) {
 
-		return jabatanDao.findByBk(jabatan.getJabatan());
+		return jabatanDao.findByBk(jabatan.getPosisi());
 	}
 	
-	public List<Jabatan> findAll( )throws ValidationException{
+	public List<Posisi> findAll( )throws ValidationException{
 		return jabatanDao.findAll();
 	}
 	

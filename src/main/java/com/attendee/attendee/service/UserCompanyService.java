@@ -36,7 +36,7 @@ public class UserCompanyService {
 		StringBuilder sb=new StringBuilder();
 		int error=0;
 
-		if(userCompany.getIdCompanyDivisiJabatan()==null || userCompany.getIdCompanyDivisiJabatan().getId()==null) {
+		if(userCompany.getIdCompanyunitPosisi()==null || userCompany.getIdCompanyunitPosisi().getId()==null) {
 			sb.append("company divisi jabatan tidak boleh kosong \n");
 			error++;
 		}

@@ -6,15 +6,15 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.attendee.attendee.dao.DivisiDao;
+import com.attendee.attendee.dao.UnitDao;
 import com.attendee.attendee.exception.ValidationException;
-import com.attendee.attendee.model.Divisi;
+import com.attendee.attendee.model.Unit;
 
 @Service
-public class DivisiService {
+public class UnitService {
 
 	@Autowired
-	private DivisiDao divisiDao;
+	private UnitDao divisiDao;
 	
 	
 	public void valIdExist(UUID id)throws ValidationException{
@@ -24,14 +24,14 @@ public class DivisiService {
 		}
 	}
 	
-	public void valIdNotNull(Divisi divisi)throws ValidationException {
+	public void valIdNotNull(Unit divisi)throws ValidationException {
 		
 		if(divisi.getId()==null) {
 			throw new ValidationException("Id tidak boleh kosong");
 		}
 	}
 	
-	public void valNonBk(Divisi divisi)throws ValidationException{
+	public void valNonBk(Unit divisi)throws ValidationException{
 		
 		StringBuilder sb=new StringBuilder();
 		int error=0;
@@ -46,29 +46,29 @@ public class DivisiService {
 		}
 	}
 	
-	public void valBkNotExist(Divisi divisi)throws ValidationException{
-		if(divisiDao.isBkExist(divisi.getDivisi())) {
+	public void valBkNotExist(Unit divisi)throws ValidationException{
+		if(divisiDao.isBkExist(divisi.getUnit())) {
 			throw new ValidationException("Data sudah ada");
 		}
 	}	
 	
-	public void valBkNotChange(Divisi divisi)throws ValidationException{
-		String s=findById(divisi.getId()).getDivisi();
-		if(!divisi.getDivisi().toString().equals(s.toString())) {
+	public void valBkNotChange(Unit divisi)throws ValidationException{
+		String s=findById(divisi.getId()).getUnit();
+		if(!divisi.getUnit().toString().equals(s.toString())) {
 
 			throw new ValidationException("divisi tidak boleh berubah");
 		}
 	}
 	
-	public void valBkNotNull(Divisi divisi) throws ValidationException{
+	public void valBkNotNull(Unit divisi) throws ValidationException{
 		
-		if(divisi.getDivisi()==null) {
+		if(divisi.getUnit()==null) {
 
 			throw new ValidationException("divisi tidak boleh kosong");
 		}
 	}
 	
-	public void save(Divisi divisi)throws ValidationException{
+	public void save(Unit divisi)throws ValidationException{
 		
 		valBkNotNull(divisi);
 		valBkNotExist(divisi);
@@ -76,7 +76,7 @@ public class DivisiService {
 		divisiDao.save(divisi);
 	}
 	
-	public void update(Divisi divisi)throws ValidationException{
+	public void update(Unit divisi)throws ValidationException{
 		
 		valIdNotNull(divisi);
 		valIdExist(divisi.getId());
@@ -92,17 +92,17 @@ public class DivisiService {
 		divisiDao.delete(id);
 	}
 	
-	public Divisi findById(UUID id)throws ValidationException{
+	public Unit findById(UUID id)throws ValidationException{
 
 		return divisiDao.findById(id);
 	}
 	
-	public Divisi findByBk(Divisi divisi) {
+	public Unit findByBk(Unit divisi) {
 
-		return divisiDao.findByBk(divisi.getDivisi());
+		return divisiDao.findByBk(divisi.getUnit());
 	}
 	
-	public List<Divisi> findAll( )throws ValidationException{
+	public List<Unit> findAll( )throws ValidationException{
 		return divisiDao.findAll();
 	}
 	
