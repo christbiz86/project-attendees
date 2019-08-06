@@ -15,8 +15,7 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name="company")
 public class Company {
-
-
+	
 	@Id
 	@Column(name="id")
 	private UUID id;
@@ -44,11 +43,11 @@ public class Company {
 	
 	@JoinColumn(name = "created_by", referencedColumnName = "id")
 	@OneToOne(optional = false)
-	private UUID createdBy;	
+	private User createdBy;	
 	
 	@JoinColumn(name = "updated_by", referencedColumnName = "id")
 	@OneToOne(optional = false)
-	private UUID updatedBy;
+	private User updatedBy;
 
 	public UUID getId() {
 		return id;
@@ -106,20 +105,19 @@ public class Company {
 		this.updatedAt = updatedAt;
 	}
 
-	public UUID getCreatedBy() {
+	public User getCreatedBy() {
 		return createdBy;
 	}
 
-	public void setCreatedBy(UUID createdBy) {
+	public void setCreatedBy(User createdBy) {
 		this.createdBy = createdBy;
 	}
 
-	public UUID getUpdatedBy() {
+	public User getUpdatedBy() {
 		return updatedBy;
 	}
 
-	public void setUpdatedBy(UUID updatedBy) {
+	public void setUpdatedBy(User updatedBy) {
 		this.updatedBy = updatedBy;
 	}
-	
 }

@@ -1,13 +1,12 @@
 package com.attendee.attendee.exception;
 
-public class ValidationException  extends Exception{
+public class ValidationException extends Exception {
 
 	private static final long serialVersionUID = 1L;
 
-	public ValidationException(String message) 
-	{
+	public ValidationException(String message) {
 		super(message);
 		System.out.println(message);
 	}
-	
+
 }

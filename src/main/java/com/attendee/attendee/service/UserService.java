@@ -115,7 +115,6 @@ public class UserService {
 	}
 
 	public void save(User user) throws ValidationException {
-
 		valBkNotNull(user);
 		valBkNotExist(user);
 		valNonBk(user);
@@ -123,7 +122,6 @@ public class UserService {
 	}
 
 	public void update(User user) throws ValidationException {
-
 		valIdNotNull(user);
 		valIdExist(user.getId());
 		valBkNotNull(user);

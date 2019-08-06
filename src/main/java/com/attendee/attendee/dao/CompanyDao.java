@@ -44,6 +44,24 @@ public class CompanyDao extends ParentDao {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public Company findByFilter(String nama) {
+		List<Company> list = super.entityManager
+				.createQuery("FROM Company"
+						+ "WHERE nama = :nama")
+				.setParameter("nama", nama)
+				.getResultList();
+		
+		if (list.size() == 0) {
+			return new Company();
+		}
+		else {
+			return (Company)list.get(0);
+		}
+				
+	}
+	
 	@Transactional
 	public boolean isIdExist(UUID id) {
 		if(findById(id).getId() == null) {
