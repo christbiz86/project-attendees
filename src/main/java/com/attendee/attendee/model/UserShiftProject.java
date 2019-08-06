@@ -20,5 +20,31 @@ public class UserShiftProject {
 	@OneToOne(optional = false)
 	private UserCompany userCompany;
 	
+	@JoinColumn(name = "id_shift_project", referencedColumnName = "id")
+	@OneToOne(optional = false)
 	private ShiftProject shiftProject;
+
+	public UUID getId() {
+		return id;
+	}
+
+	public void setId(UUID id) {
+		this.id = id;
+	}
+
+	public UserCompany getUserCompany() {
+		return userCompany;
+	}
+
+	public void setUserCompany(UserCompany userCompany) {
+		this.userCompany = userCompany;
+	}
+
+	public ShiftProject getShiftProject() {
+		return shiftProject;
+	}
+
+	public void setShiftProject(ShiftProject shiftProject) {
+		this.shiftProject = shiftProject;
+	}
 }
