@@ -59,7 +59,6 @@ public class CompanyDao extends ParentDao {
 		else {
 			return (Company)list.get(0);
 		}
-				
 	}
 	
 	@Transactional
@@ -97,12 +96,6 @@ public class CompanyDao extends ParentDao {
 	@Transactional
 	public void update(Company company) {
 		super.entityManager.merge(company);
-	}
-	
-	@Transactional
-	public void delete(UUID id) {
-		Company company = findById(id);
-		super.entityManager.remove(company);
 	}
 
 }

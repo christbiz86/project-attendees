@@ -20,8 +20,8 @@ public class Unit {
 	@Column(name="id")
 	private UUID id;
 	
-	@Column(name="divisi")
-	private String divisi;
+	@Column(name="unit")
+	private String unit;
 	
 	@Column(name="id_status")
 	private Status idStatus;
@@ -50,12 +50,12 @@ public class Unit {
 		this.id = id;
 	}
 
-	public String getDivisi() {
-		return divisi;
+	public String getUnit() {
+		return unit;
 	}
 
-	public void setDivisi(String divisi) {
-		this.divisi = divisi;
+	public void setUnit(String unit) {
+		this.unit = unit;
 	}
 
 	public Status getIdStatus() {

@@ -1,5 +1,6 @@
 package com.attendee.attendee.service;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.attendee.attendee.dao.CompanyDao;
 import com.attendee.attendee.exception.ValidationException;
 import com.attendee.attendee.model.Company;
-import com.attendee.attendee.model.User;
 
 @Service
 public class CompanyService {
@@ -31,6 +31,10 @@ public class CompanyService {
 		if (company.getId() == null) {
 			throw new ValidationException("ID tidak boleh kosong!");
 		}
+	}
+	
+	public List<Company> findAll() {
+		return companyDao.findAll();
 	}
 	
 	public Company findById(UUID id) {
@@ -109,12 +113,6 @@ public class CompanyService {
 	
 	public void update(Company company) {
 		companyDao.update(company);
-	}
-	
-	public void delete(UUID id) {
-		companyDao.delete(id);
-	}
-	
-	
+	}	
 
 }
