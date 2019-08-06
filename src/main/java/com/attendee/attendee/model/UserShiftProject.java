@@ -20,5 +20,7 @@ public class UserShiftProject {
 	@OneToOne(optional = false)
 	private UserCompany userCompany;
 	
+	@JoinColumn(name = "id_shift_project", referencedColumnName = "id")
+	@OneToOne(optional = false)
 	private ShiftProject shiftProject;
 }
