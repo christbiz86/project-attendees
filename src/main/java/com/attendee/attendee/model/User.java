@@ -41,7 +41,7 @@ public class User {
 
 	
 	@Column(name="username")
-	private String userName;
+	private String username;
 	
 	@Column(name="password")
 	private String password;
@@ -103,11 +103,11 @@ public class User {
 
 
 	public String getUserName() {
-		return userName;
+		return username;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUserName(String username) {
+		this.username = username;
 	}
 
 	public String getPassword() {

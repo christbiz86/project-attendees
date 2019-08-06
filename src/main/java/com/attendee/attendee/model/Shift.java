@@ -8,31 +8,29 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name="company")
-public class Company {
-
-
+public class Shift {
 	@Id
-	@Column(name="id")
+	@Column(name = "id")
 	private UUID id;
 	
-	@Column(name="kode")
+	@Column(name = "kode")
 	private String kode;
 	
+	@Temporal(TemporalType.DATE)
+	@Column(name = "masuk")
+	private Date masuk;
 	
-	@Column(name="nama")
-	private String nama;
+	@Temporal(TemporalType.DATE)
+	@Column(name = "pulang")
+	private Date pulang;
 	
-	@Column(name="jatah_cuti")
-	private Integer jatahCuti;
-	
-	@Column(name="toleransi_keterlambatan")
-	private Integer toleransiKeterlambatan;
+	@JoinColumn(name = "id_status", referencedColumnName = "id")
+	@OneToOne
+	private Status status;
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name = "created_at")
@@ -66,28 +64,28 @@ public class Company {
 		this.kode = kode;
 	}
 
-	public String getNama() {
-		return nama;
+	public Date getMasuk() {
+		return masuk;
 	}
 
-	public void setNama(String nama) {
-		this.nama = nama;
+	public void setMasuk(Date masuk) {
+		this.masuk = masuk;
 	}
 
-	public Integer getJatahCuti() {
-		return jatahCuti;
+	public Date getPulang() {
+		return pulang;
 	}
 
-	public void setJatahCuti(Integer jatahCuti) {
-		this.jatahCuti = jatahCuti;
+	public void setPulang(Date pulang) {
+		this.pulang = pulang;
 	}
 
-	public Integer getToleransiKeterlambatan() {
-		return toleransiKeterlambatan;
+	public Status getStatus() {
+		return status;
 	}
 
-	public void setToleransiKeterlambatan(Integer toleransiKeterlambatan) {
-		this.toleransiKeterlambatan = toleransiKeterlambatan;
+	public void setStatus(Status status) {
+		this.status = status;
 	}
 
 	public Date getCreatedAt() {
@@ -121,5 +119,4 @@ public class Company {
 	public void setUpdatedBy(UUID updatedBy) {
 		this.updatedBy = updatedBy;
 	}
-	
 }

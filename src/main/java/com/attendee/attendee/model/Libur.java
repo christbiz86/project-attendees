@@ -8,33 +8,31 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name="company")
-public class Company {
-
-
+public class Libur {
 	@Id
-	@Column(name="id")
+	@Column(name = "id")
 	private UUID id;
 	
-	@Column(name="kode")
-	private String kode;
-	
-	
-	@Column(name="nama")
+	@Column(name = "nama")
 	private String nama;
 	
-	@Column(name="jatah_cuti")
-	private Integer jatahCuti;
-	
-	@Column(name="toleransi_keterlambatan")
-	private Integer toleransiKeterlambatan;
+	@Temporal(TemporalType.DATE)
+	@Column(name = "tgl_mulai")
+	private Date tglMulai;
 	
 	@Temporal(TemporalType.DATE)
+	@Column(name = "tgl_akhir")
+	private Date tglAkhir;
+	
+	@JoinColumn(name = "id_status", referencedColumnName = "id")
+	@OneToOne
+	private Status status;
+	
+	@Temporal(TemporalType.DATE) 
 	@Column(name = "created_at")
 	private Date createdAt;
 	
@@ -58,14 +56,6 @@ public class Company {
 		this.id = id;
 	}
 
-	public String getKode() {
-		return kode;
-	}
-
-	public void setKode(String kode) {
-		this.kode = kode;
-	}
-
 	public String getNama() {
 		return nama;
 	}
@@ -74,20 +64,28 @@ public class Company {
 		this.nama = nama;
 	}
 
-	public Integer getJatahCuti() {
-		return jatahCuti;
+	public Date getTglMulai() {
+		return tglMulai;
 	}
 
-	public void setJatahCuti(Integer jatahCuti) {
-		this.jatahCuti = jatahCuti;
+	public void setTglMulai(Date tglMulai) {
+		this.tglMulai = tglMulai;
 	}
 
-	public Integer getToleransiKeterlambatan() {
-		return toleransiKeterlambatan;
+	public Date getTglAkhir() {
+		return tglAkhir;
 	}
 
-	public void setToleransiKeterlambatan(Integer toleransiKeterlambatan) {
-		this.toleransiKeterlambatan = toleransiKeterlambatan;
+	public void setTglAkhir(Date tglAkhir) {
+		this.tglAkhir = tglAkhir;
+	}
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
 	}
 
 	public Date getCreatedAt() {
@@ -121,5 +119,4 @@ public class Company {
 	public void setUpdatedBy(UUID updatedBy) {
 		this.updatedBy = updatedBy;
 	}
-	
 }
