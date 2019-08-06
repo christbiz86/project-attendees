@@ -23,11 +23,11 @@ public class CompanyDivisiJabatan {
 	
 	@JoinColumn(name = "id_divisi", referencedColumnName = "id")
 	@OneToOne(optional = false)
-	private Divisi idDivisi;
+	private Unit idDivisi;
 
 	@JoinColumn(name = "id_jabatan", referencedColumnName = "id")
 	@OneToOne(optional = false)
-	private Jabatan idJabatan;
+	private Posisi idJabatan;
 
 	public UUID getId() {
 		return id;
@@ -45,19 +45,19 @@ public class CompanyDivisiJabatan {
 		this.idCompany = idCompany;
 	}
 
-	public Divisi getIdDivisi() {
+	public Unit getIdDivisi() {
 		return idDivisi;
 	}
 
-	public void setIdDivisi(Divisi idDivisi) {
+	public void setIdDivisi(Unit idDivisi) {
 		this.idDivisi = idDivisi;
 	}
 
-	public Jabatan getIdJabatan() {
+	public Posisi getIdJabatan() {
 		return idJabatan;
 	}
 
-	public void setIdJabatan(Jabatan idJabatan) {
+	public void setIdJabatan(Posisi idJabatan) {
 		this.idJabatan = idJabatan;
 	}
 	

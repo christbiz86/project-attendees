@@ -3,56 +3,52 @@ package com.attendee.attendee.dao;
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
+import javax.transaction.Transactional;
 
-import com.attendee.attendee.model.Jabatan;
+import org.springframework.stereotype.Repository;
+
+import com.attendee.attendee.model.Libur;
 
 @Repository
-public class JabatanDao extends ParentDao{
-	
+public class LiburDao extends ParentDao {
 	@Transactional
-	public void save(Jabatan jabatan) {
-		super.entityManager.merge(jabatan);
+	public void save(Libur libur) {
+		super.entityManager.merge(libur);
 	}
 	
 	@Transactional
 	public void delete(UUID id) {
-		Jabatan jabatan = findById(id);
-		super.entityManager.remove(jabatan);
+		Libur libur = findById(id);
+		super.entityManager.remove(libur);
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Jabatan findById(UUID id) {	
-		
-		List<Jabatan> list = super.entityManager
-                .createQuery("from Jabatan where id=:id")
+	public Libur findById(UUID id) {	
+		List<Libur> list = super.entityManager
+                .createQuery("FROM Libur WHERE id=:id")
                 .setParameter("id", id)
                 .getResultList();
 
 		if (list.size() == 0) {
-			return new Jabatan();
+			return new Libur();
 		}
 		else {
-			return (Jabatan)list.get(0);
+			return (Libur)list.get(0);
 		}
 	}
-
-
+	
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public List<Jabatan> findAll() {	
-		
-		List<Jabatan> list = super.entityManager
-                .createQuery("from Jabatan ")
+	public List<Libur> findAll() {	
+		List<Libur> list = super.entityManager
+                .createQuery("FROM Libur ")
                 .getResultList();
 
 		return list;
 	}
 	
 	public boolean isExist(UUID id) {
-		
 		if(findById(id).getId()==null) {
 			return false;
 		}else {
@@ -62,30 +58,25 @@ public class JabatanDao extends ParentDao{
 	
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Jabatan findByBk(String kode) {	
-		
-		List<Jabatan> list = super.entityManager
-                .createQuery("from Jabatan where kode=:kode")
+	public Libur findByBk(String kode) {		
+		List<Libur> list = super.entityManager
+                .createQuery("FROM Libur WHERE kode=:kode")
                 .setParameter("kode", kode)
                 .getResultList();
 
 		if (list.size() == 0) {
-			return new Jabatan();
+			return new Libur();
 		}
 		else {
-			return (Jabatan)list.get(0);
+			return (Libur)list.get(0);
 		}
 	}
 
 	public boolean isBkExist(String kode) {
-		
 		if(findByBk(kode).getId()==null) {
-	
 			return false;
 		}else {
 			return true;
 		}	 
 	}
-
-
 }

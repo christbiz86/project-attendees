@@ -6,51 +6,53 @@ import java.util.UUID;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.attendee.attendee.model.Project;
-
+import com.attendee.attendee.model.Posisi;
 
 @Repository
-public class ProjectDao extends ParentDao {
+public class PosisiDao extends ParentDao{
+	
 	@Transactional
-	public void save(Project project) {
-		super.entityManager.merge(project);
+	public void save(Posisi posisi) {
+		super.entityManager.merge(posisi);
 	}
 	
 	@Transactional
 	public void delete(UUID id) {
-		Project project= findById(id);
-		super.entityManager.remove(project);
+		Posisi posisi = findById(id);
+		super.entityManager.remove(posisi);
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Project findById(UUID id) {	
+	public Posisi findById(UUID id) {	
 		
-		List<Project> list = super.entityManager
-                .createQuery("FROM Project WHERE id=:id")
+		List<Posisi> list = super.entityManager
+                .createQuery("from Jabatan where id=:id")
                 .setParameter("id", id)
                 .getResultList();
 
 		if (list.size() == 0) {
-			return new Project();
+			return new Posisi();
 		}
 		else {
-			return (Project)list.get(0);
+			return (Posisi)list.get(0);
 		}
 	}
 
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public List<Project> findAll() {	
-		List<Project> list = super.entityManager
-                .createQuery("FROM Project ")
+	public List<Posisi> findAll() {	
+		
+		List<Posisi> list = super.entityManager
+                .createQuery("from Jabatan ")
                 .getResultList();
 
 		return list;
 	}
 	
 	public boolean isExist(UUID id) {
+		
 		if(findById(id).getId()==null) {
 			return false;
 		}else {
@@ -60,21 +62,23 @@ public class ProjectDao extends ParentDao {
 	
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Project findByBk(String kode) {	
-		List<Project> list = super.entityManager
-                .createQuery("FROM Project WHERE kode=:kode")
+	public Posisi findByBk(String kode) {	
+		
+		List<Posisi> list = super.entityManager
+                .createQuery("from Jabatan where kode=:kode")
                 .setParameter("kode", kode)
                 .getResultList();
 
 		if (list.size() == 0) {
-			return new Project();
+			return new Posisi();
 		}
 		else {
-			return (Project)list.get(0);
+			return (Posisi)list.get(0);
 		}
 	}
 
 	public boolean isBkExist(String kode) {
+		
 		if(findByBk(kode).getId()==null) {
 	
 			return false;
@@ -82,4 +86,6 @@ public class ProjectDao extends ParentDao {
 			return true;
 		}	 
 	}
+
+
 }

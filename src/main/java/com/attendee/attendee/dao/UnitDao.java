@@ -6,45 +6,45 @@ import java.util.UUID;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.attendee.attendee.model.Divisi;
+import com.attendee.attendee.model.Unit;
 
 @Repository
-public class DivisiDao extends ParentDao{
+public class UnitDao extends ParentDao{
 	
 	@Transactional
-	public void save(Divisi divisi) {
-		super.entityManager.merge(divisi);
+	public void save(Unit unit) {
+		super.entityManager.merge(unit);
 	}
 	
 	@Transactional
 	public void delete(UUID id) {
-		Divisi divisi = findById(id);
-		super.entityManager.remove(divisi);
+		Unit unit = findById(id);
+		super.entityManager.remove(unit);
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Divisi findById(UUID id) {	
+	public Unit findById(UUID id) {	
 		
-		List<Divisi> list = super.entityManager
+		List<Unit> list = super.entityManager
                 .createQuery("from Divisi where id=:id")
                 .setParameter("id", id)
                 .getResultList();
 
 		if (list.size() == 0) {
-			return new Divisi();
+			return new Unit();
 		}
 		else {
-			return (Divisi)list.get(0);
+			return (Unit)list.get(0);
 		}
 	}
 
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public List<Divisi> findAll() {	
+	public List<Unit> findAll() {	
 		
-		List<Divisi> list = super.entityManager
+		List<Unit> list = super.entityManager
                 .createQuery("from Divisi ")
                 .getResultList();
 
@@ -62,18 +62,18 @@ public class DivisiDao extends ParentDao{
 	
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Divisi findByBk(String kode) {	
+	public Unit findByBk(String kode) {	
 		
-		List<Divisi> list = super.entityManager
+		List<Unit> list = super.entityManager
                 .createQuery("from Divisi where kode=:kode")
                 .setParameter("kode", kode)
                 .getResultList();
 
 		if (list.size() == 0) {
-			return new Divisi();
+			return new Unit();
 		}
 		else {
-			return (Divisi)list.get(0);
+			return (Unit)list.get(0);
 		}
 	}
 
