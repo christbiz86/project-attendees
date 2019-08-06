@@ -6,46 +6,46 @@ import java.util.UUID;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.attendee.attendee.model.Divisi;
+import com.attendee.attendee.model.Posisi;
 
 @Repository
-public class DivisiDao extends ParentDao{
+public class PosisiDao extends ParentDao{
 	
 	@Transactional
-	public void save(Divisi divisi) {
-		super.entityManager.merge(divisi);
+	public void save(Posisi jabatan) {
+		super.entityManager.merge(jabatan);
 	}
 	
 	@Transactional
 	public void delete(UUID id) {
-		Divisi divisi = findById(id);
-		super.entityManager.remove(divisi);
+		Posisi jabatan = findById(id);
+		super.entityManager.remove(jabatan);
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Divisi findById(UUID id) {	
+	public Posisi findById(UUID id) {	
 		
-		List<Divisi> list = super.entityManager
-                .createQuery("from Divisi where id=:id")
+		List<Posisi> list = super.entityManager
+                .createQuery("from Jabatan where id=:id")
                 .setParameter("id", id)
                 .getResultList();
 
 		if (list.size() == 0) {
-			return new Divisi();
+			return new Posisi();
 		}
 		else {
-			return (Divisi)list.get(0);
+			return (Posisi)list.get(0);
 		}
 	}
 
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public List<Divisi> findAll() {	
+	public List<Posisi> findAll() {	
 		
-		List<Divisi> list = super.entityManager
-                .createQuery("from Divisi ")
+		List<Posisi> list = super.entityManager
+                .createQuery("from Jabatan ")
                 .getResultList();
 
 		return list;
@@ -62,18 +62,18 @@ public class DivisiDao extends ParentDao{
 	
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Divisi findByBk(String kode) {	
+	public Posisi findByBk(String kode) {	
 		
-		List<Divisi> list = super.entityManager
-                .createQuery("from Divisi where kode=:kode")
+		List<Posisi> list = super.entityManager
+                .createQuery("from Jabatan where kode=:kode")
                 .setParameter("kode", kode)
                 .getResultList();
 
 		if (list.size() == 0) {
-			return new Divisi();
+			return new Posisi();
 		}
 		else {
-			return (Divisi)list.get(0);
+			return (Posisi)list.get(0);
 		}
 	}
 
@@ -86,5 +86,6 @@ public class DivisiDao extends ParentDao{
 			return true;
 		}	 
 	}
+
 
 }
