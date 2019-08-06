@@ -50,31 +50,6 @@ public class UserDao extends ParentDao{
 
 		return list;
 	}
-
-//	@SuppressWarnings("unchecked")
-//	@Transactional
-//	public List<User> findByFilter(String pasien) {	
-//		
-//		StringBuilder sb=new StringBuilder("SELECT p.id, p.kode , p.id_pemeriksaan ");
-//		sb.append(" FROM resep p ");
-//		sb.append(" JOIN pemeriksaan n ON p.id_pemeriksaan=n.id ");
-//		sb.append(" JOIN registrasi r ON n.id_registrasi=r.id ");
-//		sb.append(" JOIN pasien ps ON r.id_pasien=ps.id ");
-//		sb.append(" WHERE 1=1 ");		
-//			
-//		if(!pasien.equals("null")) {
-//			sb.append(" AND ps.nama LIKE '%"+pasien+"%' ");
-//			System.out.println("not null nama");
-//		}
-//			
-//		List<Resep> list=super.entityManager.createNativeQuery(sb.toString(),Resep.class).getResultList();
-//		
-//		if(list.size()==0) {
-//			return new ArrayList<Resep>();
-//		}else {
-//			return list;
-//		}
-//	}
 	
 	public boolean isExist(UUID id) {
 		
