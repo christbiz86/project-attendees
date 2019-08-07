@@ -58,10 +58,11 @@ public class LiburCompanyDao extends ParentDao {
 	
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public LiburCompany findByBk(String kode) {		
-		List<LiburCompany> list = super.entityManager
-                .createQuery("FROM LiburCompany WHERE kode=:kode")
-                .setParameter("kode", kode)
+	public LiburCompany findByBk(UUID libur, UUID company) {
+		List<LiburCompany> list = super.entityManager.createNativeQuery("SELECT * "
+				+ "FROM libur_company lc WHERE lc.id_libur=:libur AND lc.id_company=:company", LiburCompany.class)
+                .setParameter("libur", libur)
+                .setParameter("company", company)
                 .getResultList();
 
 		if (list.size() == 0) {
@@ -72,8 +73,8 @@ public class LiburCompanyDao extends ParentDao {
 		}
 	}
 
-	public boolean isBkExist(String kode) {
-		if(findByBk(kode).getId()==null) {
+	public boolean isBkExist(UUID libur, UUID company) {
+		if(findByBk(libur, company).getId()==null) {
 			return false;
 		}else {
 			return true;
