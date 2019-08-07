@@ -1,28 +1,31 @@
 package com.attendee.attendee.model;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.GenericGenerator;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name="company")
 public class Company {
-	
 	@Id
-	@Column(name="id")
+	@GeneratedValue(generator = "UUID")
+	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
 	private UUID id;
 	
 	@Column(name="kode")
 	private String kode;
-	
 	
 	@Column(name="nama")
 	private String nama;
@@ -33,20 +36,20 @@ public class Company {
 	@Column(name="toleransi_keterlambatan")
 	private Integer toleransiKeterlambatan;
 	
-	@Temporal(TemporalType.DATE)
 	@Column(name = "created_at")
-	private Date createdAt;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+7")
+	private Timestamp createdAt;
 	
-	@Temporal(TemporalType.DATE)
 	@Column(name = "updated_at")
-	private Date updatedAt;
+	@JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss", timezone = "GMT+7")
+	private Timestamp updatedAt;
 	
 	@JoinColumn(name = "created_by", referencedColumnName = "id")
-	@OneToOne(optional = false)
+	@OneToOne
 	private User createdBy;	
 	
 	@JoinColumn(name = "updated_by", referencedColumnName = "id")
-	@OneToOne(optional = false)
+	@OneToOne
 	private User updatedBy;
 
 	public UUID getId() {
@@ -89,19 +92,19 @@ public class Company {
 		this.toleransiKeterlambatan = toleransiKeterlambatan;
 	}
 
-	public Date getCreatedAt() {
+	public Timestamp getCreatedAt() {
 		return createdAt;
 	}
 
-	public void setCreatedAt(Date createdAt) {
+	public void setCreatedAt(Timestamp createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	public Date getUpdatedAt() {
+	public Timestamp getUpdatedAt() {
 		return updatedAt;
 	}
 
-	public void setUpdatedAt(Date updatedAt) {
+	public void setUpdatedAt(Timestamp updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 

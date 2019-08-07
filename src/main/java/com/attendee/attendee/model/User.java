@@ -5,19 +5,21 @@ import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name="users")
 public class User {
-	
 	@Id
 	@Column(name="id")
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private UUID id;
 	
 	@Column(name="kode")
@@ -29,7 +31,8 @@ public class User {
 	@Column(name="alamat")
 	private String alamat;
 	
-	@Temporal(TemporalType.DATE)
+//	@Temporal(TemporalType.DATE)
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	@Column(name="tgl_lahir")
 	private Date tglLahir;
 	
@@ -38,10 +41,6 @@ public class User {
 
 	@Column(name="telp")
 	private String telp;
-
-	
-	@Column(name="username")
-	private String username;
 	
 	@Column(name="password")
 	private String password;
@@ -49,25 +48,27 @@ public class User {
 	@Column(name="foto")
 	private String foto;
 	
-	@Temporal(TemporalType.DATE)
-	@Column(name="create_at")
-	private Date createAt;
-	
-	@Temporal(TemporalType.DATE)
-	@Column(name="update_at")
-	private Date updateAt;
-	
-	@JoinColumn(name = "create_by", referencedColumnName = "id")
-	@OneToOne(optional = false)
-	private User createBy;
-	
-	@JoinColumn(name = "update_by", referencedColumnName = "id")
-	@OneToOne(optional = false)
-	private User updateBy;
-	
 	@JoinColumn(name = "id_status", referencedColumnName = "id")
-	@OneToOne(optional = false)	
+	@OneToOne
 	private Status idStatus;
+	
+//	@Temporal(TemporalType.DATE)
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	@Column(name="created_at")
+	private Date createdAt;
+	
+//	@Temporal(TemporalType.DATE)
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	@Column(name="updated_at")
+	private Date updatedAt;
+	
+	@JoinColumn(name = "created_by", referencedColumnName = "id")
+	@OneToOne
+	private User createdBy;
+	
+	@JoinColumn(name = "updated_by", referencedColumnName = "id")
+	@OneToOne
+	private User updatedBy;
 
 	public UUID getId() {
 		return id;
@@ -101,15 +102,6 @@ public class User {
 		this.alamat = alamat;
 	}
 
-
-	public String getUserName() {
-		return username;
-	}
-
-	public void setUserName(String username) {
-		this.username = username;
-	}
-
 	public String getPassword() {
 		return password;
 	}
@@ -126,36 +118,36 @@ public class User {
 		this.foto = foto;
 	}
 
-	public Date getCreateAt() {
-		return createAt;
+	public Date getCreatedAt() {
+		return createdAt;
 	}
 
-	public void setCreateAt(Date createAt) {
-		this.createAt = createAt;
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
 	}
 
-	public Date getUpdateAt() {
-		return updateAt;
+	public Date getUpdatedAt() {
+		return updatedAt;
 	}
 
-	public void setUpdateAt(Date updateAt) {
-		this.updateAt = updateAt;
+	public void setUpdatedAt(Date updatedAt) {
+		this.updatedAt = updatedAt;
 	}
 
-	public User getCreateBy() {
-		return createBy;
+	public User getCreatedBy() {
+		return createdBy;
 	}
 
-	public void setCreateBy(User createBy) {
-		this.createBy = createBy;
+	public void setCreatedBy(User createdBy) {
+		this.createdBy = createdBy;
 	}
 
-	public User getUpdateBy() {
-		return updateBy;
+	public User getUpdatedBy() {
+		return updatedBy;
 	}
 
-	public void setUpdateBy(User updateBy) {
-		this.updateBy = updateBy;
+	public void setUpdatedBy(User updatedBy) {
+		this.updatedBy = updatedBy;
 	}
 
 	public String getEmail() {

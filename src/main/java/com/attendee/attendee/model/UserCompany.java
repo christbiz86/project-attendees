@@ -4,6 +4,8 @@ import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -15,15 +17,16 @@ public class UserCompany {
 
 	@Id
 	@Column(name="id")
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private UUID id;
 	
 	@JoinColumn(name = "id_user", referencedColumnName = "id")
 	@OneToOne(optional = false)
 	private User idUser;
 
-	@JoinColumn(name = "id_company_divisi_jabatan", referencedColumnName = "id")
+	@JoinColumn(name = "id_company_unit_posisi", referencedColumnName = "id")
 	@OneToOne(optional = false)
-	private CompanyUnitPosisi idCompanyDivisiJabatan;	
+	private CompanyUnitPosisi idCompanyunitPosisi;	
 	
 	@JoinColumn(name = "id_tipe_user", referencedColumnName = "id")
 	@OneToOne(optional = false)
@@ -53,12 +56,13 @@ public class UserCompany {
 		this.idTipeUser = idTipeUser;
 	}
 
-	public CompanyUnitPosisi getIdCompanyDivisiJabatan() {
-		return idCompanyDivisiJabatan;
+	public CompanyUnitPosisi getIdCompanyunitPosisi() {
+		return idCompanyunitPosisi;
 	}
 
-	public void setIdCompanyDivisiJabatan(CompanyUnitPosisi idCompanyDivisiJabatan) {
-		this.idCompanyDivisiJabatan = idCompanyDivisiJabatan;
+	public void setIdCompanyunitPosisi(CompanyUnitPosisi idCompanyunitPosisi) {
+		this.idCompanyunitPosisi = idCompanyunitPosisi;
 	}
+	
 	
 }

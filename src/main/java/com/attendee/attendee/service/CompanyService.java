@@ -1,5 +1,6 @@
 package com.attendee.attendee.service;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,15 +16,9 @@ public class CompanyService {
 	@Autowired
 	private CompanyDao companyDao;
 	
-	public void valIdNotExist(UUID id) throws ValidationException {
-		if (companyDao.isIdExist(id)) {
-			throw new ValidationException("Data sudah ada!");
-		}
-	}
-	
-	public void valIdExist(UUID id) throws ValidationException {
-		if (!companyDao.isIdExist(id)) {
-			throw new ValidationException("Data tidak ada!");
+	public void valIdExist(Company company) throws ValidationException {
+		if (!companyDao.isIdExist(company.getId())) {
+			throw new ValidationException("ID tidak ada!");
 		}
 	}
 	
@@ -41,12 +36,12 @@ public class CompanyService {
 		return companyDao.findById(id);
 	}
 	
-	public Company findByBk(Company company) {
-		return companyDao.findByBk(company.getKode());
+	public Company findByBk(String kode) {
+		return companyDao.findByBk(kode);
 	}
 	
 	public Company findByFilter(Company company) {
-		return companyDao.findByBk(company.getKode());
+		return companyDao.findByFilter(company);
 	}
 	
 	public void valBkNotExist(Company company) throws ValidationException {
@@ -57,15 +52,14 @@ public class CompanyService {
 	
 	public void valBkNotNull(Company company) throws ValidationException {
 		if (company.getKode() == null) {
-			throw new ValidationException("Kode tidak boleh kosong");
+			throw new ValidationException("Kode tidak boleh kosong!");
 		}
 	}
 	
 	public void valBkNotChange(Company company) throws ValidationException {
 		String s = findById(company.getId()).getKode();
 		if (!company.getKode().toString().equals(s.toString())) {
-
-			throw new ValidationException("Kode tidak boleh berubah");
+			throw new ValidationException("Kode tidak boleh berubah!");
 		}
 	}
 	
@@ -89,30 +83,40 @@ public class CompanyService {
 			sb.append("Tanggal dibuat tidak boleh kosong \n");
 			error++;
 		}
-		if (company.getUpdatedAt() == null) {
+//		if (company.getUpdatedAt() == null) {
+//			sb.append("Tanggal diedit tidak boleh kosong \n");
+//			error++;
+//		}
+		if (company.getCreatedBy() == null) {
 			sb.append("Pembuat tidak boleh kosong \n");
 			error++;
 		}
-		if (company.getCreatedBy() == null) {
-			sb.append("Tanggal diedit tidak boleh kosong \n");
-			error++;
-		}
-		if (company.getUpdatedBy() == null) {
-			sb.append("Pengedit tidak boleh kosong \n");
-			error++;
-		}
+//		if (company.getUpdatedBy() == null) {
+//			sb.append("Pengedit tidak boleh kosong \n");
+//			error++;
+//		}
 
 		if (error > 0) {
 			throw new ValidationException(sb.toString());
 		}	
 	}
 	
-	public void insert(Company company) {
+	public void insert(Company company) throws ValidationException {
+		company.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+		valBkNotNull(company);
+		valBkNotExist(company);
+		valNonBk(company);
 		companyDao.save(company);
 	}
 	
-	public void update(Company company) {
-		companyDao.update(company);
-	}	
+	public void update(Company company) throws ValidationException {
+		company.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+		valIdNotNull(company);
+		valIdExist(company);
+		valBkNotNull(company);
+		valBkNotChange(company);
+		valNonBk(company);
+		companyDao.save(company);
+	}
 
 }

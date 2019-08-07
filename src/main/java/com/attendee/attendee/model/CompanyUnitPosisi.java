@@ -4,30 +4,33 @@ import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="company_divisi_jabatan")
+@Table(name="company_unit_posisi")
 public class CompanyUnitPosisi {
 
 	@Id
 	@Column(name="id")
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private UUID id;
 	
 	@JoinColumn(name = "id_company", referencedColumnName = "id")
 	@OneToOne(optional = false)
 	private Company idCompany;
 	
-	@JoinColumn(name = "id_divisi", referencedColumnName = "id")
+	@JoinColumn(name = "id_unit", referencedColumnName = "id")
 	@OneToOne(optional = false)
-	private Unit idDivisi;
+	private Unit idUnit;
 
-	@JoinColumn(name = "id_jabatan", referencedColumnName = "id")
+	@JoinColumn(name = "id_posisi", referencedColumnName = "id")
 	@OneToOne(optional = false)
-	private Posisi idJabatan;
+	private Posisi idPosisi;
 
 	public UUID getId() {
 		return id;
@@ -45,20 +48,20 @@ public class CompanyUnitPosisi {
 		this.idCompany = idCompany;
 	}
 
-	public Unit getIdDivisi() {
-		return idDivisi;
+	public Unit getIdUnit() {
+		return idUnit;
 	}
 
-	public void setIdDivisi(Unit idDivisi) {
-		this.idDivisi = idDivisi;
+	public void setIdUnit(Unit idUnit) {
+		this.idUnit = idUnit;
 	}
 
-	public Posisi getIdJabatan() {
-		return idJabatan;
+	public Posisi getIdPosisi() {
+		return idPosisi;
 	}
 
-	public void setIdJabatan(Posisi idJabatan) {
-		this.idJabatan = idJabatan;
+	public void setIdPosisi(Posisi idPosisi) {
+		this.idPosisi = idPosisi;
 	}
-	
+
 }

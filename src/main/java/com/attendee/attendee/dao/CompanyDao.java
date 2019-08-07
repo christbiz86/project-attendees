@@ -14,7 +14,7 @@ public class CompanyDao extends ParentDao {
 	@Transactional
 	public Company findById(UUID id) {
 		List<Company> list = super.entityManager
-				.createQuery("FROM Company"
+				.createQuery("FROM Company "
 						+ "WHERE id = :id")
 				.setParameter("id", id)
 				.getResultList();
@@ -31,7 +31,7 @@ public class CompanyDao extends ParentDao {
 	@Transactional
 	public Company findByBk(String kode) {
 		List<Company> list = super.entityManager
-				.createQuery("FROM Company"
+				.createQuery("FROM Company "
 						+ "WHERE kode = :kode")
 				.setParameter("kode", kode)
 				.getResultList();
@@ -46,11 +46,22 @@ public class CompanyDao extends ParentDao {
 	
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Company findByFilter(String nama) {
+	public Company findByFilter(Company company) {
+		StringBuilder sb = new StringBuilder("SELECT c.id, c.kode, c.nama, c.jatah_cuti, c.toleransi_keterlambatan, ");
+		sb.append("c.created_at, c.updated_at, c.created_by, c.updated_by ");
+		sb.append("FROM company c ");
+		sb.append("WHERE 1=1 ");
+		
+		if(!company.getKode().equals("null")) {
+			sb.append("AND c.kode LIKE '"+company.getKode()+"' ");
+		}
+		
+		if(!company.getNama().equals("null")) {
+			sb.append("AND c.nama LIKE '"+company.getNama()+"' ");
+		}
+		
 		List<Company> list = super.entityManager
-				.createQuery("FROM Company"
-						+ "WHERE nama = :nama")
-				.setParameter("nama", nama)
+				.createNativeQuery(sb.toString(), Company.class)
 				.getResultList();
 		
 		if (list.size() == 0) {
@@ -90,11 +101,6 @@ public class CompanyDao extends ParentDao {
 	
 	@Transactional
 	public void save(Company company) {
-		super.entityManager.merge(company);
-	}
-	
-	@Transactional
-	public void update(Company company) {
 		super.entityManager.merge(company);
 	}
 

@@ -62,11 +62,11 @@ public class UserCompanyDao extends ParentDao{
 	
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public UserCompany findByBk(String kode) {	
+	public UserCompany findByBk(String idUser) {	
 		
 		List<UserCompany> list = super.entityManager
-                .createQuery("from UserCompany where kode=:kode")
-                .setParameter("kode", kode)
+                .createQuery("from UserCompany where idUser=:idUser")
+                .setParameter("idUser", idUser)
                 .getResultList();
 
 		if (list.size() == 0) {
@@ -77,9 +77,9 @@ public class UserCompanyDao extends ParentDao{
 		}
 	}
 
-	public boolean isBkExist(String kode) {
+	public boolean isBkExist(String idUser) {
 		
-		if(findByBk(kode).getId()==null) {
+		if(findByBk(idUser).getId()==null) {
 	
 			return false;
 		}else {
