@@ -1,10 +1,13 @@
 package com.attendee.attendee.model;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -12,10 +15,13 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
-@Table(name = "shift")
+@Table(name = "project")
 public class Project {
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
 	private UUID id;
 	
@@ -28,24 +34,24 @@ public class Project {
 	@Column(name = "lokasi")
 	private String lokasi;
 	
-	@Temporal(TemporalType.DATE)
 	@Column(name = "created_at")
-	private Date createdAt;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+7")
+	private Timestamp createdAt;
 	
-	@Temporal(TemporalType.DATE)
 	@Column(name = "updated_at")
-	private Date updatedAt;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+7")
+	private Timestamp updatedAt;
 	
 	@JoinColumn(name = "created_by", referencedColumnName = "id")
-	@OneToOne(optional = false)
-	private UUID createdBy;	
+	@OneToOne
+	private User createdBy;	
 	
 	@JoinColumn(name = "updated_by", referencedColumnName = "id")
-	@OneToOne(optional = false)
-	private UUID updatedBy;
+	@OneToOne
+	private User updatedBy;
 	
 	@JoinColumn(name = "id_status", referencedColumnName = "id")
-	@OneToOne(optional = false)	
+	@OneToOne	
 	private Status idStatus;
 
 	public UUID getId() {
@@ -80,35 +86,35 @@ public class Project {
 		this.lokasi = lokasi;
 	}
 
-	public Date getCreatedAt() {
+	public Timestamp getCreatedAt() {
 		return createdAt;
 	}
 
-	public void setCreatedAt(Date createdAt) {
+	public void setCreatedAt(Timestamp createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	public Date getUpdatedAt() {
+	public Timestamp getUpdatedAt() {
 		return updatedAt;
 	}
 
-	public void setUpdatedAt(Date updatedAt) {
+	public void setUpdatedAt(Timestamp updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	public UUID getCreatedBy() {
+	public User getCreatedBy() {
 		return createdBy;
 	}
 
-	public void setCreatedBy(UUID createdBy) {
+	public void setCreatedBy(User createdBy) {
 		this.createdBy = createdBy;
 	}
 
-	public UUID getUpdatedBy() {
+	public User getUpdatedBy() {
 		return updatedBy;
 	}
 
-	public void setUpdatedBy(UUID updatedBy) {
+	public void setUpdatedBy(User updatedBy) {
 		this.updatedBy = updatedBy;
 	}
 

@@ -40,7 +40,7 @@ public class ShiftProjectService {
 	}
 	
 	public ShiftProject findByBk(ShiftProject shiftProject) {
-		return shiftProjectDao.findByBk(shiftProject.getShift().getKode(), shiftProject.getProject().getKode());
+		return shiftProjectDao.findByBk(shiftProject.getShift().getId(), shiftProject.getProject().getId());
 	}
 	
 	public List<ShiftProject> findAll() throws ValidationException {
@@ -48,7 +48,7 @@ public class ShiftProjectService {
 	}
 	
 	public void valBkNotExist(ShiftProject shiftProject) throws ValidationException {
-		if(shiftProjectDao.isBkExist(shiftProject.getShift().getKode(), shiftProject.getProject().getKode())) {
+		if(shiftProjectDao.isBkExist(shiftProject.getShift().getId(), shiftProject.getProject().getId())) {
 			throw new ValidationException("Data Sudah Ada");
 		}
 	}

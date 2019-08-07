@@ -50,10 +50,6 @@ public class UserService {
 			sb.append("tanggal lahir tidak boleh kosong \n");
 			error++;
 		}
-		if(user.getUserName()==null) {
-			sb.append("username tidak boleh kosong \n");
-			error++;
-		}
 		if(user.getTelp()==null) {
 			sb.append("telepon tidak boleh kosong \n");
 			error++;
@@ -70,19 +66,19 @@ public class UserService {
 			sb.append("password tidak boleh kosong \n");
 			error++;
 		}
-		if(user.getCreateAt()==null) {
+		if(user.getCreatedAt()==null) {
 			sb.append("tanggal dibuat tidak boleh kosong \n");
 			error++;
 		}
-		if(user.getCreateBy()==null) {
+		if(user.getCreatedBy()==null) {
 			sb.append("pembuat tidak boleh kosong \n");
 			error++;
 		}
-		if(user.getUpdateAt()==null) {
+		if(user.getUpdatedAt()==null) {
 			sb.append("tanggal diedit tidak boleh kosong \n");
 			error++;
 		}
-		if(user.getUpdateBy()==null) {
+		if(user.getUpdatedBy()==null) {
 			sb.append("pengedit tidak boleh kosong \n");
 			error++;
 		}

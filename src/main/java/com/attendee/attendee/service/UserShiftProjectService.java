@@ -73,9 +73,22 @@ public class UserShiftProjectService {
 		}
 	}
 	
+	public void valNonBk(UserShiftProject userShiftProject) throws ValidationException {
+		StringBuilder sb = new StringBuilder();
+		int error = 0;
+		if(userShiftProject.getWorktime()==null) {
+			sb.append("Worktime Tidak Boleh Kosong");
+		}
+		
+		if(error > 0) {
+			throw new ValidationException(sb.toString());
+		}
+	}
+	
 	public void save(UserShiftProject userShiftProject) throws ValidationException {
 		valBkNotNull(userShiftProject);
 		valBkNotExist(userShiftProject);
+		valNonBk(userShiftProject);
 		userShiftProjectDao.save(userShiftProject);
 	}
 	
@@ -84,6 +97,7 @@ public class UserShiftProjectService {
 		valIdExist(userShiftProject.getId());
 		valBkNotNull(userShiftProject);
 		valBkNotChange(userShiftProject);
+		valNonBk(userShiftProject);
 		userShiftProjectDao.save(userShiftProject);
 	}
 	

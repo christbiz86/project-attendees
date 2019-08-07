@@ -10,10 +10,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.attendee.attendee.exception.MessageResponse;
@@ -27,6 +29,12 @@ import com.attendee.attendee.service.UserShiftProjectService;
 public class UserShiftProjectController {
 	@Autowired
 	private UserShiftProjectService userShiftProjectService;
+	
+	@GetMapping(value = "shift-project")
+	public @ResponseBody List<UserShiftProject> getAllUserShiftProject(){
+		List<UserShiftProject> userShiftProjectList = userShiftProjectService.findAll();
+		return userShiftProjectList;
+	}
 	
 	@PostMapping(value = "/user-shift-project")
 	public ResponseEntity<?> insertUserShiftProject(@RequestBody UserShiftProject userShiftProject) throws Exception {

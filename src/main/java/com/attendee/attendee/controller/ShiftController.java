@@ -8,10 +8,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.attendee.attendee.exception.MessageResponse;
@@ -26,7 +28,13 @@ public class ShiftController {
 	@Autowired
 	private ShiftService shiftService;
 	
-	@PostMapping(value = "/shift")
+	@GetMapping(value = "shift")
+	public @ResponseBody List<Shift> getAllShift(){
+		List<Shift> shiftList = shiftService.findAll();
+		return shiftList;
+	}
+	
+	@PostMapping(value = "shift")
 	public ResponseEntity<?> insertShift(@RequestBody Shift shift) throws Exception {
 		List messagesFailed = new ArrayList();
 		List messagesSuccess = new ArrayList();
@@ -58,7 +66,7 @@ public class ShiftController {
 		}
 	}
 	
-	@PutMapping(value = "/shift")
+	@PutMapping(value = "shift")
 	public ResponseEntity<?> submitUpdate(@RequestBody Shift shift) throws Exception {
 		List messagesFailed = new ArrayList();
 		List messagesSuccess = new ArrayList();

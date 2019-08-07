@@ -8,12 +8,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.attendee.attendee.exception.InvalidDataException;
+import com.attendee.attendee.exception.MessageListResponse;
 import com.attendee.attendee.exception.MessageResponse;
 import com.attendee.attendee.model.Project;
 import com.attendee.attendee.service.ProjectService;
@@ -26,6 +30,12 @@ public class ProjectController {
 	@Autowired
 	private ProjectService projectService;
 	
+	@GetMapping(value = "project")
+	public @ResponseBody List<Project> getAllProject(){
+		List<Project> projectList = projectService.findAll();
+		return projectList;
+	}
+	
 	@PostMapping(value = "/project")
 	public ResponseEntity<?> insertProject(@RequestBody Project project) throws Exception {
 		List messagesFailed = new ArrayList();
@@ -37,6 +47,9 @@ public class ProjectController {
 			projectService.save(project);
 			MessageResponse mg = new MessageResponse("Insert Success with Code Shift " + project.getKode());
 			messagesSuccess.add(mg);
+		} catch (InvalidDataException ex) {
+			MessageListResponse mg = new MessageListResponse(ex.getMessages());
+			messagesFailed.add(mg);
 		} catch (Exception e) {
 			MessageResponse mg = new MessageResponse("Insert Failed");
 			messagesException.add(mg);
@@ -51,12 +64,28 @@ public class ProjectController {
 		if(messagesSuccess.size() > 0) {
 			return ResponseEntity.ok(messagesSuccess);
 			
-		} else if(messagesFailed.size() > 0 ){
+		}
+		
+		if(messagesFailed.size() > 0 ){
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(messagesFailed);
 		} else {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(messagesException);
 		}
 	}
+	
+//	@PostMapping(value = "/project")
+//	public ResponseEntity<?> insertProject(@RequestBody Project project) throws IOException {
+//		try {
+//			projectService.save(project);
+//			return ResponseEntity.ok("Insert Success with Code Shift " + project.getKode());
+//		} catch (InvalidDataException e) {
+//			System.out.println(e.getMessage());
+//			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessages());
+//		} catch (Exception e) {
+//			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+//		}
+//		
+//	}
 	
 	@PutMapping(value = "/project")
 	public ResponseEntity<?> submitUpdate(@RequestBody Project project) throws Exception {

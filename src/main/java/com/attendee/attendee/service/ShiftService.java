@@ -1,5 +1,6 @@
 package com.attendee.attendee.service;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
 
@@ -86,6 +87,7 @@ public class ShiftService {
 	}
 	
 	public void save(Shift shift) throws ValidationException {
+		shift.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 		valBkNotNull(shift);
 		valBkNotExist(shift);
 		valNonBk(shift);

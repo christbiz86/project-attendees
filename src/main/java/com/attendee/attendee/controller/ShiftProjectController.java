@@ -10,10 +10,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.attendee.attendee.exception.MessageResponse;
@@ -28,7 +30,13 @@ public class ShiftProjectController {
 	@Autowired
 	private ShiftProjectService shiftProjectService;
 	
-	@PostMapping(value = "/shift-project")
+	@GetMapping(value = "shift-project")
+	public @ResponseBody List<ShiftProject> getAllShiftProject(){
+		List<ShiftProject> shiftProjectList = shiftProjectService.findAll();
+		return shiftProjectList;
+	}
+	
+	@PostMapping(value = "shift-project")
 	public ResponseEntity<?> insertShiftProject(@RequestBody ShiftProject shiftProject) throws Exception {
 		List messagesFailed = new ArrayList();
 		List messagesSuccess = new ArrayList();
@@ -37,7 +45,7 @@ public class ShiftProjectController {
 		
 		try {
 			shiftProjectService.save(shiftProject);
-			MessageResponse mg = new MessageResponse("Insert Success with Code Project " + shiftProject.getProject().getKode() + " And Code Shift " + shiftProject.getShift().getKode());
+			MessageResponse mg = new MessageResponse("Insert Success");
 			messagesSuccess.add(mg);
 		} catch (Exception e) {
 			MessageResponse mg = new MessageResponse("Insert Failed");
@@ -60,7 +68,7 @@ public class ShiftProjectController {
 		}
 	}
 	
-	@DeleteMapping(value = "/shift-project/{id}")
+	@DeleteMapping(value = "shift-project/{id}")
 	public ResponseEntity<?> delete(@PathVariable UUID id) throws Exception {
 		try {
 			shiftProjectService.delete(id);
