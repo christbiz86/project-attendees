@@ -33,15 +33,11 @@ public class User {
 	@Column(name="tgl_lahir")
 	private Date tglLahir;
 	
-	@Column(name="email")
-	private String email;
-
 	@Column(name="telp")
 	private String telp;
-
 	
-	@Column(name="username")
-	private String username;
+	@Column(name="email")
+	private String email;
 	
 	@Column(name="password")
 	private String password;
@@ -49,26 +45,26 @@ public class User {
 	@Column(name="foto")
 	private String foto;
 	
-	@Temporal(TemporalType.DATE)
-	@Column(name="create_at")
-	private Date createAt;
-	
-	@Temporal(TemporalType.DATE)
-	@Column(name="update_at")
-	private Date updateAt;
-	
-	@JoinColumn(name = "create_by", referencedColumnName = "id")
-	@OneToOne(optional = false)
-	private User createBy;
-	
-	@JoinColumn(name = "update_by", referencedColumnName = "id")
-	@OneToOne(optional = false)
-	private User updateBy;
-	
 	@JoinColumn(name = "id_status", referencedColumnName = "id")
-	@OneToOne(optional = false)	
+	@OneToOne
 	private Status idStatus;
-
+	
+	@Temporal(TemporalType.DATE)
+	@Column(name="created_at")
+	private Date createdAt;
+	
+	@Temporal(TemporalType.DATE)
+	@Column(name="updated_at")
+	private Date updatedAt;
+	
+	@JoinColumn(name = "created_by", referencedColumnName = "id")
+	@OneToOne
+	private User createdBy;
+	
+	@JoinColumn(name = "updated_by", referencedColumnName = "id")
+	@OneToOne
+	private User updatedBy;
+	
 	public UUID getId() {
 		return id;
 	}
@@ -101,15 +97,6 @@ public class User {
 		this.alamat = alamat;
 	}
 
-
-	public String getUserName() {
-		return username;
-	}
-
-	public void setUserName(String username) {
-		this.username = username;
-	}
-
 	public String getPassword() {
 		return password;
 	}
@@ -127,35 +114,35 @@ public class User {
 	}
 
 	public Date getCreateAt() {
-		return createAt;
+		return createdAt;
 	}
 
 	public void setCreateAt(Date createAt) {
-		this.createAt = createAt;
+		this.createdAt = createAt;
 	}
 
 	public Date getUpdateAt() {
-		return updateAt;
+		return updatedAt;
 	}
 
 	public void setUpdateAt(Date updateAt) {
-		this.updateAt = updateAt;
+		this.updatedAt = updateAt;
 	}
 
 	public User getCreateBy() {
-		return createBy;
+		return createdBy;
 	}
 
 	public void setCreateBy(User createBy) {
-		this.createBy = createBy;
+		this.createdBy = createBy;
 	}
 
 	public User getUpdateBy() {
-		return updateBy;
+		return updatedBy;
 	}
 
 	public void setUpdateBy(User updateBy) {
-		this.updateBy = updateBy;
+		this.updatedBy = updateBy;
 	}
 
 	public String getEmail() {

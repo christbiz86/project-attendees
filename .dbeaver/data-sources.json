@@ -37,6 +37,61 @@
 						"enabled": false,
 						"save-password": true,
 						"properties": {
+							"socks-port": "1080",
+							"socks-host": ""
+						}
+					},
+					"postgre_ssl": {
+						"type": "CONFIG",
+						"enabled": false,
+						"save-password": true,
+						"properties": {
+							"rootCert": "",
+							"sslFactory": "",
+							"clientCert": "",
+							"clientKey": "",
+							"sslMode": ""
+						}
+					}
+				}
+			}
+		},
+		"postgres-jdbc-16c66446b6b-2acca6f2bcf99825": {
+			"provider": "postgresql",
+			"driver": "postgres-jdbc",
+			"name": "PostgreSQL - localAttendee",
+			"save-password": true,
+			"read-only": false,
+			"configuration": {
+				"host": "localhost",
+				"port": "5432",
+				"database": "localAttendee",
+				"url": "jdbc:postgresql://localhost:5432/localAttendee",
+				"home": "postgresql-x64-10",
+				"type": "dev",
+				"provider-properties": {
+					"@dbeaver-show-non-default-db@": "false",
+					"@dbeaver-show-template-db@": "false"
+				},
+				"handlers": {
+					"ssh_tunnel": {
+						"type": "TUNNEL",
+						"enabled": false,
+						"save-password": true,
+						"properties": {
+							"sshConnectTimeout": "10000",
+							"port": "22",
+							"keyPath": "",
+							"implementation": "jsch",
+							"host": "",
+							"authType": "PASSWORD"
+						}
+					},
+					"socks_proxy": {
+						"type": "PROXY",
+						"enabled": false,
+						"save-password": true,
+						"properties": {
 							"socks-host": "",
 							"socks-port": "1080"
 						}

@@ -1,5 +1,6 @@
 package com.attendee.attendee.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -35,13 +36,17 @@ public class ApprovalDao extends ParentDao {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Transactional
+	@SuppressWarnings("unchecked")
 	public List<Approval> findAll() {
 		List<Approval> list = super.entityManager
-				.createQuery("FROM Approval")
-				.getResultList();
-		return list;
+                .createQuery(" from Approval ")
+                .getResultList();
+		if (list.size() == 0)
+			return new ArrayList<Approval>();
+		else {
+			return list;
+		}
 	}
 	
 	@SuppressWarnings("unchecked")
