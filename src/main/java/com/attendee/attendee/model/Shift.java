@@ -11,6 +11,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.springframework.data.annotation.CreatedDate;
+
 @Entity
 public class Shift {
 	@Id
@@ -32,8 +34,9 @@ public class Shift {
 	@OneToOne
 	private Status status;
 	
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "created_at")
+	@CreatedDate
 	private Date createdAt;
 	
 	@Temporal(TemporalType.DATE)
