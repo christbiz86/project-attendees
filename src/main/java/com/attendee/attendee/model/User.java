@@ -1,5 +1,6 @@
 package com.attendee.attendee.model;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.UUID;
 
@@ -31,7 +32,6 @@ public class User {
 	@Column(name="alamat")
 	private String alamat;
 	
-//	@Temporal(TemporalType.DATE)
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	@Column(name="tgl_lahir")
 	private Date tglLahir;
@@ -52,15 +52,13 @@ public class User {
 	@OneToOne
 	private Status idStatus;
 	
-//	@Temporal(TemporalType.DATE)
-	@JsonFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+7")
 	@Column(name="created_at")
-	private Date createdAt;
+	private Timestamp createdAt;
 	
-//	@Temporal(TemporalType.DATE)
-	@JsonFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+7")
 	@Column(name="updated_at")
-	private Date updatedAt;
+	private Timestamp updatedAt;
 	
 	@JoinColumn(name = "created_by", referencedColumnName = "id")
 	@OneToOne
@@ -122,7 +120,7 @@ public class User {
 		return createdAt;
 	}
 
-	public void setCreatedAt(Date createdAt) {
+	public void setCreatedAt(Timestamp createdAt) {
 		this.createdAt = createdAt;
 	}
 
@@ -130,7 +128,7 @@ public class User {
 		return updatedAt;
 	}
 
-	public void setUpdatedAt(Date updatedAt) {
+	public void setUpdatedAt(Timestamp updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 

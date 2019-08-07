@@ -1,5 +1,7 @@
 package com.attendee.attendee.dao;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -10,7 +12,40 @@ import org.springframework.transaction.annotation.Transactional;
 import com.attendee.attendee.model.User;
 
 @Repository
-public class UserDao extends ParentDao{
+public class UserDao extends ParentDao {
+	//buat nyoba doang ya ini
+	//pass : rei25909
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public User findPassword(String pass) throws NoSuchAlgorithmException {
+		MessageDigest alg = MessageDigest.getInstance("MD5");
+        alg.reset(); 
+        alg.update(pass.getBytes());
+        byte[] digest = alg.digest();
+
+        StringBuffer hashedpwd = new StringBuffer();
+        String hx;
+        for (int i=0;i<digest.length;i++){
+            hx =  Integer.toHexString(0xFF & digest[i]);
+            if(hx.length() == 1){hx = "0" + hx;}
+            hashedpwd.append(hx);
+        }
+//        System.out.println(hashedpwd.toString());
+        String strHashedpwd = hashedpwd.toString();
+		
+		List<User> list = super.entityManager
+                .createQuery("from User where password = :pass")
+                .setParameter("pass", strHashedpwd)
+                .getResultList();
+
+		if (list.size() == 0) {
+			return new User();
+		}
+		else {
+			return (User)list.get(0);
+		}
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Transactional
 	public User findById(UUID id) {

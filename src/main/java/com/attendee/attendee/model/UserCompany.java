@@ -14,7 +14,6 @@ import javax.persistence.Table;
 @Entity
 @Table(name="user_company")
 public class UserCompany {
-
 	@Id
 	@Column(name="id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,7 +25,7 @@ public class UserCompany {
 
 	@JoinColumn(name = "id_company_unit_posisi", referencedColumnName = "id")
 	@OneToOne(optional = false)
-	private CompanyUnitPosisi idCompanyunitPosisi;	
+	private CompanyUnitPosisi idCompanyUnitPosisi;	
 	
 	@JoinColumn(name = "id_tipe_user", referencedColumnName = "id")
 	@OneToOne(optional = false)
@@ -56,12 +55,12 @@ public class UserCompany {
 		this.idTipeUser = idTipeUser;
 	}
 
-	public CompanyUnitPosisi getIdCompanyunitPosisi() {
-		return idCompanyunitPosisi;
+	public CompanyUnitPosisi getIdCompanyUnitPosisi() {
+		return idCompanyUnitPosisi;
 	}
 
-	public void setIdCompanyunitPosisi(CompanyUnitPosisi idCompanyunitPosisi) {
-		this.idCompanyunitPosisi = idCompanyunitPosisi;
+	public void setIdCompanyUnitPosisi(CompanyUnitPosisi idCompanyUnitPosisi) {
+		this.idCompanyUnitPosisi = idCompanyUnitPosisi;
 	}
 	
 	
