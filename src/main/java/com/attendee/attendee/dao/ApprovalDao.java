@@ -12,12 +12,11 @@ import com.attendee.attendee.model.Approval;
 
 @Repository
 public class ApprovalDao extends ParentDao {
-	@Transactional
+	
 	public void save(Approval approval) {
 		super.entityManager.merge(approval);
 	}
 	
-	@Transactional
 	public void delete(Approval approval) {
 		super.entityManager.remove(approval);
 	}
@@ -41,6 +40,20 @@ public class ApprovalDao extends ParentDao {
 	public List<Approval> findAll() {
 		List<Approval> list = super.entityManager
                 .createQuery(" from Approval ")
+                .getResultList();
+		if (list.size() == 0)
+			return new ArrayList<Approval>();
+		else {
+			return list;
+		}
+	}
+	
+	@Transactional
+	@SuppressWarnings("unchecked")
+	public List<Approval> findByStatus(String status) {
+		List<Approval> list = super.entityManager
+                .createQuery("from Approval where status.status=:status")
+                .setParameter("status", status)
                 .getResultList();
 		if (list.size() == 0)
 			return new ArrayList<Approval>();
