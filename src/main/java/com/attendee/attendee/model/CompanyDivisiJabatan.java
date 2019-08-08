@@ -10,7 +10,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="company_divisi_jabatan")
+@Table(name="company_unit_divisi")
 public class CompanyDivisiJabatan {
 
 	@Id
@@ -21,11 +21,11 @@ public class CompanyDivisiJabatan {
 	@OneToOne(optional = false)
 	private Company idCompany;
 	
-	@JoinColumn(name = "id_divisi", referencedColumnName = "id")
+	@JoinColumn(name = "id_unit", referencedColumnName = "id")
 	@OneToOne(optional = false)
 	private Unit idDivisi;
 
-	@JoinColumn(name = "id_jabatan", referencedColumnName = "id")
+	@JoinColumn(name = "id_posisi", referencedColumnName = "id")
 	@OneToOne(optional = false)
 	private Posisi idJabatan;
 

@@ -5,6 +5,8 @@ import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -16,9 +18,9 @@ import javax.persistence.TemporalType;
 @Table(name="company")
 public class Company {
 
-
 	@Id
 	@Column(name="id")
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private UUID id;
 	
 	@Column(name="kode")
@@ -42,13 +44,13 @@ public class Company {
 	@Column(name = "updated_at")
 	private Date updatedAt;
 	
+	@OneToOne
 	@JoinColumn(name = "created_by", referencedColumnName = "id")
-	@OneToOne(optional = false)
-	private UUID createdBy;	
+	private User createdBy;	
 	
+	@OneToOne
 	@JoinColumn(name = "updated_by", referencedColumnName = "id")
-	@OneToOne(optional = false)
-	private UUID updatedBy;
+	private User updatedBy;
 
 	public UUID getId() {
 		return id;
@@ -106,19 +108,19 @@ public class Company {
 		this.updatedAt = updatedAt;
 	}
 
-	public UUID getCreatedBy() {
+	public User getCreatedBy() {
 		return createdBy;
 	}
 
-	public void setCreatedBy(UUID createdBy) {
+	public void setCreatedBy(User createdBy) {
 		this.createdBy = createdBy;
 	}
 
-	public UUID getUpdatedBy() {
+	public User getUpdatedBy() {
 		return updatedBy;
 	}
 
-	public void setUpdatedBy(UUID updatedBy) {
+	public void setUpdatedBy(User updatedBy) {
 		this.updatedBy = updatedBy;
 	}
 	

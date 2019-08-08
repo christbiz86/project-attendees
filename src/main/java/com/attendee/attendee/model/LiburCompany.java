@@ -4,6 +4,8 @@ import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -14,14 +16,15 @@ import javax.persistence.Table;
 public class LiburCompany {
 	@Id
 	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private UUID id;
 	
+	@OneToOne
 	@JoinColumn(name = "id_libur", referencedColumnName = "id")
-	@OneToOne(optional = false)
 	private Libur libur;
 	
+	@OneToOne
 	@JoinColumn(name = "id_company", referencedColumnName = "id")
-	@OneToOne(optional = false)
 	private Company company;
 
 	public UUID getId() {

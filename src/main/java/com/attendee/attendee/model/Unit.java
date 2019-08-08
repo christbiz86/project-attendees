@@ -13,7 +13,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name="divisi")
+@Table(name="unit")
 public class Unit {
 
 	@Id
@@ -23,24 +23,25 @@ public class Unit {
 	@Column(name="divisi")
 	private String divisi;
 	
-	@Column(name="id_status")
+	@JoinColumn(name="id_status", referencedColumnName = "id")
+	@OneToOne(optional = false)
 	private Status idStatus;
 	
 	@Temporal(TemporalType.DATE)
-	@Column(name="create_at")
-	private Date createAt;
+	@Column(name="created_at")
+	private Date createdAt;
 	
 	@Temporal(TemporalType.DATE)
-	@Column(name="update_at")
-	private Date updateAt;
+	@Column(name="updated_at")
+	private Date updatedAt;
 	
-	@JoinColumn(name = "create_by", referencedColumnName = "id")
+	@JoinColumn(name = "created_by", referencedColumnName = "id")
 	@OneToOne(optional = false)
-	private User createBy;
+	private User createdBy;
 	
-	@JoinColumn(name = "update_by", referencedColumnName = "id")
+	@JoinColumn(name = "updated_by", referencedColumnName = "id")
 	@OneToOne(optional = false)
-	private User updateBy;
+	private User updatedBy;
 
 	public UUID getId() {
 		return id;
@@ -66,35 +67,35 @@ public class Unit {
 		this.idStatus = idStatus;
 	}
 
-	public Date getCreateAt() {
-		return createAt;
+	public Date getCreatedAt() {
+		return createdAt;
 	}
 
-	public void setCreateAt(Date createAt) {
-		this.createAt = createAt;
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
 	}
 
-	public Date getUpdateAt() {
-		return updateAt;
+	public Date getUpdatedAt() {
+		return updatedAt;
 	}
 
-	public void setUpdateAt(Date updateAt) {
-		this.updateAt = updateAt;
+	public void setUpdatedAt(Date updatedAt) {
+		this.updatedAt = updatedAt;
 	}
 
-	public User getCreateBy() {
-		return createBy;
+	public User getCreatedBy() {
+		return createdBy;
 	}
 
-	public void setCreateBy(User createBy) {
-		this.createBy = createBy;
+	public void setCreatedBy(User createdBy) {
+		this.createdBy = createdBy;
 	}
 
-	public User getUpdateBy() {
-		return updateBy;
+	public User getUpdatedBy() {
+		return updatedBy;
 	}
 
-	public void setUpdateBy(User updateBy) {
-		this.updateBy = updateBy;
+	public void setUpdatedBy(User updatedBy) {
+		this.updatedBy = updatedBy;
 	}
 }

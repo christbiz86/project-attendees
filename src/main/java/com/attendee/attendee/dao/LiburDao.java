@@ -1,5 +1,7 @@
 package com.attendee.attendee.dao;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -53,6 +55,45 @@ public class LiburDao extends ParentDao {
 			return false;
 		}else {
 			return true;
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public List<Libur> findByFilter(Libur libur) {
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("FROM Libur WHERE 1=1");
+		if(libur.getNama() != null) {
+			String nama = libur.getNama();
+			sb.append(" AND nama='"+nama+"'");
+		}
+		
+		if (libur.getTglMulai() != null) {
+			Date tglMulai = libur.getTglMulai();
+			sb.append(" AND tglMulai='"+tglMulai+"'");
+		}
+		
+		if (libur.getTglAkhir() != null) {
+			Date tglAkhir = libur.getTglAkhir();
+			sb.append(" AND tglAkhir='"+tglAkhir+"'");
+		}
+		
+		if (libur.getStatus() != null) {
+			String status = libur.getStatus().getStatus();
+			sb.append(" AND status.status='"+status+"'");
+		}
+
+		List<Libur> list = super.entityManager
+                .createQuery(sb.toString())
+                .getResultList();
+
+		if (list.size() == 0) {
+			List<Libur> nullList = new ArrayList<Libur>();
+			return nullList;
+		}
+		else {
+			return list;
 		}
 	}
 	

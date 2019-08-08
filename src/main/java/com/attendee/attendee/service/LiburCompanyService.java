@@ -35,64 +35,55 @@ public class LiburCompanyService {
 		}
 	}
 	
-	private void valBkNotChange(LiburCompany liburCompany)throws ValidationException{
-		UUID company=findById(liburCompany.getId()).getCompany().getId();
-		UUID libur=findById(liburCompany.getId()).getLibur().getId();
-		if(!liburCompany.getLibur().getId().toString().equals(libur.toString())) {
-
-			throw new ValidationException("Hari Libur tidak boleh berubah");
+	private void valNonBk(LiburCompany liburCompany) throws ValidationException {
+		StringBuilder sb=new StringBuilder();
+		int error=0;
+		
+		if(liburCompany.getLibur().getId().equals(null)) {
+			sb.append("Hari Libur tidak boleh kosong \n");
+			error++;
 		}
-		if(!liburCompany.getCompany().getId().toString().equals(company.toString())) {
-
-			throw new ValidationException("Company tidak boleh berubah");
+		if(liburCompany.getCompany().getId().equals(null)) {
+			sb.append("Company tidak boleh kosong \n");
+			error++;
+		}
+		
+		if(error>0) {
+			throw new ValidationException(sb.toString());
 		}
 	}
 	
-	private void valBkNotNull(LiburCompany liburCompany) throws ValidationException{
-		
-		if(liburCompany.getLibur().getId()==null) {
-
-			throw new ValidationException("Hari Libur tidak boleh kosong");
-		}
-		if(liburCompany.getCompany().getId()==null) {
-
-			throw new ValidationException("Company tidak boleh kosong");
-		}
-	}
-	
-	public void save(LiburCompany liburCompany)throws ValidationException{
-		
-		valBkNotNull(liburCompany);
+	public void insert(LiburCompany liburCompany)throws ValidationException {
+		valNonBk(liburCompany);
 		valBkNotExist(liburCompany);
 		liburCompanyDao.save(liburCompany);
 	}
 	
-	public void update(LiburCompany liburCompany)throws ValidationException{
-		
+	public void update(LiburCompany liburCompany)throws ValidationException {
 		valIdNotNull(liburCompany);
 		valIdExist(liburCompany.getId());
-		valBkNotNull(liburCompany);
-		valBkNotChange(liburCompany);
+		valNonBk(liburCompany);
 		liburCompanyDao.save(liburCompany);
 	}
 	
 	public void delete(UUID id)throws ValidationException{
-	
 		valIdExist(id);
 		liburCompanyDao.delete(id);
 	}
 	
-	public LiburCompany findById(UUID id)throws ValidationException{
-
-		return liburCompanyDao.findById(id);
+	public LiburCompany findById(LiburCompany liburCompany) {
+		return liburCompanyDao.findById(liburCompany.getId());
+	}
+	
+	public List<LiburCompany> findByFilter(LiburCompany liburCompany) {
+		return liburCompanyDao.findByFilter(liburCompany);
 	}
 	
 	public LiburCompany findByBk(LiburCompany liburCompany) {
-
 		return liburCompanyDao.findByBk(liburCompany.getLibur().getId(), liburCompany.getCompany().getId());
 	}
 	
-	public List<LiburCompany> findAll()throws ValidationException{
+	public List<LiburCompany> findAll() {
 		return liburCompanyDao.findAll();
 	}
 }
