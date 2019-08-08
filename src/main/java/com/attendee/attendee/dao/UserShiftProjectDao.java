@@ -1,5 +1,6 @@
 package com.attendee.attendee.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -47,6 +48,20 @@ public class UserShiftProjectDao extends ParentDao {
                 .getResultList();
 
 		return list;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public List<UserShiftProject> filterUserShift(String worktime) {
+		List<UserShiftProject> userShiftList = super.entityManager
+				.createQuery("FROM UserShiftProject worktime=:worktime")
+				.setParameter("worktime", worktime)
+				.getResultList();
+		if(userShiftList.size() == 0) {
+			return new ArrayList<UserShiftProject>();
+		} else {
+			return userShiftList;
+		}
 	}
 	
 	public boolean isExist(UUID id) {

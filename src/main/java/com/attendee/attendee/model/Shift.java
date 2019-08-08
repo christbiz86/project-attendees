@@ -1,51 +1,57 @@
 package com.attendee.attendee.model;
 
-import java.util.Date;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.Table;
+
+import org.springframework.data.annotation.CreatedDate;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
+@Table(name = "shift")
 public class Shift {
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
 	private UUID id;
 	
 	@Column(name = "kode")
 	private String kode;
 	
-	@Temporal(TemporalType.DATE)
 	@Column(name = "masuk")
-	private Date masuk;
+	private Time masuk;
 	
-	@Temporal(TemporalType.DATE)
 	@Column(name = "pulang")
-	private Date pulang;
+	private Time pulang;
 	
 	@JoinColumn(name = "id_status", referencedColumnName = "id")
 	@OneToOne
 	private Status status;
 	
-	@Temporal(TemporalType.DATE)
 	@Column(name = "created_at")
-	private Date createdAt;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+7")
+	private Timestamp createdAt;
 	
-	@Temporal(TemporalType.DATE)
 	@Column(name = "updated_at")
-	private Date updatedAt;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+7")
+	private Timestamp updatedAt;
 	
 	@JoinColumn(name = "created_by", referencedColumnName = "id")
-	@OneToOne(optional = false)
+	@OneToOne
 	private User createdBy;	
 	
 	@JoinColumn(name = "updated_by", referencedColumnName = "id")
-	@OneToOne(optional = false)
+	@OneToOne
 	private User updatedBy;
 
 	public UUID getId() {
@@ -64,19 +70,19 @@ public class Shift {
 		this.kode = kode;
 	}
 
-	public Date getMasuk() {
+	public Time getMasuk() {
 		return masuk;
 	}
 
-	public void setMasuk(Date masuk) {
+	public void setMasuk(Time masuk) {
 		this.masuk = masuk;
 	}
 
-	public Date getPulang() {
+	public Time getPulang() {
 		return pulang;
 	}
 
-	public void setPulang(Date pulang) {
+	public void setPulang(Time pulang) {
 		this.pulang = pulang;
 	}
 
@@ -88,19 +94,19 @@ public class Shift {
 		this.status = status;
 	}
 
-	public Date getCreatedAt() {
+	public Timestamp getCreatedAt() {
 		return createdAt;
 	}
 
-	public void setCreatedAt(Date createdAt) {
+	public void setCreatedAt(Timestamp createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	public Date getUpdatedAt() {
+	public Timestamp getUpdatedAt() {
 		return updatedAt;
 	}
 
-	public void setUpdatedAt(Date updatedAt) {
+	public void setUpdatedAt(Timestamp updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 

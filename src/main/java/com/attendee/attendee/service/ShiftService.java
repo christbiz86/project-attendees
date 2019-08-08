@@ -1,5 +1,7 @@
 package com.attendee.attendee.service;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.attendee.attendee.dao.ShiftDao;
+import com.attendee.attendee.exception.InvalidDataException;
 import com.attendee.attendee.model.Shift;
 
 @Service
@@ -34,35 +37,34 @@ public class ShiftService {
 		}
 	}
 	
-	public void valNonBk(Shift shift) throws ValidationException {
-		StringBuilder sb = new StringBuilder();
-		int error = 0;
-		if(shift.getKode()==null) {
-			sb.append("Kode Shift Tidak Boleh Kosong");
+	public void valNonBk(Shift shift) throws InvalidDataException {
+		List<String> listErr = new ArrayList<String>();
+		if(shift.getKode() == null) {
+			listErr.add("Kode Shift Tidak Boleh Kosong");
 		}
 		
-		if(shift.getMasuk()==null) {
-			sb.append("Jam Masuk Tidak Boleh Kosong ");
+		if(shift.getMasuk() == null) {
+			listErr.add("Jam Masuk Tidak Boleh Kosong ");
 		}
 		
-		if(shift.getPulang()==null) {
-			sb.append("Jam Pulang Tidak Boleh Kosong");
+		if(shift.getPulang() == null) {
+			listErr.add("Jam Pulang Tidak Boleh Kosong");
 		}
 		
-		if(shift.getStatus()==null) {
-			sb.append("Status Shift Tidak Boleh Kosong");
+		if(shift.getStatus() == null) {
+			listErr.add("Status Shift Tidak Boleh Kosong");
 		}
 		
-		if(shift.getCreatedAt()==null) {
-			sb.append("Tanggal Pembuatan Shift Tidak Boleh Kosong");
+		if(shift.getCreatedAt() == null) {
+			listErr.add("Tanggal Pembuatan Shift Tidak Boleh Kosong");
 		}
 		
-		if(shift.getCreatedBy()==null) {
-			sb.append("Pembuat Shift Tidak Boleh Kosong");
+		if(shift.getCreatedBy() == null) {
+			listErr.add("Pembuat Shift Tidak Boleh Kosong");
 		}
 		
-		if(error > 0) {
-			throw new ValidationException(sb.toString());
+		if(!listErr.isEmpty()) {
+			throw new InvalidDataException(listErr);
 		}
 	}
 	
@@ -85,14 +87,16 @@ public class ShiftService {
 		}
 	}
 	
-	public void save(Shift shift) throws ValidationException {
+	public void save(Shift shift) throws Exception {
+		shift.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 		valBkNotNull(shift);
 		valBkNotExist(shift);
 		valNonBk(shift);
 		shiftDao.save(shift);
 	}
 	
-	public void update(Shift shift) throws ValidationException {
+	public void update(Shift shift) throws Exception {
+		shift.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
 		valIdNotNull(shift);
 		valIdExist(shift.getId());
 		valBkNotNull(shift);
@@ -116,5 +120,15 @@ public class ShiftService {
 	
 	public List<Shift> findAll() throws ValidationException {
 		return shiftDao.findAll();
+	}
+	
+	public List<Shift> filterShift(String status) throws Exception {
+		List<Shift> list = shiftDao.filterShift(status);
+		if(list.size() == 0) {
+			throw new ValidationException("Data Tidak Ditemukan");
+		} else {
+			return shiftDao.filterShift(status);
+		}
+		
 	}
 }

@@ -18,7 +18,7 @@ import javax.persistence.TemporalType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
-@Table(name="libur")
+@Table(name = "libur")
 public class Libur {
 	@Id
 	@Column(name = "id")

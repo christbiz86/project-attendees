@@ -4,6 +4,8 @@ import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -13,8 +15,12 @@ import javax.persistence.Table;
 @Table(name = "user_shift_project")
 public class UserShiftProject {
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
 	private UUID id;
+	
+	@Column(name = "worktime")
+	private String worktime;
 	
 	@JoinColumn(name = "id_user_company", referencedColumnName = "id")
 	@OneToOne(optional = false)
@@ -46,5 +52,13 @@ public class UserShiftProject {
 
 	public void setShiftProject(ShiftProject shiftProject) {
 		this.shiftProject = shiftProject;
+	}
+
+	public String getWorktime() {
+		return worktime;
+	}
+
+	public void setWorktime(String worktime) {
+		this.worktime = worktime;
 	}
 }

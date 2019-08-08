@@ -38,10 +38,6 @@ public class User {
 
 	@Column(name="telp")
 	private String telp;
-
-	
-	@Column(name="username")
-	private String username;
 	
 	@Column(name="password")
 	private String password;
@@ -99,15 +95,6 @@ public class User {
 
 	public void setAlamat(String alamat) {
 		this.alamat = alamat;
-	}
-
-
-	public String getUserName() {
-		return username;
-	}
-
-	public void setUserName(String username) {
-		this.username = username;
 	}
 
 	public String getPassword() {

@@ -40,7 +40,7 @@ public class ShiftProjectService {
 	}
 	
 	public ShiftProject findByBk(ShiftProject shiftProject) {
-		return shiftProjectDao.findByBk(shiftProject.getShift().getKode(), shiftProject.getProject().getKode());
+		return shiftProjectDao.findByBk(shiftProject.getShift().getId(), shiftProject.getProject().getId());
 	}
 	
 	public List<ShiftProject> findAll() throws ValidationException {
@@ -48,23 +48,12 @@ public class ShiftProjectService {
 	}
 	
 	public void valBkNotExist(ShiftProject shiftProject) throws ValidationException {
-		if(shiftProjectDao.isBkExist(shiftProject.getShift().getKode(), shiftProject.getProject().getKode())) {
+		if(shiftProjectDao.isBkExist(shiftProject.getShift().getId(), shiftProject.getProject().getId())) {
 			throw new ValidationException("Data Sudah Ada");
 		}
 	}
 	
-	public void valBkNotChange(ShiftProject shiftProject) throws ValidationException {
-		String project = findById(shiftProject.getId()).getProject().getKode();
-		String shift = findById(shiftProject.getId()).getShift().getKode();
-		if(!shiftProject.getShift().getKode().toString().equals(shift.toString())) {
-			throw new ValidationException("Kode Shift Tidak Boleh Diubah");
-		}
-		if(!shiftProject.getProject().getKode().toString().equals(project.toString())) {
-			throw new ValidationException("Kode Project Tidak Boleh Diubah");
-		}
-	}
-	
-	public void valBkNotNull(ShiftProject shiftProject) throws ValidationException {
+	public void valNonBk(ShiftProject shiftProject) throws ValidationException {
 		if(shiftProject.getProject() == null) {
 			throw new ValidationException("Kode Project Tidak Boleh Kosong");
 		}
@@ -75,7 +64,7 @@ public class ShiftProjectService {
 	}
 	
 	public void save(ShiftProject shiftProject) throws ValidationException {
-		valBkNotNull(shiftProject);
+		valNonBk(shiftProject);
 		valBkNotExist(shiftProject);
 		shiftProjectDao.save(shiftProject);
 	}
@@ -83,8 +72,7 @@ public class ShiftProjectService {
 	public void update(ShiftProject shiftProject) throws ValidationException {
 		valIdNotNull(shiftProject);
 		valIdExist(shiftProject.getId());
-		valBkNotNull(shiftProject);
-		valBkNotChange(shiftProject);
+		valNonBk(shiftProject);
 		shiftProjectDao.save(shiftProject);
 	}
 	

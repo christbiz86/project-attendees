@@ -1,5 +1,6 @@
 package com.attendee.attendee.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -74,6 +75,20 @@ public class ShiftDao extends ParentDao {
 		}
 		else {
 			return (Shift)list.get(0);
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public List<Shift> filterShift(String status){
+		List<Shift> shiftList = super.entityManager
+				.createQuery("FROM Shift WHERE status.status=:status")
+				.setParameter("status", status)
+				.getResultList();
+		if(shiftList.size() == 0) {
+			return new ArrayList<Shift>();
+		} else {
+			return shiftList;
 		}
 	}
 
