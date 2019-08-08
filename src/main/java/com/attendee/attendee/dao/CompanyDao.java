@@ -47,9 +47,11 @@ public class CompanyDao extends ParentDao {
 	@SuppressWarnings("unchecked")
 	@Transactional
 	public Company findByFilter(Company company) {
-		StringBuilder sb = new StringBuilder("SELECT c.id, c.kode, c.nama, c.jatah_cuti, c.toleransi_keterlambatan, ");
-		sb.append("c.created_at, c.updated_at, c.created_by, c.updated_by ");
+		StringBuilder sb = new StringBuilder("SELECT c.id, c.kode, c.nama, c.jatah_cuti, c.toleransi_keterlambatan, c.id_status, ");
+		sb.append("c.created_at, c.updated_at, c.created_by, c.updated_by, s.id, s.status ");
 		sb.append("FROM company c ");
+		sb.append("JOIN status s ");
+		sb.append("ON c.id_status = s.id ");
 		sb.append("WHERE 1=1 ");
 		
 		if(!company.getKode().equals("null")) {
@@ -58,6 +60,10 @@ public class CompanyDao extends ParentDao {
 		
 		if(!company.getNama().equals("null")) {
 			sb.append("AND c.nama LIKE '"+company.getNama()+"' ");
+		}
+		
+		if(!company.getIdStatus().getStatus().equals("null")) {
+			sb.append("AND s.status LIKE '"+company.getIdStatus().getStatus()+"' ");
 		}
 		
 		List<Company> list = super.entityManager

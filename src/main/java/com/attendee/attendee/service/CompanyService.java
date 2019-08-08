@@ -52,14 +52,14 @@ public class CompanyService {
 	
 	public void valBkNotNull(Company company) throws ValidationException {
 		if (company.getKode() == null) {
-			throw new ValidationException("Kode tidak boleh kosong!");
+			throw new ValidationException("Kode company tidak boleh kosong!");
 		}
 	}
 	
 	public void valBkNotChange(Company company) throws ValidationException {
 		String s = findById(company.getId()).getKode();
 		if (!company.getKode().toString().equals(s.toString())) {
-			throw new ValidationException("Kode tidak boleh berubah!");
+			throw new ValidationException("Kode company tidak boleh berubah!");
 		}
 	}
 	
@@ -87,10 +87,10 @@ public class CompanyService {
 //			sb.append("Tanggal diedit tidak boleh kosong \n");
 //			error++;
 //		}
-		if (company.getCreatedBy() == null) {
-			sb.append("Pembuat tidak boleh kosong \n");
-			error++;
-		}
+//		if (company.getCreatedBy() == null) {
+//			sb.append("Pembuat tidak boleh kosong \n");
+//			error++;
+//		}
 //		if (company.getUpdatedBy() == null) {
 //			sb.append("Pengedit tidak boleh kosong \n");
 //			error++;

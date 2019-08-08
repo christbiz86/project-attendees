@@ -49,13 +49,13 @@ public class UserService {
 	
 	public void valBkNotNull(User user) throws ValidationException {
 		if(user.getKode()==null) {
-			throw new ValidationException("Kode tidak boleh kosong!");
+			throw new ValidationException("Kode company tidak boleh kosong!");
 		}
 	}
 	
 	public void valBkNotExist(User user) throws ValidationException {
 		if(userDao.isBkExist(user.getKode())) {
-			throw new ValidationException("Kode sudah ada!");
+			throw new ValidationException("Kode company sudah ada!");
 		}
 	}
 	
@@ -126,7 +126,7 @@ public class UserService {
 	    }
 	    
 	    String pwd = email.substring(0,3).toLowerCase()+pw;
-//	    System.out.println(pwd);
+	    System.out.println(pwd);
 		
 		//MD5
 		MessageDigest alg = MessageDigest.getInstance("MD5");
@@ -151,7 +151,7 @@ public class UserService {
 		return userDao.findById(id);
 	}
 	
-	private User findByBk(String kode) {
+	public User findByBk(String kode) {
 		return userDao.findByBk(kode);
 	}
 	

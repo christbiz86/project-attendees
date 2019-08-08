@@ -12,23 +12,23 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="user_company")
+@Table(name = "user_company")
 public class UserCompany {
 	@Id
-	@Column(name="id")
+	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private UUID id;
-	
+
 	@JoinColumn(name = "id_user", referencedColumnName = "id")
-	@OneToOne(optional = false)
+	@OneToOne
 	private User idUser;
 
 	@JoinColumn(name = "id_company_unit_posisi", referencedColumnName = "id")
-	@OneToOne(optional = false)
-	private CompanyUnitPosisi idCompanyUnitPosisi;	
-	
+	@OneToOne
+	private CompanyUnitPosisi idCompanyUnitPosisi;
+
 	@JoinColumn(name = "id_tipe_user", referencedColumnName = "id")
-	@OneToOne(optional = false)
+	@OneToOne
 	private TipeUser idTipeUser;
 
 	public UUID getId() {
@@ -62,6 +62,5 @@ public class UserCompany {
 	public void setIdCompanyUnitPosisi(CompanyUnitPosisi idCompanyUnitPosisi) {
 		this.idCompanyUnitPosisi = idCompanyUnitPosisi;
 	}
-	
-	
+
 }

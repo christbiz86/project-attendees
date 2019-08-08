@@ -17,37 +17,41 @@ import org.hibernate.annotations.GenericGenerator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
-@Table(name="company")
+@Table(name = "company")
 public class Company {
 	@Id
 	@GeneratedValue(generator = "UUID")
 	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
 	private UUID id;
-	
-	@Column(name="kode")
+
+	@Column(name = "kode")
 	private String kode;
-	
-	@Column(name="nama")
+
+	@Column(name = "nama")
 	private String nama;
-	
-	@Column(name="jatah_cuti")
+
+	@Column(name = "jatah_cuti")
 	private Integer jatahCuti;
-	
-	@Column(name="toleransi_keterlambatan")
+
+	@Column(name = "toleransi_keterlambatan")
 	private Integer toleransiKeterlambatan;
-	
+
+	@JoinColumn(name = "id_status", referencedColumnName = "id")
+	@OneToOne
+	private Status idStatus;
+
 	@Column(name = "created_at")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+7")
 	private Timestamp createdAt;
-	
+
 	@Column(name = "updated_at")
 	@JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss", timezone = "GMT+7")
 	private Timestamp updatedAt;
-	
+
 	@JoinColumn(name = "created_by", referencedColumnName = "id")
 	@OneToOne
-	private User createdBy;	
-	
+	private User createdBy;
+
 	@JoinColumn(name = "updated_by", referencedColumnName = "id")
 	@OneToOne
 	private User updatedBy;
@@ -90,6 +94,14 @@ public class Company {
 
 	public void setToleransiKeterlambatan(Integer toleransiKeterlambatan) {
 		this.toleransiKeterlambatan = toleransiKeterlambatan;
+	}
+
+	public Status getIdStatus() {
+		return idStatus;
+	}
+
+	public void setIdStatus(Status idStatus) {
+		this.idStatus = idStatus;
 	}
 
 	public Timestamp getCreatedAt() {

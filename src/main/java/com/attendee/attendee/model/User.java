@@ -16,54 +16,54 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
-@Table(name="users")
+@Table(name = "users")
 public class User {
 	@Id
-	@Column(name="id")
+	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private UUID id;
-	
-	@Column(name="kode")
+
+	@Column(name = "kode")
 	private String kode;
-	
-	@Column(name="nama")
+
+	@Column(name = "nama")
 	private String nama;
-	
-	@Column(name="alamat")
+
+	@Column(name = "alamat")
 	private String alamat;
-	
+
 	@JsonFormat(pattern = "yyyy-MM-dd")
-	@Column(name="tgl_lahir")
+	@Column(name = "tgl_lahir")
 	private Date tglLahir;
-	
-	@Column(name="email")
+
+	@Column(name = "email")
 	private String email;
 
-	@Column(name="telp")
+	@Column(name = "telp")
 	private String telp;
-	
-	@Column(name="password")
+
+	@Column(name = "password")
 	private String password;
-	
-	@Column(name="foto")
+
+	@Column(name = "foto")
 	private String foto;
-	
+
 	@JoinColumn(name = "id_status", referencedColumnName = "id")
 	@OneToOne
 	private Status idStatus;
-	
+
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+7")
-	@Column(name="created_at")
+	@Column(name = "created_at")
 	private Timestamp createdAt;
-	
+
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+7")
-	@Column(name="updated_at")
+	@Column(name = "updated_at")
 	private Timestamp updatedAt;
-	
+
 	@JoinColumn(name = "created_by", referencedColumnName = "id")
 	@OneToOne
 	private User createdBy;
-	
+
 	@JoinColumn(name = "updated_by", referencedColumnName = "id")
 	@OneToOne
 	private User updatedBy;
