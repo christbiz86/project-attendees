@@ -2,17 +2,15 @@ package com.attendee.attendee.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -61,22 +59,40 @@ public class ShiftProjectController {
 		if(messagesSuccess.size() > 0) {
 			return ResponseEntity.ok(messagesSuccess);
 			
-		} else if(messagesFailed.size() > 0 ){
+		}
+		
+		if(messagesFailed.size() > 0 ){
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(messagesFailed);
 		} else {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(messagesException);
 		}
 	}
 	
-	@DeleteMapping(value = "shift-project/{id}")
-	public ResponseEntity<?> delete(@PathVariable UUID id) throws Exception {
+	@PutMapping(value = "shift-project")
+	public ResponseEntity<?> submitUpdate(@RequestBody ShiftProject shiftProject) throws Exception {
+		List messagesFailed = new ArrayList();
+		List messagesSuccess = new ArrayList();
+		List messagesException = new ArrayList();
+		List allMessages = new ArrayList();
+		
 		try {
-			shiftProjectService.delete(id);
-			MessageResponse mg = new MessageResponse("Delete Success");
-			return ResponseEntity.ok(mg);
+			shiftProjectService.update(shiftProject);
+			MessageResponse mg = new MessageResponse("Update Success");
+			messagesSuccess.add(mg);
 		} catch (Exception e) {
-			MessageResponse mg = new MessageResponse("Delete Failed");
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mg);
+			MessageResponse mg = new MessageResponse("Update Failed");
+			messagesException.add(mg);
+		}
+		
+		if(messagesSuccess.size() > 0) {
+			return ResponseEntity.ok(messagesSuccess);
+			
+		}
+		
+		if(messagesFailed.size() > 0 ){
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(messagesFailed);
+		} else {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(messagesException);
 		}
 	}
 }

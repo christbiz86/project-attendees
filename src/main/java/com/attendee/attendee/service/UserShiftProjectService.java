@@ -16,6 +16,15 @@ public class UserShiftProjectService {
 	@Autowired
 	private UserShiftProjectDao userShiftProjectDao;
 	
+	public List<UserShiftProject> filterUserShift(String worktime) throws Exception {
+		List<UserShiftProject> userShiftList = userShiftProjectDao.filterUserShift(worktime);
+		if(userShiftList.size() == 0) {
+			throw new ValidationException("Data Tidak Ditemukan");
+		} else {
+			return userShiftList;
+		}
+	}
+	
 	public void valIdNotExist(UUID id) throws ValidationException {
 		if(userShiftProjectDao.isExist(id)) {
 			throw new ValidationException("Data Sudah Ada");
@@ -52,17 +61,6 @@ public class UserShiftProjectService {
 		}
 	}
 	
-	public void valBkNotChange(UserShiftProject userShiftProject) throws ValidationException {
-		UUID company= findById(userShiftProject.getId()).getUserCompany().getId();
-		UUID shiftProject = findById(userShiftProject.getId()).getShiftProject().getId();
-		if(!userShiftProject.getUserCompany().getId().toString().equals(company.toString())) {
-			throw new ValidationException("Kolom Company Tidak Boleh Diubah");
-		}
-		if(!userShiftProject.getShiftProject().getId().toString().equals(shiftProject.toString())) {
-			throw new ValidationException("Kolom Shift Project Tidak Boleh Diubah");
-		}
-	}
-	
 	public void valBkNotNull(UserShiftProject userShiftProject) throws ValidationException {
 		if(userShiftProject.getUserCompany() == null) {
 			throw new ValidationException("Kolom Company Tidak Boleh Kosong");
@@ -80,6 +78,16 @@ public class UserShiftProjectService {
 			sb.append("Worktime Tidak Boleh Kosong");
 		}
 		
+		if(userShiftProject.getUserCompany() == null) {
+			sb.append("Kolom Company Tidak Boleh Kosong");
+			error++;
+		}
+		
+		if(userShiftProject.getShiftProject() == null) {
+			sb.append("Kolom Shift Project Tidak Boleh Kosong");
+			error++;
+		}
+		
 		if(error > 0) {
 			throw new ValidationException(sb.toString());
 		}
@@ -95,8 +103,6 @@ public class UserShiftProjectService {
 	public void update(UserShiftProject userShiftProject) throws ValidationException {
 		valIdNotNull(userShiftProject);
 		valIdExist(userShiftProject.getId());
-		valBkNotNull(userShiftProject);
-		valBkNotChange(userShiftProject);
 		valNonBk(userShiftProject);
 		userShiftProjectDao.save(userShiftProject);
 	}

@@ -40,7 +40,6 @@ public class Shift {
 	
 	@Column(name = "created_at")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+7")
-	@CreatedDate
 	private Timestamp createdAt;
 	
 	@Column(name = "updated_at")

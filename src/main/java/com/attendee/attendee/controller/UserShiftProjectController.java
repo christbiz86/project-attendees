@@ -36,7 +36,13 @@ public class UserShiftProjectController {
 		return userShiftProjectList;
 	}
 	
-	@PostMapping(value = "/user-shift-project")
+	@GetMapping(value = "user-shift-project")
+	public @ResponseBody List<UserShiftProject> getFilterUserShift(@PathVariable String worktime) throws Exception {
+		List<UserShiftProject> userShiftList = userShiftProjectService.filterUserShift(worktime);
+		return userShiftList;
+	}
+	
+	@PostMapping(value = "user-shift-project")
 	public ResponseEntity<?> insertUserShiftProject(@RequestBody UserShiftProject userShiftProject) throws Exception {
 		List messagesFailed = new ArrayList();
 		List messagesSuccess = new ArrayList();
@@ -70,7 +76,7 @@ public class UserShiftProjectController {
 		}
 	}
 	
-	@DeleteMapping(value = "/user-shift-project/{id}")
+	@DeleteMapping(value = "user-shift-project/{id}")
 	public ResponseEntity<?> delete(@PathVariable UUID id) throws Exception {
 		try {
 			userShiftProjectService.delete(id);
