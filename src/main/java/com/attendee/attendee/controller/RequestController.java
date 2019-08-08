@@ -17,20 +17,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.attendee.attendee.exception.InvalidDataException;
-import com.attendee.attendee.model.Approval;
-import com.attendee.attendee.model.User;
-import com.attendee.attendee.service.ApprovalService;
+import com.attendee.attendee.model.Request;
+import com.attendee.attendee.service.RequestService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping({"/approval"})
+@RequestMapping({"/request"})
 @Controller
-public class ApprovalController {
+public class RequestController {
 	@Autowired
-	private ApprovalService aprServ;
+	private RequestService aprServ;
 	
 //	static class ApprovalAndUser {
-//	    public List<Approval> approvals;
+//	    public List<Request> approvals;
 //	    public User user;
 //	}
 	
@@ -49,8 +48,8 @@ public class ApprovalController {
 	@GetMapping
 	public ResponseEntity<?> getAll() throws IOException {
 		try {
-			List<Approval> approval = aprServ.findAll();
-			return ResponseEntity.ok(approval);
+			List<Request> request = aprServ.findAll();
+			return ResponseEntity.ok(request);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
@@ -59,18 +58,18 @@ public class ApprovalController {
 	@GetMapping(value = "/{status}")
 	public ResponseEntity<?> getByStatus(@PathVariable String status) throws IOException {
 		try {
-			List<Approval> approval = aprServ.findByStatus(status);
-			return ResponseEntity.ok(approval);
+			List<Request> request = aprServ.findByStatus(status);
+			return ResponseEntity.ok(request);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
 	}
 	
 	@PostMapping
-	public ResponseEntity<?> pengajuan(@RequestBody Approval approval) throws IOException{
+	public ResponseEntity<?> pengajuan(@RequestBody Request request) throws IOException{
 		try {
-			aprServ.insert(approval);
-			return ResponseEntity.status(HttpStatus.CREATED).body("Data Approval Berhasil Disimpan");
+			aprServ.insert(request);
+			return ResponseEntity.status(HttpStatus.CREATED).body("Data Request Berhasil Disimpan");
 		}catch (InvalidDataException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessages());
 		}catch (Exception e) {
@@ -79,11 +78,11 @@ public class ApprovalController {
 	}
 	
 	@PatchMapping(value = "/{status}")
-	public ResponseEntity<?> persetujuan(@RequestBody Approval approval, @PathVariable String status) throws IOException{
+	public ResponseEntity<?> persetujuan(@RequestBody Request request, @PathVariable String status) throws IOException{
 		try {
 			//user dari UserPrinciple (belum)
-			aprServ.proses(approval, new User(), status);
-			return ResponseEntity.ok("Data Approval Berhasil Diubah");
+			aprServ.proses(request, request.getUser(), status);
+			return ResponseEntity.ok("Data Request Berhasil Diubah");
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}

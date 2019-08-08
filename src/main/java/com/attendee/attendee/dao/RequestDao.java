@@ -8,28 +8,28 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Repository;
 
-import com.attendee.attendee.model.Approval;
+import com.attendee.attendee.model.Request;
 
 @Repository
-public class ApprovalDao extends ParentDao {
+public class RequestDao extends ParentDao {
 	
-	public void save(Approval approval) {
-		super.entityManager.merge(approval);
+	public void save(Request request) {
+		super.entityManager.merge(request);
 	}
 	
-	public void delete(Approval approval) {
-		super.entityManager.remove(approval);
+	public void delete(Request request) {
+		super.entityManager.remove(request);
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Approval findById(UUID id) {
-		List<Approval> list = super.entityManager
-				.createQuery("FROM Approval WHERE id=:id")
+	public Request findById(UUID id) {
+		List<Request> list = super.entityManager
+				.createQuery("FROM Request WHERE id=:id")
 				.setParameter("id", id)
 				.getResultList();
 		if(list.size() == 0) {
-			return new Approval();
+			return new Request();
 		} else {
 			return list.get(0);
 		}
@@ -37,12 +37,12 @@ public class ApprovalDao extends ParentDao {
 	
 	@Transactional
 	@SuppressWarnings("unchecked")
-	public List<Approval> findAll() {
-		List<Approval> list = super.entityManager
-                .createQuery(" from Approval ")
+	public List<Request> findAll() {
+		List<Request> list = super.entityManager
+                .createQuery(" from Request ")
                 .getResultList();
 		if (list.size() == 0)
-			return new ArrayList<Approval>();
+			return new ArrayList<Request>();
 		else {
 			return list;
 		}
@@ -50,13 +50,13 @@ public class ApprovalDao extends ParentDao {
 	
 	@Transactional
 	@SuppressWarnings("unchecked")
-	public List<Approval> findByStatus(String status) {
-		List<Approval> list = super.entityManager
-                .createQuery("from Approval where status.status=:status")
+	public List<Request> findByStatus(String status) {
+		List<Request> list = super.entityManager
+                .createQuery("from Request where status.status=:status")
                 .setParameter("status", status)
                 .getResultList();
 		if (list.size() == 0)
-			return new ArrayList<Approval>();
+			return new ArrayList<Request>();
 		else {
 			return list;
 		}
@@ -64,18 +64,18 @@ public class ApprovalDao extends ParentDao {
 	
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Approval findByBk(String kode) {	
+	public Request findByBk(String kode) {	
 		
-		List<Approval> list = super.entityManager
-                .createQuery("from Approval where kode=:kode")
+		List<Request> list = super.entityManager
+                .createQuery("from Request where kode=:kode")
                 .setParameter("kode", kode)
                 .getResultList();
 
 		if (list.size() == 0) {
-			return new Approval();
+			return new Request();
 		}
 		else {
-			return (Approval)list.get(0);
+			return (Request)list.get(0);
 		}
 	}
 	
