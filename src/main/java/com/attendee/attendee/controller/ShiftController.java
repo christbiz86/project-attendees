@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.attendee.attendee.exception.InvalidDataException;
+import com.attendee.attendee.exception.MessageListResponse;
 import com.attendee.attendee.exception.MessageResponse;
 import com.attendee.attendee.model.Shift;
 import com.attendee.attendee.service.ShiftService;
@@ -34,6 +37,12 @@ public class ShiftController {
 		return shiftList;
 	}
 	
+	@GetMapping(value = "shift/{status}")
+	public @ResponseBody List<Shift> getFilterShift(@PathVariable String status) throws Exception {
+		List<Shift> shiftList = shiftService.filterShift(status);
+		return shiftList;
+	}
+	
 	@PostMapping(value = "shift")
 	public ResponseEntity<?> insertShift(@RequestBody Shift shift) throws Exception {
 		List messagesFailed = new ArrayList();
@@ -45,6 +54,9 @@ public class ShiftController {
 			shiftService.save(shift);
 			MessageResponse mg = new MessageResponse("Insert Success with Code Shift " + shift.getKode());
 			messagesSuccess.add(mg);
+		} catch (InvalidDataException ex) {
+			MessageListResponse mg = new MessageListResponse(ex.getMessages());
+			messagesFailed.add(mg);
 		} catch (Exception e) {
 			MessageResponse mg = new MessageResponse("Insert Failed");
 			messagesException.add(mg);
@@ -75,8 +87,11 @@ public class ShiftController {
 		
 		try {
 			shiftService.update(shift);
-			MessageResponse mg = new MessageResponse("Update Success With Code Shift" + shift.getKode());
+			MessageResponse mg = new MessageResponse("Update Success With Code Shift " + shift.getKode());
 			messagesSuccess.add(mg);
+		} catch (InvalidDataException ex) {
+			MessageListResponse mg = new MessageListResponse(ex.getMessages());
+			messagesFailed.add(mg);
 		} catch (Exception e) {
 			MessageResponse mg = new MessageResponse("Update Failed");
 			messagesException.add(mg);

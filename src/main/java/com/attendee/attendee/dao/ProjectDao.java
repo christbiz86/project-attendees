@@ -1,5 +1,6 @@
 package com.attendee.attendee.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -71,6 +72,27 @@ public class ProjectDao extends ParentDao {
 		}
 		else {
 			return (Project)list.get(0);
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public List<Project> filterProject(String status, String lokasi) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("FROM Project WHERE 1=1 ");
+		if(status != null) {
+			sb.append("AND status.status = '" + status + "' ");
+		}
+		if(lokasi != null) {
+			sb.append("AND lokasi = '" + lokasi + "' ");
+		}
+		List<Project> proList = super.entityManager
+				.createQuery(sb.toString())
+				.getResultList();
+		if(proList.size() == 0) {
+			 return new ArrayList<Project>();
+		} else {
+			return proList;
 		}
 	}
 

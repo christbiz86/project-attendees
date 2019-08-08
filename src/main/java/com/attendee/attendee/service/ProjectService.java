@@ -42,31 +42,24 @@ public class ProjectService {
 		if(project.getKode() == null) {
 			listErr.add("Kode Project Tidak Boleh Kosong");
 		}
-		System.out.println("Lewat 1");
 		System.out.println(project.getNamaProject());
 		if(project.getNamaProject() == null) {
 			listErr.add("Nama Project Tidak Boleh Kosong");
 		}
-		System.out.println("Lewat 2");
 		if(project.getLokasi() == null) {
 			listErr.add("Lokasi Project Tidak Boleh Kosong");
 		}
-		System.out.println("Lewat 3");
-		if(project.getIdStatus() == null) {
+		if(project.getStatus() == null) {
 			listErr.add("Status Project Tidak Boleh Kosong");
 		}
-		System.out.println("Lewat 4");
 		if(project.getCreatedAt() == null) {
 			listErr.add("Tanggal Pembuatan Project Tidak Boleh Kosong");
 		}
-//		System.out.println("Lewat 5");
-//		if(project.getCreatedBy() == null) {
-//			listErr.add("Pembuat Project Tidak Boleh Kosong");
-//		}
+		if(project.getCreatedBy() == null) {
+			listErr.add("Pembuat Project Tidak Boleh Kosong");
+		}
 		
 		if(!listErr.isEmpty()) {
-			System.out.println("error");
-			System.out.println(listErr);
 			throw new InvalidDataException(listErr);
 		}
 	}
@@ -81,6 +74,15 @@ public class ProjectService {
 	
 	public List<Project> findAll() throws ValidationException {
 		return projectDao.findAll();
+	}
+	
+	public List<Project> filterProject(String status, String lokasi) throws Exception {
+		List<Project> proList = projectDao.filterProject(status, lokasi);
+		if(proList.size() == 0) {
+			throw new ValidationException("Data Tidak Ditemukan");
+		} else {
+			return proList;
+		}
 	}
 	
 	public void valBkNotExist(Project project) throws ValidationException {
@@ -112,6 +114,8 @@ public class ProjectService {
 	}
 	
 	public void update(Project project) throws Exception {
+		project.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+		
 		valIdNotNull(project);
 		valIdExist(project.getId());
 		valBkNotNull(project);

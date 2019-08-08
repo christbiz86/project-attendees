@@ -52,7 +52,7 @@ public class Project {
 	
 	@JoinColumn(name = "id_status", referencedColumnName = "id")
 	@OneToOne	
-	private Status idStatus;
+	private Status status;
 
 	public UUID getId() {
 		return id;
@@ -118,11 +118,11 @@ public class Project {
 		this.updatedBy = updatedBy;
 	}
 
-	public Status getIdStatus() {
-		return idStatus;
+	public Status getStatus() {
+		return status;
 	}
 
-	public void setIdStatus(Status idStatus) {
-		this.idStatus = idStatus;
+	public void setStatus(Status status) {
+		this.status = status;
 	}
 }

@@ -30,7 +30,7 @@ public class UserShiftProjectController {
 	@Autowired
 	private UserShiftProjectService userShiftProjectService;
 	
-	@GetMapping(value = "shift-project")
+	@GetMapping(value = "user-shift-project")
 	public @ResponseBody List<UserShiftProject> getAllUserShiftProject(){
 		List<UserShiftProject> userShiftProjectList = userShiftProjectService.findAll();
 		return userShiftProjectList;

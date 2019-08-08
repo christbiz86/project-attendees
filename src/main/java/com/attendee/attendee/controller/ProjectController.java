@@ -36,7 +36,13 @@ public class ProjectController {
 		return projectList;
 	}
 	
-	@PostMapping(value = "/project")
+	@GetMapping(value = "project/filter")
+	public @ResponseBody List<Project> getFilterProject(@RequestBody Project project) throws Exception {
+		List<Project> proList = projectService.filterProject(project.getStatus().getStatus(), project.getLokasi());
+		return proList;
+	}
+	
+	@PostMapping(value = "project")
 	public ResponseEntity<?> insertProject(@RequestBody Project project) throws Exception {
 		List messagesFailed = new ArrayList();
 		List messagesSuccess = new ArrayList();
@@ -73,21 +79,7 @@ public class ProjectController {
 		}
 	}
 	
-//	@PostMapping(value = "/project")
-//	public ResponseEntity<?> insertProject(@RequestBody Project project) throws IOException {
-//		try {
-//			projectService.save(project);
-//			return ResponseEntity.ok("Insert Success with Code Shift " + project.getKode());
-//		} catch (InvalidDataException e) {
-//			System.out.println(e.getMessage());
-//			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessages());
-//		} catch (Exception e) {
-//			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-//		}
-//		
-//	}
-	
-	@PutMapping(value = "/project")
+	@PutMapping(value = "project")
 	public ResponseEntity<?> submitUpdate(@RequestBody Project project) throws Exception {
 		List messagesFailed = new ArrayList();
 		List messagesSuccess = new ArrayList();
@@ -98,6 +90,9 @@ public class ProjectController {
 			projectService.update(project);
 			MessageResponse mg = new MessageResponse("Update Success With Code Project " + project.getKode());
 			messagesSuccess.add(mg);
+		} catch (InvalidDataException ex) {
+			MessageListResponse mg = new MessageListResponse(ex.getMessages());
+			messagesFailed.add(mg);
 		} catch (Exception e) {
 			MessageResponse mg = new MessageResponse("Update Failed");
 			messagesException.add(mg);
