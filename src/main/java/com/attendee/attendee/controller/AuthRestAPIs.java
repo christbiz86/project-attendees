@@ -1,4 +1,4 @@
-package com.attendee.attendee.security;
+package com.attendee.attendee.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,7 +13,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,8 +26,6 @@ import com.attendee.attendee.model.User;
 import com.attendee.attendee.model.UserPrinciple;
 import com.attendee.attendee.security.jwt.JwtProvider;
 import com.attendee.attendee.security.jwt.JwtResponse;
-import com.attendee.attendee.service.TipeUserService;
-import com.attendee.attendee.service.UserCompanyService;
 import com.attendee.attendee.service.UserService;
 
  
@@ -43,11 +40,6 @@ public class AuthRestAPIs {
     @Autowired
     private UserService userRepository;
  
-    @Autowired
-    private UserCompanyService userCompanyRepository;
-    
-    @Autowired
-    private TipeUserService tuService;
  
     @Autowired
     private  PasswordEncoder encoder;
