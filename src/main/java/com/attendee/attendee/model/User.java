@@ -53,11 +53,11 @@ public class User {
 	@Column(name="foto",unique=true)
 	private String foto;
 	
-	@JsonFormat(shape=JsonFormat.Shape.STRING,pattern="yyyy-MM-dd HH:mm:ss",timezone="ASIA/JAKARTA")
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="ASIA/JAKARTA")
 	@Column(name = "created_at")
- 	private Date createdAt;
+ 	private Timestamp createdAt;
 	
-	@JsonFormat(shape=JsonFormat.Shape.STRING,pattern="yyyy-MM-dd HH:mm:ss",timezone="ASIA/JAKARTA")
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="ASIA/JAKARTA")
 	@Column(name = "updated_at")
  	private Timestamp updatedAt;
 	
