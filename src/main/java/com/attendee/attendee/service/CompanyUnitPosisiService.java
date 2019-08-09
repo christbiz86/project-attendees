@@ -60,7 +60,7 @@ public class CompanyUnitPosisiService {
 	}	
 	
 	
-	public void save(CompanyUnitPosisi companyUnitPosisi)throws ValidationException{
+	public void insert(CompanyUnitPosisi companyUnitPosisi)throws ValidationException{
 		
 		valBkNotExist(companyUnitPosisi);
 		valNonBk(companyUnitPosisi);
