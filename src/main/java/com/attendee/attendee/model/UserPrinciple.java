@@ -13,7 +13,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.fasterxml.jackson.annotation.JsonIgnore;
  
 public class UserPrinciple implements UserDetails {
-	
 	private static final long serialVersionUID = 1L;
   	private UUID id;
     private String name;
@@ -36,7 +35,6 @@ public class UserPrinciple implements UserDetails {
     }
  
     public static UserPrinciple build(UserCompany userCompany) {
-    	
     	List<GrantedAuthority> authorities = new ArrayList<>();
     	authorities.add(new SimpleGrantedAuthority(userCompany.getIdTipeUser().getTipe()));
 
@@ -45,7 +43,7 @@ public class UserPrinciple implements UserDetails {
         		userCompany.getIdUser().getNama(),
         		userCompany.getIdUser().getEmail(),
         		userCompany.getIdUser().getPassword(),
-        		userCompany.getIdCompanyunitPosisi(),
+        		userCompany.getIdCompanyUnitPosisi(),
                 authorities
         );
     }

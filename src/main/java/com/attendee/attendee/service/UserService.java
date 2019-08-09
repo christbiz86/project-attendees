@@ -1,7 +1,11 @@
 package com.attendee.attendee.service;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +21,6 @@ import com.attendee.attendee.model.UserCompany;
 
 @Service
 public class UserService{
-
 	@Autowired
 	private UserDao userDao;
 	
@@ -39,64 +42,71 @@ public class UserService{
 	@Autowired
 	private CompanyUnitPosisiService cupService;
 	
+	public String generatePassword(User user) throws NoSuchAlgorithmException {
+		String email = user.getEmail();
+		
+		Random RANDOM = new SecureRandom();
+	    String letters = "1234567890";
+	    String pw = "";
+	    for (int i=0; i<5; i++) {
+	        int index = (int)(RANDOM.nextDouble()*letters.length());
+	        pw += letters.substring(index, index+1);
+	    }
+	    
+	    String pwd = email.substring(0,3).toLowerCase()+pw;
+	    System.out.println(pwd);
+		
+		//MD5
+		MessageDigest alg = MessageDigest.getInstance("MD5");
+        alg.reset(); 
+        alg.update(pwd.getBytes());
+        byte[] digest = alg.digest();
+
+        StringBuffer hashedpwd = new StringBuffer();
+        String hx;
+        for (int i=0;i<digest.length;i++){
+            hx =  Integer.toHexString(0xFF & digest[i]);
+            //0x03 is equal to 0x3, but we need 0x03 for our md5sum
+            if(hx.length() == 1){hx = "0" + hx;}
+            hashedpwd.append(hx);
+        }
+        
+        return hashedpwd.toString();
+	}
 	
 	private void valIdExist(UUID id)throws ValidationException{
-		
 		if(!userDao.isExist(id)) {
 			throw new ValidationException("Data tidak ada");
 		}
 	}
 	
 	private void valIdNotNull(User user)throws ValidationException {
-		
 		if(user.getId()==null) {
 			throw new ValidationException("Id tidak boleh kosong");
 		}
 	}
 	
 	private void valNonBk(User user)throws ValidationException{
-		
 		StringBuilder sb=new StringBuilder();
 		int error=0;
 
-		if(user.getAlamat()==null) {
-			sb.append("alamat tidak boleh kosong \n");
+		if(user.getNama() == null) {
+			sb.append("Alamat tidak boleh kosong!");
 			error++;
 		}
-		if(user.getTglLahir()==null) {
-			sb.append("tanggal lahir tidak boleh kosong \n");
+		if(user.getAlamat() == null) {
+			sb.append("Alamat tidak boleh kosong!");
 			error++;
 		}
-		if(user.getTelp()==null) {
-			sb.append("telepon tidak boleh kosong \n");
+		if(user.getTglLahir() == null) {
+			sb.append("Tanggal lahir tidak boleh kosong!");
 			error++;
 		}
-//		if(user.getFoto()==null) {
-//			sb.append("foto tidak boleh kosong \n");
-//			error++;
-//		}
-		if(user.getNama()==null) {
-			sb.append("nama tidak boleh kosong \n");
+		if(user.getTelp() == null) {
+			sb.append("Nomor telepon tidak boleh kosong!");
 			error++;
-		}
-		if(user.getPassword()==null) {
-			sb.append("password tidak boleh kosong \n");
-			error++;
-		}
-		if(user.getCreatedAt()==null) {
-			sb.append("tanggal dibuat tidak boleh kosong \n");
-			error++;
-		}
-		if(user.getCreatedBy()==null) {
-			sb.append("pembuat tidak boleh kosong \n");
-			error++;
-		}
-		if(user.getUpdatedAt()==null) {
-			sb.append("tanggal diedit tidak boleh kosong \n");
-			error++;
-		}
-		if(user.getUpdatedBy()==null) {
-			sb.append("pengedit tidak boleh kosong \n");
+		}if(user.getEmail() == null) {
+			sb.append("Email tidak boleh kosong!");
 			error++;
 		}
 		
@@ -114,15 +124,12 @@ public class UserService{
 	private void valBkNotChange(User user)throws ValidationException{
 		String s=findById(user.getId()).getKode();
 		if(!user.getKode().toString().equals(s.toString())) {
-
 			throw new ValidationException("Kode tidak boleh berubah");
 		}
 	}
 	
 	private void valBkNotNull(User user) throws ValidationException{
-		
 		if(user.getKode()==null) {
-
 			throw new ValidationException("Kode tidak boleh kosong");
 		}
 	}
@@ -135,8 +142,9 @@ public class UserService{
 		}
 	}
 	
-	public void save(User user)throws ValidationException{
+	public void save(User user)throws ValidationException, NoSuchAlgorithmException{
 		user.setCreatedAt(getTime());
+		user.setPassword(generatePassword(user));
 		
 		user.setUpdatedAt(null);
 		user.setUpdatedBy(null);
@@ -160,18 +168,15 @@ public class UserService{
 	}
 	
 	public void delete(UUID id)throws ValidationException{
-	
 		valIdExist(id);
 		userDao.delete(id);
 	}
 	
 	public User findById(UUID id)throws ValidationException{
-
 		return userDao.findById(id);
 	}
 	
 	public User findByBk(User user) {
-
 		return userDao.findByBk(user.getKode());
 	}
 	
@@ -188,7 +193,6 @@ public class UserService{
 	}
 
 	public User findUsername(String username) {
-
 		return userDao.userLogin(username);
 	}
 
@@ -213,17 +217,17 @@ public class UserService{
 			save(user.getUser());
 			
 			UserCompany userCompany=new UserCompany();
-	        CompanyUnitPosisi companyunitPosisi=new CompanyUnitPosisi();
+	        CompanyUnitPosisi companyUnitPosisi = new CompanyUnitPosisi();
 	        
-	        companyunitPosisi.setIdCompany(comService.findById(user.getCompany().getId()));
-	        companyunitPosisi.setIdPosisi(posisiService.findById(user.getPosisi().getId()));
-	        companyunitPosisi.setIdUnit(unitService.findById(user.getUnit().getId()));
+	        companyUnitPosisi.setIdCompany(comService.findById(user.getCompany().getId()));
+	        companyUnitPosisi.setIdPosisi(posisiService.findById(user.getPosisi().getId()));
+	        companyUnitPosisi.setIdUnit(unitService.findById(user.getUnit().getId()));
 	        
-	        cupService.save(companyunitPosisi);
+	        cupService.insert(companyUnitPosisi);
 	 
 	        userCompany.setIdUser(findByBk(user.getUser()));
 	        userCompany.setIdTipeUser(user.getTipeUser());
-	        userCompany.setIdCompanyunitPosisi(cupService.findByBk(companyunitPosisi.getIdCompany().getId(),companyunitPosisi.getIdUnit().getId(),companyunitPosisi.getIdPosisi().getId()));
+	        userCompany.setIdCompanyUnitPosisi(cupService.findByBk(companyUnitPosisi.getIdCompany().getId(),companyUnitPosisi.getIdUnit().getId(),companyUnitPosisi.getIdPosisi().getId()));
 	        
 	        ucService.save(userCompany);
 	        

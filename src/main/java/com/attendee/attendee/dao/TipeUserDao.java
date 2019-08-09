@@ -11,6 +11,20 @@ import com.attendee.attendee.model.TipeUser;
 
 @Repository
 public class TipeUserDao extends ParentDao{
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public TipeUser findByTipe(String tipe) {
+		List<TipeUser> tu = super.entityManager
+				.createQuery("FROM TipeUser WHERE tipe = :tipe")
+				.setParameter("tipe", tipe)
+				.getResultList();
+		
+		if(tu.size() == 0) {
+			return new TipeUser();
+		}else {
+			return (TipeUser)tu.get(0);
+		}
+	}
 	
 	@Transactional
 	public void save(TipeUser tipeUser) {
