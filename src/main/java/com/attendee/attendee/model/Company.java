@@ -18,7 +18,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @Table(name="company")
 public class Company {
 
-
 	@Id
 	@Column(name="id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -45,12 +44,12 @@ public class Company {
 	@Column(name = "updated_at")
 	private Timestamp updatedAt;
 	
+	@OneToOne
 	@JoinColumn(name = "created_by", referencedColumnName = "id")
-	@OneToOne(optional = false)
 	private User createdBy;	
 	
+	@OneToOne
 	@JoinColumn(name = "updated_by", referencedColumnName = "id")
-	@OneToOne(optional = false)
 	private User updatedBy;
 
 	public UUID getId() {

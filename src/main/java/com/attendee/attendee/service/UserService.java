@@ -83,6 +83,22 @@ public class UserService{
 			sb.append("password tidak boleh kosong \n");
 			error++;
 		}
+		if(user.getCreatedAt()==null) {
+			sb.append("tanggal dibuat tidak boleh kosong \n");
+			error++;
+		}
+		if(user.getCreatedBy()==null) {
+			sb.append("pembuat tidak boleh kosong \n");
+			error++;
+		}
+		if(user.getUpdatedAt()==null) {
+			sb.append("tanggal diedit tidak boleh kosong \n");
+			error++;
+		}
+		if(user.getUpdatedBy()==null) {
+			sb.append("pengedit tidak boleh kosong \n");
+			error++;
+		}
 		
 		if(error>0) {
 			throw new ValidationException(sb.toString());
