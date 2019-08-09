@@ -20,7 +20,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name="users",uniqueConstraints = {
-        @UniqueConstraint(columnNames = "username"),
         @UniqueConstraint(columnNames = "email")})
 public class User {
 	
@@ -42,23 +41,11 @@ public class User {
 	@Column(name="tgl_lahir")
 	private Date tglLahir;
 	
-<<<<<<< HEAD
-	@Column(name="email",unique=true)
-	private String email;
-
-	@Column(name="telp")
-	private String telp;
-
-	@Column(name="username",unique=true)
-	private String username;
-=======
 	@Column(name="telp")
 	private String telp;
 	
 	@Column(name="email")
 	private String email;
->>>>>>> 3d9b5f5854fcb7aeb0d02e6e70fc5c064329a31c
-	
 
 	@Column(name="password")
 	private String password;
@@ -66,57 +53,26 @@ public class User {
 	@Column(name="foto",unique=true)
 	private String foto;
 	
-<<<<<<< HEAD
-	@JsonFormat(shape=JsonFormat.Shape.STRING,pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+7")
+	@JsonFormat(shape=JsonFormat.Shape.STRING,pattern="yyyy-MM-dd HH:mm:ss",timezone="ASIA/JAKARTA")
 	@Column(name = "created_at")
  	private Date createdAt;
 	
-	@JsonFormat(shape=JsonFormat.Shape.STRING,pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+7")
+	@JsonFormat(shape=JsonFormat.Shape.STRING,pattern="yyyy-MM-dd HH:mm:ss",timezone="ASIA/JAKARTA")
 	@Column(name = "updated_at")
  	private Timestamp updatedAt;
 	
 	@JoinColumn(name = "created_by", referencedColumnName = "id")
-//	@OneToOne(optional = false)
-=======
-	@JoinColumn(name = "id_status", referencedColumnName = "id")
-	@OneToOne
-	private Status idStatus;
-	
-	@Temporal(TemporalType.DATE)
-	@Column(name="created_at")
-	private Date createdAt;
-	
-	@Temporal(TemporalType.DATE)
-	@Column(name="updated_at")
-	private Date updatedAt;
-	
-	@JoinColumn(name = "created_by", referencedColumnName = "id")
->>>>>>> 3d9b5f5854fcb7aeb0d02e6e70fc5c064329a31c
 	@OneToOne
 	private User createdBy;
 	
 	@JoinColumn(name = "updated_by", referencedColumnName = "id")
-<<<<<<< HEAD
-//	@OneToOne(optional = false)
 	@OneToOne
 	private User updatedBy;
 	
 	@JoinColumn(name = "id_status", referencedColumnName = "id")
-//	@OneToOne(optional = false)	
 	@OneToOne
 	private Status idStatus;
-	
-//    @ManyToMany(cascade=CascadeType.REFRESH, fetch = FetchType.EAGER)
-//    @JoinTable(name = "user_company", 
-//      joinColumns = @JoinColumn(name = "id_user"), 
-//      inverseJoinColumns = @JoinColumn(name = "id_tipe_user"))
-//    private Set<TipeUser> roles = new HashSet<>();
-	
-=======
-	@OneToOne
-	private User updatedBy;
-	
->>>>>>> 3d9b5f5854fcb7aeb0d02e6e70fc5c064329a31c
+
 	public UUID getId() {
 		return id;
 	}
@@ -149,18 +105,30 @@ public class User {
 		this.alamat = alamat;
 	}
 
-<<<<<<< HEAD
-
-	public String getUsername() {
-		return username;
+	public Date getTglLahir() {
+		return tglLahir;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setTglLahir(Date tglLahir) {
+		this.tglLahir = tglLahir;
 	}
 
-=======
->>>>>>> 3d9b5f5854fcb7aeb0d02e6e70fc5c064329a31c
+	public String getTelp() {
+		return telp;
+	}
+
+	public void setTelp(String telp) {
+		this.telp = telp;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	public String getPassword() {
 		return password;
 	}
@@ -177,14 +145,12 @@ public class User {
 		this.foto = foto;
 	}
 
-<<<<<<< HEAD
-	
 	public Date getCreatedAt() {
 		return createdAt;
 	}
 
 	public void setCreatedAt(Date createdAt) {
-		this.createdAt =createdAt;
+		this.createdAt = createdAt;
 	}
 
 	public Timestamp getUpdatedAt() {
@@ -209,62 +175,6 @@ public class User {
 
 	public void setUpdatedBy(User updatedBy) {
 		this.updatedBy = updatedBy;
-=======
-	public Date getCreateAt() {
-		return createdAt;
-	}
-
-	public void setCreateAt(Date createAt) {
-		this.createdAt = createAt;
-	}
-
-	public Date getUpdateAt() {
-		return updatedAt;
-	}
-
-	public void setUpdateAt(Date updateAt) {
-		this.updatedAt = updateAt;
-	}
-
-	public User getCreateBy() {
-		return createdBy;
-	}
-
-	public void setCreateBy(User createBy) {
-		this.createdBy = createBy;
-	}
-
-	public User getUpdateBy() {
-		return updatedBy;
-	}
-
-	public void setUpdateBy(User updateBy) {
-		this.updatedBy = updateBy;
->>>>>>> 3d9b5f5854fcb7aeb0d02e6e70fc5c064329a31c
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public Date getTglLahir() {
-		return tglLahir;
-	}
-
-	public void setTglLahir(Date tglLahir) {
-		this.tglLahir = tglLahir;
-	}
-
-	public String getTelp() {
-		return telp;
-	}
-
-	public void setTelp(String telp) {
-		this.telp = telp;
 	}
 
 	public Status getIdStatus() {
@@ -274,14 +184,4 @@ public class User {
 	public void setIdStatus(Status idStatus) {
 		this.idStatus = idStatus;
 	}
-
-//	public Set<TipeUser> getRoles() {
-//		return roles;
-//	}
-//
-//	public void setRoles(Set<TipeUser> roles) {
-//		this.roles = roles;
-//	}
-
-
 }
