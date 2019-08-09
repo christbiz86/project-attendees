@@ -42,6 +42,7 @@ public class User {
 	@Column(name="tgl_lahir")
 	private Date tglLahir;
 	
+<<<<<<< HEAD
 	@Column(name="email",unique=true)
 	private String email;
 
@@ -50,6 +51,13 @@ public class User {
 
 	@Column(name="username",unique=true)
 	private String username;
+=======
+	@Column(name="telp")
+	private String telp;
+	
+	@Column(name="email")
+	private String email;
+>>>>>>> 3d9b5f5854fcb7aeb0d02e6e70fc5c064329a31c
 	
 
 	@Column(name="password")
@@ -58,6 +66,7 @@ public class User {
 	@Column(name="foto",unique=true)
 	private String foto;
 	
+<<<<<<< HEAD
 	@JsonFormat(shape=JsonFormat.Shape.STRING,pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+7")
 	@Column(name = "created_at")
  	private Date createdAt;
@@ -68,10 +77,26 @@ public class User {
 	
 	@JoinColumn(name = "created_by", referencedColumnName = "id")
 //	@OneToOne(optional = false)
+=======
+	@JoinColumn(name = "id_status", referencedColumnName = "id")
+	@OneToOne
+	private Status idStatus;
+	
+	@Temporal(TemporalType.DATE)
+	@Column(name="created_at")
+	private Date createdAt;
+	
+	@Temporal(TemporalType.DATE)
+	@Column(name="updated_at")
+	private Date updatedAt;
+	
+	@JoinColumn(name = "created_by", referencedColumnName = "id")
+>>>>>>> 3d9b5f5854fcb7aeb0d02e6e70fc5c064329a31c
 	@OneToOne
 	private User createdBy;
 	
 	@JoinColumn(name = "updated_by", referencedColumnName = "id")
+<<<<<<< HEAD
 //	@OneToOne(optional = false)
 	@OneToOne
 	private User updatedBy;
@@ -87,6 +112,11 @@ public class User {
 //      inverseJoinColumns = @JoinColumn(name = "id_tipe_user"))
 //    private Set<TipeUser> roles = new HashSet<>();
 	
+=======
+	@OneToOne
+	private User updatedBy;
+	
+>>>>>>> 3d9b5f5854fcb7aeb0d02e6e70fc5c064329a31c
 	public UUID getId() {
 		return id;
 	}
@@ -119,6 +149,7 @@ public class User {
 		this.alamat = alamat;
 	}
 
+<<<<<<< HEAD
 
 	public String getUsername() {
 		return username;
@@ -128,6 +159,8 @@ public class User {
 		this.username = username;
 	}
 
+=======
+>>>>>>> 3d9b5f5854fcb7aeb0d02e6e70fc5c064329a31c
 	public String getPassword() {
 		return password;
 	}
@@ -144,6 +177,7 @@ public class User {
 		this.foto = foto;
 	}
 
+<<<<<<< HEAD
 	
 	public Date getCreatedAt() {
 		return createdAt;
@@ -175,6 +209,38 @@ public class User {
 
 	public void setUpdatedBy(User updatedBy) {
 		this.updatedBy = updatedBy;
+=======
+	public Date getCreateAt() {
+		return createdAt;
+	}
+
+	public void setCreateAt(Date createAt) {
+		this.createdAt = createAt;
+	}
+
+	public Date getUpdateAt() {
+		return updatedAt;
+	}
+
+	public void setUpdateAt(Date updateAt) {
+		this.updatedAt = updateAt;
+	}
+
+	public User getCreateBy() {
+		return createdBy;
+	}
+
+	public void setCreateBy(User createBy) {
+		this.createdBy = createBy;
+	}
+
+	public User getUpdateBy() {
+		return updatedBy;
+	}
+
+	public void setUpdateBy(User updateBy) {
+		this.updatedBy = updateBy;
+>>>>>>> 3d9b5f5854fcb7aeb0d02e6e70fc5c064329a31c
 	}
 
 	public String getEmail() {
