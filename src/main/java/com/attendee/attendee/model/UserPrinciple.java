@@ -17,20 +17,19 @@ public class UserPrinciple implements UserDetails {
 	private static final long serialVersionUID = 1L;
   	private UUID id;
     private String name;
+    @JsonIgnore
     private String username;
-    private String email;
      @JsonIgnore
     private String password;
     private CompanyUnitPosisi idCompany;
     private Collection<? extends GrantedAuthority> authorities;
  
     public UserPrinciple(UUID id, String name, 
-              String username, String email, String password,CompanyUnitPosisi idCompany,
+              String email, String password,CompanyUnitPosisi idCompany,
               Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.name = name;
-        this.username = username;
-        this.email = email;
+        this.username = email;
         this.password = password;
         this.idCompany=idCompany;
         this.authorities = authorities;
@@ -44,7 +43,6 @@ public class UserPrinciple implements UserDetails {
         return new UserPrinciple(
         		userCompany.getIdUser().getId(),
         		userCompany.getIdUser().getNama(),
-        		userCompany.getIdUser().getUsername(),
         		userCompany.getIdUser().getEmail(),
         		userCompany.getIdUser().getPassword(),
         		userCompany.getIdCompanyunitPosisi(),
@@ -58,10 +56,6 @@ public class UserPrinciple implements UserDetails {
  
     public String getName() {
         return name;
-    }
- 
-    public String getEmail() {
-        return email;
     }
  
     @Override

@@ -131,4 +131,21 @@ public class UserCompanyDao extends ParentDao{
 			return (UserCompany)list.get(0);
 		}
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public UserCompany findByEmail(String email) {
+		
+		List<UserCompany> list = super.entityManager
+                .createQuery("from UserCompany where idUser.email=:email")
+                .setParameter("email", email)
+                .getResultList();
+
+		if (list.size() == 0) {
+			return new UserCompany();
+		}
+		else {
+			return (UserCompany)list.get(0);
+		}
+	}
 }
