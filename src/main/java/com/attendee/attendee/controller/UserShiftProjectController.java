@@ -36,11 +36,11 @@ public class UserShiftProjectController {
 		return userShiftProjectList;
 	}
 	
-	@GetMapping(value = "user-shift-project")
-	public @ResponseBody List<UserShiftProject> getFilterUserShift(@PathVariable String worktime) throws Exception {
-		List<UserShiftProject> userShiftList = userShiftProjectService.filterUserShift(worktime);
-		return userShiftList;
-	}
+//	@GetMapping(value = "user-shift-project")
+//	public @ResponseBody List<UserShiftProject> getFilterUserShift(@PathVariable String worktime) throws Exception {
+//		List<UserShiftProject> userShiftList = userShiftProjectService.filterUserShift(worktime);
+//		return userShiftList;
+//	}
 	
 	@PostMapping(value = "user-shift-project")
 	public ResponseEntity<?> insertUserShiftProject(@RequestBody UserShiftProject userShiftProject) throws Exception {
