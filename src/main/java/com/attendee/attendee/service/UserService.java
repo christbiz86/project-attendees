@@ -67,10 +67,6 @@ public class UserService{
 			sb.append("tanggal lahir tidak boleh kosong \n");
 			error++;
 		}
-		if(user.getUsername()==null) {
-			sb.append("username tidak boleh kosong \n");
-			error++;
-		}
 		if(user.getTelp()==null) {
 			sb.append("telepon tidak boleh kosong \n");
 			error++;

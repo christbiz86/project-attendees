@@ -19,13 +19,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
  
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
       
     	try {
-    		UserCompany user = userCompanyService.findByUsername(username);
+    		UserCompany user = userCompanyService.findByEmail(email);
             return UserPrinciple.build(user);
     	}catch(UsernameNotFoundException e) {     
-    		throw new UsernameNotFoundException("User Not Found with -> username or email : " + username);
+    		throw new UsernameNotFoundException("User Not Found with -> email : " + email);
     	}
 
     }

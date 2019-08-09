@@ -92,7 +92,7 @@ public class UserDao extends ParentDao{
 	@Transactional
 	public List<User> findByFilter(User user) {
 
-		StringBuilder sb=new StringBuilder("SELECT u.id , u.kode , u.nama , u.alamat , u.tgl_lahir , u.telp , u.email , u.username , u.password , u.foto , u.id_status , u.created_at , u.updated_at , u.created_by , u.updated_by ");
+		StringBuilder sb=new StringBuilder("SELECT u.id , u.kode , u.nama , u.alamat , u.tgl_lahir , u.telp , u.email , u.password , u.foto , u.id_status , u.created_at , u.updated_at , u.created_by , u.updated_by ");
 		sb.append("FROM users u ");
 		sb.append(" WHERE 1=1 ");		
 
@@ -104,9 +104,6 @@ public class UserDao extends ParentDao{
 		}
 		if(user.getEmail()!=null) {
 			sb.append(" AND u.email LIKE '%"+user.getEmail()+"%' ");
-		}
-		if(user.getUsername()!=null) {
-			sb.append(" AND u.username LIKE '%"+user.getUsername()+"%' ");
 		}
 		if(user.getTelp()!=null) {
 			sb.append(" AND u.telp LIKE '%"+user.getTelp()+"%' ");
@@ -123,11 +120,11 @@ public class UserDao extends ParentDao{
 	
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public User userLogin(String username) {	
+	public User userLogin(String email) {	
 		
 		List<User> list = super.entityManager
-                .createQuery("from User where username=:username")
-                .setParameter("username", username)
+                .createQuery("from User where email=:email")
+                .setParameter("email", email)
                 .getResultList();
 
 		if (list.size() == 0) {
