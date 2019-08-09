@@ -52,6 +52,10 @@ public class CompanyController {
 	@Autowired
 	private CompanyUnitPosisiService cupServ;
 	
+	public void setPojoRegForm() {
+		
+	}
+	
 	@PostMapping(value = "/company")
 	public ResponseEntity<?> save(@RequestBody RegistrationForm regForm) throws Exception {
 		List<MessageResponse> messagesSuccess = new ArrayList();
@@ -89,6 +93,8 @@ public class CompanyController {
 			CompanyUnitPosisi cup = new CompanyUnitPosisi(); 
 			
 			Company kc = comServ.findByBk(regForm.getKodeCompany());
+			
+			//set company unit posisi
 			cup.setIdCompany(kc);			
 			
 			try {
