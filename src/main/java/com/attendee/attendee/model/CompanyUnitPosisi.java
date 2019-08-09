@@ -21,15 +21,15 @@ public class CompanyUnitPosisi {
 	private UUID id;
 	
 	@JoinColumn(name = "id_company", referencedColumnName = "id")
-	@OneToOne(optional = false)
+	@OneToOne
 	private Company idCompany;
 	
 	@JoinColumn(name = "id_unit", referencedColumnName = "id")
-	@OneToOne(optional = false)
+	@OneToOne
 	private Unit idUnit;
 
 	@JoinColumn(name = "id_posisi", referencedColumnName = "id")
-	@OneToOne(optional = false)
+	@OneToOne
 	private Posisi idPosisi;
 
 	public UUID getId() {

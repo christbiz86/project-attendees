@@ -1,5 +1,6 @@
 package com.attendee.attendee.service;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
 
@@ -68,7 +69,18 @@ public class UnitService {
 		}
 	}
 	
+	private void valCreatedNotChange(Unit unit)throws ValidationException {
+		Unit tempUnit=findById(unit.getId());
+			
+		if(tempUnit.getCreatedAt()!=unit.getCreatedAt() && tempUnit.getCreatedBy()!=unit.getCreatedBy()) {
+			throw new ValidationException("created tidak boleh berubah");
+		}
+	}
+	
 	public void save(Unit divisi)throws ValidationException{
+		divisi.setCreatedAt(getTime());
+		divisi.setUpdatedAt(null);
+		divisi.setUpdatedBy(null);
 		
 		valBkNotNull(divisi);
 		valBkNotExist(divisi);
@@ -77,6 +89,8 @@ public class UnitService {
 	}
 	
 	public void update(Unit divisi)throws ValidationException{
+		divisi.setUpdatedAt(getTime());
+		valCreatedNotChange(divisi);
 		
 		valIdNotNull(divisi);
 		valIdExist(divisi.getId());
@@ -108,5 +122,9 @@ public class UnitService {
 	
 	public List<Unit> findByFilter(Unit unit)throws ValidationException{
 		return divisiDao.findByFilter(unit);
+	}
+	
+	private Timestamp getTime() {
+		return  new Timestamp(System.currentTimeMillis());
 	}
 }

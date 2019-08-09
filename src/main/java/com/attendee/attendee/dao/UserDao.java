@@ -120,4 +120,22 @@ public class UserDao extends ParentDao{
 			return list;
 		}
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public User userLogin(String username) {	
+		
+		List<User> list = super.entityManager
+                .createQuery("from User where username=:username")
+                .setParameter("username", username)
+                .getResultList();
+
+		if (list.size() == 0) {
+			return new User();
+		}
+		else {
+			return (User)list.get(0);
+		}
+	}
+
 }

@@ -36,10 +36,10 @@ public class UserCompanyService {
 		StringBuilder sb=new StringBuilder();
 		int error=0;
 
-		if(userCompany.getIdCompanyunitPosisi()==null || userCompany.getIdCompanyunitPosisi().getId()==null) {
-			sb.append("company divisi jabatan tidak boleh kosong \n");
-			error++;
-		}
+//		if(userCompany.getIdCompanyunitPosisi()==null || userCompany.getIdCompanyunitPosisi().getId()==null) {
+//			sb.append("company divisi jabatan tidak boleh kosong \n");
+//			error++;
+//		}
 		if(userCompany.getIdTipeUser()==null) {
 			sb.append("tipe user tidak boleh kosong \n");
 			error++;
@@ -51,7 +51,8 @@ public class UserCompanyService {
 	}
 	
 	private void valBkNotExist(UserCompany userCompany)throws ValidationException{
-		if(userCompanyDao.isBkExist(userCompany.getIdUser().getId().toString())) {
+		System.out.println("ooooo");
+		if(userCompanyDao.isBkExist(userCompany.getIdUser().getId())) {
 			throw new ValidationException("Data sudah ada");
 		}
 	}	
@@ -73,7 +74,7 @@ public class UserCompanyService {
 	}
 	
 	public void save(UserCompany userCompany)throws ValidationException{
-		
+		System.out.println("save");
 		valBkNotNull(userCompany);
 		valBkNotExist(userCompany);
 		valNonBk(userCompany);
@@ -103,10 +104,19 @@ public class UserCompanyService {
 	
 	public UserCompany findByBk(UserCompany userCompany) {
 
-		return userCompanyDao.findByBk(userCompany.getIdUser().getId().toString());
+		return userCompanyDao.findByBk(userCompany.getIdUser().getId());
 	}
 	
 	public List<UserCompany> findAll( )throws ValidationException{
 		return userCompanyDao.findAll();
 	}
+	
+	public List<UserCompany> findByFilter(UserCompany userCompany )throws ValidationException{
+		return userCompanyDao.findByFilter(userCompany);
+	}
+
+	public UserCompany findByUsername(String username) {
+	
+		return userCompanyDao.findByUsername(username);
+	}	
 }

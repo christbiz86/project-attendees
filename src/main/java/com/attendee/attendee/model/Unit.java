@@ -11,11 +11,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
-@Table(name="divisi")
+@Table(name="unit")
 public class Unit {
 
 	@Id
@@ -23,20 +23,19 @@ public class Unit {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private UUID id;
 	
-	@Column(name="unit")
+	@Column(name="unit",unique=true)
 	private String unit;
 	
 	@JoinColumn(name = "id_status", referencedColumnName = "id")
 	@OneToOne(optional = false)
 	private Status idStatus;
 	
-//	@Temporal(TemporalType.DATE)
-	@Column(name="created_at")
+	@JsonFormat(shape=JsonFormat.Shape.STRING,pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+7")
+	@Column(name = "created_at")
 	private Timestamp createdAt;
 	
-	
-//	@Temporal(TemporalType.DATE)
-	@Column(name="updated_at")
+	@JsonFormat(shape=JsonFormat.Shape.STRING,pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+7")
+	@Column(name = "updated_at")
 	private Timestamp updatedAt;
 	
 	@JoinColumn(name = "created_by", referencedColumnName = "id")

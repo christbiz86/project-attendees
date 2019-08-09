@@ -1,5 +1,6 @@
 package com.attendee.attendee.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -62,10 +63,10 @@ public class UserCompanyDao extends ParentDao{
 	
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public UserCompany findByBk(String idUser) {	
+	public UserCompany findByBk(UUID idUser) {	
 		
 		List<UserCompany> list = super.entityManager
-                .createQuery("from UserCompany where idUser=:idUser")
+                .createQuery("from UserCompany where idUser.id=:idUser")
                 .setParameter("idUser", idUser)
                 .getResultList();
 
@@ -77,7 +78,7 @@ public class UserCompanyDao extends ParentDao{
 		}
 	}
 
-	public boolean isBkExist(String idUser) {
+	public boolean isBkExist(UUID idUser) {
 		
 		if(findByBk(idUser).getId()==null) {
 	
@@ -85,5 +86,49 @@ public class UserCompanyDao extends ParentDao{
 		}else {
 			return true;
 		}	 
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public List<UserCompany> findByFilter(UserCompany userCompany) {
+		
+		StringBuilder sb=new StringBuilder("SELECT p.id,p.id_user,p.id_company_unit_posisi,p.id_tipe_user ");
+		sb.append("FROM user_company p ");
+		sb.append(" WHERE 1=1 ");		
+
+		if(userCompany.getIdUser().getId()!=null) {
+			sb.append(" AND p.id_user LIKE '%"+userCompany.getIdUser().getId()+"%' ");
+		}
+		if(userCompany.getIdTipeUser().getId()!=null) {
+			sb.append(" AND p.id_tipe_user LIKE '%"+userCompany.getIdTipeUser().getId()+"%' ");
+		}
+		if(userCompany.getIdCompanyunitPosisi().getId()!=null) {
+			sb.append(" AND p.id_company_unit_posisi LIKE '%"+userCompany.getIdCompanyunitPosisi().getId()+"%' ");
+		}
+		
+		List<UserCompany> list=super.entityManager.createNativeQuery(sb.toString(),UserCompany.class).getResultList();
+		
+		if(list.size()==0) {
+			return new ArrayList<UserCompany>();
+		}else {
+			return list;
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public UserCompany findByUsername(String username) {
+		
+		List<UserCompany> list = super.entityManager
+                .createQuery("from UserCompany where idUser.username=:username")
+                .setParameter("username", username)
+                .getResultList();
+
+		if (list.size() == 0) {
+			return new UserCompany();
+		}
+		else {
+			return (UserCompany)list.get(0);
+		}
 	}
 }

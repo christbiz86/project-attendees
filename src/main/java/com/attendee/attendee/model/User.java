@@ -14,16 +14,14 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
-import org.apache.tomcat.util.security.MD5Encoder;
-import org.postgresql.util.MD5Digest;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import javax.persistence.UniqueConstraint;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
-@Table(name="users")
+@Table(name="users",uniqueConstraints = {
+        @UniqueConstraint(columnNames = "username"),
+        @UniqueConstraint(columnNames = "email")})
 public class User {
 	
 	@Id
@@ -44,47 +42,51 @@ public class User {
 	@Column(name="tgl_lahir")
 	private Date tglLahir;
 	
-	@Column(name="email")
+	@Column(name="email",unique=true)
 	private String email;
 
 	@Column(name="telp")
 	private String telp;
 
-	
-	@Column(name="username")
+	@Column(name="username",unique=true)
 	private String username;
 	
 
 	@Column(name="password")
-	private MD5Encoder password;
+	private String password;
 	
-	@Column(name="foto")
+	@Column(name="foto",unique=true)
 	private String foto;
 	
-
+	@JsonFormat(shape=JsonFormat.Shape.STRING,pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+7")
+	@Column(name = "created_at")
+ 	private Date createdAt;
 	
 	@JsonFormat(shape=JsonFormat.Shape.STRING,pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+7")
-	@Column(name = "created_at", nullable = false, updatable = false)
-    @CreatedDate
-	private Date createdAt;
-	
-	@JsonFormat(shape=JsonFormat.Shape.STRING,pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+7")
-	@Column(name = "updated_at", nullable = false)
-    @LastModifiedDate
-	private Timestamp updatedAt;
+	@Column(name = "updated_at")
+ 	private Timestamp updatedAt;
 	
 	@JoinColumn(name = "created_by", referencedColumnName = "id")
-	@OneToOne(optional = false)
+//	@OneToOne(optional = false)
+	@OneToOne
 	private User createdBy;
 	
 	@JoinColumn(name = "updated_by", referencedColumnName = "id")
-	@OneToOne(optional = false)
+//	@OneToOne(optional = false)
+	@OneToOne
 	private User updatedBy;
 	
 	@JoinColumn(name = "id_status", referencedColumnName = "id")
-	@OneToOne(optional = false)	
+//	@OneToOne(optional = false)	
+	@OneToOne
 	private Status idStatus;
-
+	
+//    @ManyToMany(cascade=CascadeType.REFRESH, fetch = FetchType.EAGER)
+//    @JoinTable(name = "user_company", 
+//      joinColumns = @JoinColumn(name = "id_user"), 
+//      inverseJoinColumns = @JoinColumn(name = "id_tipe_user"))
+//    private Set<TipeUser> roles = new HashSet<>();
+	
 	public UUID getId() {
 		return id;
 	}
@@ -126,11 +128,11 @@ public class User {
 		this.username = username;
 	}
 
-	public MD5Encoder getPassword() {
+	public String getPassword() {
 		return password;
 	}
 
-	public void setPassword(MD5Encoder password) {
+	public void setPassword(String password) {
 		this.password = password;
 	}
 
@@ -148,7 +150,7 @@ public class User {
 	}
 
 	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
+		this.createdAt =createdAt;
 	}
 
 	public Timestamp getUpdatedAt() {
@@ -206,5 +208,14 @@ public class User {
 	public void setIdStatus(Status idStatus) {
 		this.idStatus = idStatus;
 	}
+
+//	public Set<TipeUser> getRoles() {
+//		return roles;
+//	}
+//
+//	public void setRoles(Set<TipeUser> roles) {
+//		this.roles = roles;
+//	}
+
 
 }

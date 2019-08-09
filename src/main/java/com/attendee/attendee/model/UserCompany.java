@@ -21,15 +21,15 @@ public class UserCompany {
 	private UUID id;
 	
 	@JoinColumn(name = "id_user", referencedColumnName = "id")
-	@OneToOne(optional = false)
+	@OneToOne
 	private User idUser;
 
 	@JoinColumn(name = "id_company_unit_posisi", referencedColumnName = "id")
-	@OneToOne(optional = false)
+	@OneToOne
 	private CompanyUnitPosisi idCompanyunitPosisi;	
 	
 	@JoinColumn(name = "id_tipe_user", referencedColumnName = "id")
-	@OneToOne(optional = false)
+	@OneToOne
 	private TipeUser idTipeUser;
 
 	public UUID getId() {
@@ -63,6 +63,13 @@ public class UserCompany {
 	public void setIdCompanyunitPosisi(CompanyUnitPosisi idCompanyunitPosisi) {
 		this.idCompanyunitPosisi = idCompanyunitPosisi;
 	}
-	
+
+//	public Set<User> getIdUser() {
+//		return idUser;
+//	}
+//
+//	public void setIdUser(Set<User> idUser) {
+//		this.idUser = idUser;
+//	}
 	
 }

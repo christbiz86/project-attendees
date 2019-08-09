@@ -1,5 +1,6 @@
 package com.attendee.attendee.service;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,21 +18,21 @@ public class PosisiService {
 	private PosisiDao jabatanDao;
 	
 	
-	public void valIdExist(UUID id)throws ValidationException{
+	private void valIdExist(UUID id)throws ValidationException{
 		
 		if(!jabatanDao.isExist(id)) {
 			throw new ValidationException("Data tidak ada");
 		}
 	}
 	
-	public void valIdNotNull(Posisi jabatan)throws ValidationException {
+	private void valIdNotNull(Posisi jabatan)throws ValidationException {
 		
 		if(jabatan.getId()==null) {
 			throw new ValidationException("Id tidak boleh kosong");
 		}
 	}
 	
-	public void valNonBk(Posisi jabatan)throws ValidationException{
+	private void valNonBk(Posisi jabatan)throws ValidationException{
 		
 		StringBuilder sb=new StringBuilder();
 		int error=0;
@@ -46,13 +47,13 @@ public class PosisiService {
 		}
 	}
 	
-	public void valBkNotExist(Posisi jabatan)throws ValidationException{
+	private void valBkNotExist(Posisi jabatan)throws ValidationException{
 		if(jabatanDao.isBkExist(jabatan.getPosisi())) {
 			throw new ValidationException("Data sudah ada");
 		}
 	}	
 	
-	public void valBkNotChange(Posisi jabatan)throws ValidationException{
+	private void valBkNotChange(Posisi jabatan)throws ValidationException{
 		String s=findById(jabatan.getId()).getPosisi();
 		if(!jabatan.getPosisi().equals(s)) {
 
@@ -60,7 +61,7 @@ public class PosisiService {
 		}
 	}
 	
-	public void valBkNotNull(Posisi jabatan) throws ValidationException{
+	private void valBkNotNull(Posisi jabatan) throws ValidationException{
 		
 		if(jabatan.getPosisi()==null) {
 
@@ -68,7 +69,19 @@ public class PosisiService {
 		}
 	}
 	
+	private void valCreatedNotChange(Posisi posisi)throws ValidationException {
+		Posisi tempPosisi=findById(posisi.getId());
+			
+		if(tempPosisi.getCreatedAt()!=posisi.getCreatedAt() && tempPosisi.getCreatedBy()!=posisi.getCreatedBy()) {
+			throw new ValidationException("created tidak boleh berubah");
+		}
+	
+	}
+	
 	public void save(Posisi jabatan)throws ValidationException{
+		jabatan.setCreatedAt(getTime());
+		jabatan.setUpdatedAt(null);
+		jabatan.setUpdatedBy(null);
 		
 		valBkNotNull(jabatan);
 		valBkNotExist(jabatan);
@@ -77,6 +90,9 @@ public class PosisiService {
 	}
 	
 	public void update(Posisi jabatan)throws ValidationException{
+		jabatan.setUpdatedAt(getTime());
+		
+		valCreatedNotChange(jabatan);
 		
 		valIdNotNull(jabatan);
 		valIdExist(jabatan.getId());
@@ -110,4 +126,7 @@ public class PosisiService {
 		return jabatanDao.findByFilter(posisi);
 	}
 	
+	private Timestamp getTime() {
+		return  new Timestamp(System.currentTimeMillis());
+	}
 }

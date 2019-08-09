@@ -96,7 +96,7 @@ public class CompanyDao extends ParentDao{
 		sb.append("FROM company c ");
 		sb.append(" WHERE 1=1 ");		
 
-		if(!company.getNama().equals(null)) {
+		if(company.getNama()!=null) {
 			sb.append(" AND c.nama LIKE '%"+company.getNama()+"%' ");
 		}
 					

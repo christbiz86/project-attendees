@@ -28,7 +28,7 @@ public class UnitDao extends ParentDao{
 	public Unit findById(UUID id) {	
 		
 		List<Unit> list = super.entityManager
-                .createQuery("from Divisi where id=:id")
+                .createQuery("from Unit where id=:id")
                 .setParameter("id", id)
                 .getResultList();
 
@@ -46,7 +46,7 @@ public class UnitDao extends ParentDao{
 	public List<Unit> findAll() {	
 		
 		List<Unit> list = super.entityManager
-                .createQuery("from Divisi ")
+                .createQuery("from Unit ")
                 .getResultList();
 
 		return list;
@@ -63,11 +63,11 @@ public class UnitDao extends ParentDao{
 	
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Unit findByBk(String divisi) {	
+	public Unit findByBk(String unit) {	
 		
 		List<Unit> list = super.entityManager
-                .createQuery("from Divisi where divisi=:divisi")
-                .setParameter("divisi", divisi)
+                .createQuery("from Unit where unit=:unit ")
+                .setParameter("unit", unit)
                 .getResultList();
 
 		if (list.size() == 0) {
@@ -91,15 +91,15 @@ public class UnitDao extends ParentDao{
 	@SuppressWarnings("unchecked")
 	@Transactional
 	public List<Unit> findByFilter(Unit unit) {
-		
-		StringBuilder sb=new StringBuilder("SELECT u.id,u.unit,u.id_status,u.created_at,u.updated_at,u.created_by,u.updated_by ");
+		System.out.println("1");
+		StringBuilder sb=new StringBuilder("SELECT * ");
 		sb.append("FROM unit u ");
 		sb.append(" WHERE 1=1 ");		
 
-		if(!unit.getUnit().equals(null)) {
+		if(unit.getUnit()!=null) {
 			sb.append(" AND u.unit LIKE '%"+unit.getUnit()+"%' ");
 		}
-		if(!unit.getIdStatus().getStatus().equals(null)) {
+		if(unit.getIdStatus().getStatus()!=null) {
 			sb.append(" AND u.id_status LIKE '%"+unit.getIdStatus().getStatus()+"%' ");
 		}
 					

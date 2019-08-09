@@ -9,13 +9,35 @@ import org.springframework.stereotype.Service;
 
 import com.attendee.attendee.dao.UserDao;
 import com.attendee.attendee.exception.ValidationException;
+import com.attendee.attendee.model.CompanyUnitPosisi;
+import com.attendee.attendee.model.PojoUser;
+import com.attendee.attendee.model.TipeUser;
 import com.attendee.attendee.model.User;
+import com.attendee.attendee.model.UserCompany;
 
 @Service
-public class UserService {
+public class UserService{
 
 	@Autowired
 	private UserDao userDao;
+	
+	@Autowired
+	private UserCompanyService ucService;
+	
+	@Autowired
+	private TipeUserService tuService;
+	
+	@Autowired
+	private CompanyService comService;
+	
+	@Autowired
+	private UnitService unitService;
+	
+	@Autowired
+	private PosisiService posisiService;
+	
+	@Autowired
+	private CompanyUnitPosisiService cupService;
 	
 	
 	private void valIdExist(UUID id)throws ValidationException{
@@ -61,26 +83,10 @@ public class UserService {
 			sb.append("nama tidak boleh kosong \n");
 			error++;
 		}
-//		if(user.getPassword()==null) {
-//			sb.append("password tidak boleh kosong \n");
-//			error++;
-//		}
-//		if(user.getCreatedAt()==null) {
-//			sb.append("tanggal dibuat tidak boleh kosong \n");
-//			error++;
-//		}
-//		if(user.getCreatedBy()==null) {
-//			sb.append("pembuat tidak boleh kosong \n");
-//			error++;
-//		}
-//		if(user.getUpdatedAt()==null) {
-//			sb.append("tanggal diedit tidak boleh kosong \n");
-//			error++;
-//		}
-//		if(user.getUpdatedBy()==null) {
-//			sb.append("pengedit tidak boleh kosong \n");
-//			error++;
-//		}
+		if(user.getPassword()==null) {
+			sb.append("password tidak boleh kosong \n");
+			error++;
+		}
 		
 		if(error>0) {
 			throw new ValidationException(sb.toString());
@@ -109,9 +115,19 @@ public class UserService {
 		}
 	}
 	
+	private void valCreatedNotChange(User user)throws ValidationException {
+		User tempUser=findById(user.getId());
+			
+		if(tempUser.getCreatedAt()!=user.getCreatedAt() && tempUser.getCreatedBy()!=user.getCreatedBy()) {
+			throw new ValidationException("created tidak boleh berubah");
+		}
+	}
+	
 	public void save(User user)throws ValidationException{
 		user.setCreatedAt(getTime());
-//		user.setCreatedBy(user.getId());
+		
+		user.setUpdatedAt(null);
+		user.setUpdatedBy(null);
 		
 		valBkNotNull(user);
 		valBkNotExist(user);
@@ -121,7 +137,7 @@ public class UserService {
 	
 	public void update(User user)throws ValidationException{
 		user.setUpdatedAt(getTime());
-//		user.setUpdatedBy(user.getId());
+		valCreatedNotChange(user);
 		
 		valIdNotNull(user);
 		valIdExist(user.getId());
@@ -158,4 +174,52 @@ public class UserService {
 	private Timestamp getTime() {
 		return  new Timestamp(System.currentTimeMillis());
 	}
+
+	public User findUsername(String username) {
+
+		return userDao.userLogin(username);
+	}
+
+	public void saveWithTipeUser(User signUpRequest) throws ValidationException{
+		try {
+			save(signUpRequest);
+	        UserCompany userCompany=new UserCompany();
+	        TipeUser tu=tuService.findName("ROLE_SUPERADMIN");
+	        userCompany.setIdUser(findByBk(signUpRequest));
+	        userCompany.setIdTipeUser(tu);
+	        ucService.save(userCompany);
+	      
+		}catch(Exception e) {
+			delete(findByBk(signUpRequest).getId());
+			throw new ValidationException("error");
+		}
+        		
+	}
+
+	public void saveWithCompanyUnitPosisi(PojoUser user)throws ValidationException {
+		try {
+			save(user.getUser());
+			
+			UserCompany userCompany=new UserCompany();
+	        CompanyUnitPosisi companyunitPosisi=new CompanyUnitPosisi();
+	        
+	        companyunitPosisi.setIdCompany(comService.findById(user.getCompany().getId()));
+	        companyunitPosisi.setIdPosisi(posisiService.findById(user.getPosisi().getId()));
+	        companyunitPosisi.setIdUnit(unitService.findById(user.getUnit().getId()));
+	        
+	        cupService.save(companyunitPosisi);
+	 
+	        userCompany.setIdUser(findByBk(user.getUser()));
+	        userCompany.setIdTipeUser(user.getTipeUser());
+	        userCompany.setIdCompanyunitPosisi(cupService.findByBk(companyunitPosisi.getIdCompany().getId(),companyunitPosisi.getIdUnit().getId(),companyunitPosisi.getIdPosisi().getId()));
+	        
+	        ucService.save(userCompany);
+	        
+		}catch (Exception e) {
+			System.out.println(e);
+			delete(findByBk(user.getUser()).getId());
+			throw new ValidationException("error");
+		}
+	}
+
 }

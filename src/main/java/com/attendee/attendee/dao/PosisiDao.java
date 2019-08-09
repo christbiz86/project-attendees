@@ -13,14 +13,14 @@ import com.attendee.attendee.model.Posisi;
 public class PosisiDao extends ParentDao{
 	
 	@Transactional
-	public void save(Posisi jabatan) {
-		super.entityManager.merge(jabatan);
+	public void save(Posisi posisi) {
+		super.entityManager.merge(posisi);
 	}
 	
 	@Transactional
 	public void delete(UUID id) {
-		Posisi jabatan = findById(id);
-		super.entityManager.remove(jabatan);
+		Posisi posisi = findById(id);
+		super.entityManager.remove(posisi);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -28,7 +28,7 @@ public class PosisiDao extends ParentDao{
 	public Posisi findById(UUID id) {	
 		
 		List<Posisi> list = super.entityManager
-                .createQuery("from Jabatan where id=:id")
+                .createQuery("from Posisi where id=:id")
                 .setParameter("id", id)
                 .getResultList();
 
@@ -46,7 +46,7 @@ public class PosisiDao extends ParentDao{
 	public List<Posisi> findAll() {	
 		
 		List<Posisi> list = super.entityManager
-                .createQuery("from Jabatan ")
+                .createQuery("from Posisi ")
                 .getResultList();
 
 		return list;
@@ -63,11 +63,11 @@ public class PosisiDao extends ParentDao{
 	
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Posisi findByBk(String jabatan) {	
+	public Posisi findByBk(String posisi) {	
 		
 		List<Posisi> list = super.entityManager
-                .createQuery("from Jabatan where jabatan=:jabatan")
-                .setParameter("jabatan", jabatan)
+                .createQuery("from Posisi where posisi=:posisi")
+                .setParameter("posisi", posisi)
                 .getResultList();
 
 		if (list.size() == 0) {
@@ -78,9 +78,9 @@ public class PosisiDao extends ParentDao{
 		}
 	}
 
-	public boolean isBkExist(String jabatan) {
+	public boolean isBkExist(String posisi) {
 		
-		if(findByBk(jabatan).getId()==null) {
+		if(findByBk(posisi).getId()==null) {
 	
 			return false;
 		}else {
@@ -92,14 +92,14 @@ public class PosisiDao extends ParentDao{
 	@Transactional
 	public List<Posisi> findByFilter(Posisi posisi) {
 		
-		StringBuilder sb=new StringBuilder("SELECT p.id,p.posisi,p.id_status,p.created_at,p.updated_at,p.created_by,p.updated_by ");
+		StringBuilder sb=new StringBuilder("SELECT * ");
 		sb.append("FROM posisi p ");
 		sb.append(" WHERE 1=1 ");		
 
-		if(!posisi.getPosisi().equals(null)) {
+		if(posisi.getPosisi()!=null) {
 			sb.append(" AND p.posisi LIKE '%"+posisi.getPosisi()+"%' ");
 		}
-		if(!posisi.getIdStatus().getId().equals(null)) {
+		if(posisi.getIdStatus().getId()!=null) {
 			sb.append(" AND p.id_status LIKE '%"+posisi.getIdStatus().getId()+"%' ");
 		}
 		

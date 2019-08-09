@@ -37,6 +37,7 @@ public class UnitController {
 		 
 		 catch(Exception ex) 
 		 {
+			 System.out.println(ex);
 			 MessageResponse mg = new MessageResponse("Retrieve Failed" );
 		     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mg);
 		 }

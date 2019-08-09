@@ -14,23 +14,23 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.attendee.attendee.exception.MessageResponse;
 import com.attendee.attendee.exception.ValidationException;
-import com.attendee.attendee.model.Posisi;
-import com.attendee.attendee.service.PosisiService;
+import com.attendee.attendee.model.CompanyUnitPosisi;
+import com.attendee.attendee.service.CompanyUnitPosisiService;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @Controller
-public class PosisiController {
+public class CompanyUnitPosisiController {
 
 	@Autowired
-	private PosisiService posisiService;
+	private CompanyUnitPosisiService companyUnitPosisiService;
 	
-	@RequestMapping(value = "/posisi", method = RequestMethod.GET)
-	public ResponseEntity<?> retrieveByFilter(@RequestBody Posisi posisi) throws ValidationException
+	@RequestMapping(value = "/companyunitposisi", method = RequestMethod.GET)
+	public ResponseEntity<?> retrieveByFilter(@RequestBody CompanyUnitPosisi companyUnitPosisi) throws ValidationException
 	{
 		 try 
 		 {
-			 List<Posisi> posisiList=posisiService.findByFilter(posisi);
+			 List<CompanyUnitPosisi> posisiList=companyUnitPosisiService.findByFilter(companyUnitPosisi);
 
 			 return ResponseEntity.ok(posisiList);
 		 }
@@ -43,10 +43,10 @@ public class PosisiController {
 	}
 
 	
-	@RequestMapping(value = "/posisi", method = RequestMethod.POST)
-	public ResponseEntity<?> submit(@RequestBody Posisi posisi) throws ValidationException{
+	@RequestMapping(value = "/companyunitposisi", method = RequestMethod.POST)
+	public ResponseEntity<?> submit(@RequestBody CompanyUnitPosisi companyUnitPosisi) throws ValidationException{
 		try {
-			posisiService.save(posisi);
+			companyUnitPosisiService.save(companyUnitPosisi);
 			MessageResponse mg  = new MessageResponse("Success submit");
 			
 			return ResponseEntity.ok(mg);
@@ -57,18 +57,17 @@ public class PosisiController {
 			
 		 }
 		catch (Exception e) {
-			System.out.println(e);
 			MessageResponse mg = new MessageResponse("Failed submit" );
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mg);
 		}
 	}
 	
-	@RequestMapping(value =  "/posisi", method = RequestMethod.PUT)
-	public ResponseEntity<?> update(@RequestBody Posisi posisi) throws Exception
+	@RequestMapping(value =  "/companyunitposisi", method = RequestMethod.PUT)
+	public ResponseEntity<?> update(@RequestBody CompanyUnitPosisi companyUnitPosisi) throws Exception
 	{
 		 try 
 		 {
-			 posisiService.update(posisi);
+			 companyUnitPosisiService.update(companyUnitPosisi);
 			 MessageResponse mg = new MessageResponse("Success update");
 			 return ResponseEntity.ok(mg);
 		 }
