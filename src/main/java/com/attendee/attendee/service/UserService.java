@@ -9,6 +9,7 @@ import java.util.Random;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.attendee.attendee.dao.UserDao;
@@ -42,6 +43,10 @@ public class UserService{
 	@Autowired
 	private CompanyUnitPosisiService cupService;
 	
+   @Autowired
+    private  PasswordEncoder encoder;
+	 
+	
 	public String generatePassword(User user) throws NoSuchAlgorithmException {
 		String email = user.getEmail();
 		
@@ -53,25 +58,25 @@ public class UserService{
 	        pw += letters.substring(index, index+1);
 	    }
 	    
-	    String pwd = email.substring(0,3).toLowerCase()+pw;
+	    String pwd = (email.substring(0,3).toLowerCase()+pw).toString();
 	    System.out.println(pwd);
 		
 		//MD5
-		MessageDigest alg = MessageDigest.getInstance("MD5");
-        alg.reset(); 
-        alg.update(pwd.getBytes());
-        byte[] digest = alg.digest();
-
-        StringBuffer hashedpwd = new StringBuffer();
-        String hx;
-        for (int i=0;i<digest.length;i++){
-            hx =  Integer.toHexString(0xFF & digest[i]);
-            //0x03 is equal to 0x3, but we need 0x03 for our md5sum
-            if(hx.length() == 1){hx = "0" + hx;}
-            hashedpwd.append(hx);
-        }
+//		MessageDigest alg = MessageDigest.getInstance("MD5");
+//        alg.reset(); 
+//        alg.update(pwd.getBytes());
+//        byte[] digest = alg.digest();
+//
+//        StringBuffer hashedpwd = new StringBuffer();
+//        String hx;
+//        for (int i=0;i<digest.length;i++){
+//            hx =  Integer.toHexString(0xFF & digest[i]);
+//            //0x03 is equal to 0x3, but we need 0x03 for our md5sum
+//            if(hx.length() == 1){hx = "0" + hx;}
+//            hashedpwd.append(hx);
+//        }
         
-        return hashedpwd.toString();
+        return pwd;
 	}
 	
 	private void valIdExist(UUID id)throws ValidationException{
@@ -144,7 +149,7 @@ public class UserService{
 	
 	public void save(User user)throws ValidationException, NoSuchAlgorithmException{
 		user.setCreatedAt(getTime());
-		user.setPassword(generatePassword(user));
+		user.setPassword(encoder.encode(generatePassword(user)));
 		
 		user.setUpdatedAt(null);
 		user.setUpdatedBy(null);

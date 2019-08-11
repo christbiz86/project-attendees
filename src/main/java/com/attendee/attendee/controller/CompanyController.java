@@ -53,9 +53,9 @@ public class CompanyController {
 	
 	@PostMapping(value = "/company")
 	public ResponseEntity<?> save(@RequestBody RegistrationForm regForm) throws Exception {
-		List<MessageResponse> messagesSuccess = new ArrayList();
-		List<MessageResponse> messagesExist = new ArrayList();
-		List<MessageResponse> messagesException = new ArrayList();
+		List<MessageResponse> messagesSuccess = new ArrayList<MessageResponse>();
+		List<MessageResponse> messagesExist = new ArrayList<MessageResponse>();
+		List<MessageResponse> messagesException = new ArrayList<MessageResponse>();
 	    List allMessages =  new ArrayList();
 	    
 	    Company company = new Company();	    
@@ -93,25 +93,32 @@ public class CompanyController {
 			cup.setIdCompany(kc);			
 			
 			try {
-				cupServ.insert(cup);
+				cupServ.insertSuperAdmin(cup);
 				
 				UserCompany uc = new UserCompany();
 				
 				User uBk = new User(); 
+				TipeUser tuTipe=new TipeUser();
 				uBk.setKode(regForm.getKodeUser());
 				uBk=userServ.findByBk(uBk);
-				TipeUser tuTipe = tuServ.findByTipe("Super Admin");
-				
+				tuTipe = tuServ.findByTipe("Super Admin");
+				cup=cupServ.findByIdCompany(kc.getId());
 				//set user company
+				System.out.println(cup.getId());
+				System.out.println(tuTipe.getId());
+				System.out.println(uBk.getId());
 				uc.setIdUser(uBk);
 				uc.setIdTipeUser(tuTipe);
+				uc.setIdCompanyUnitPosisi(cup);
 				
 				try {
+					System.out.println("11111");
 					ucServ.save(uc);
 					MessageResponse mr = new MessageResponse("Insert success with company name "+company.getNama()+ " and user name "+user.getNama());
 					messagesSuccess.add(mr);
 					return ResponseEntity.status(HttpStatus.CREATED).body(mr);
 				} catch (Exception e) {
+					System.out.println(e.getMessage());
 					System.out.println(e);
 					MessageResponse mr = new MessageResponse("Insert company unit posisi failed!");
 					messagesException.add(mr);
