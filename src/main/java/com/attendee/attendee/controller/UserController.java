@@ -135,5 +135,23 @@ public class UserController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mg);
 		}
 	}
+	
+	@RequestMapping(value = "/userLoggedin", method = RequestMethod.GET)
+	public ResponseEntity<?> retrieveUserLogedIn() throws ValidationException
+	{
+		 try 
+		 {
+			 UserPrinciple user=(UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+			 return ResponseEntity.ok(user);
+		 }
+		 
+		 catch(Exception ex) 
+		 {
+			 MessageResponse mg = new MessageResponse("Retrieve Failed" );
+		     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mg);
+		 }	
+	}
+
 
 }

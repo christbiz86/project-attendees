@@ -9,6 +9,7 @@ import java.util.Random;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ import com.attendee.attendee.model.PojoUser;
 import com.attendee.attendee.model.TipeUser;
 import com.attendee.attendee.model.User;
 import com.attendee.attendee.model.UserCompany;
+import com.attendee.attendee.model.UserPrinciple;
 
 @Service
 public class UserService{
@@ -224,7 +226,8 @@ public class UserService{
 			UserCompany userCompany=new UserCompany();
 	        CompanyUnitPosisi companyUnitPosisi = new CompanyUnitPosisi();
 	        
-	        companyUnitPosisi.setIdCompany(comService.findById(user.getCompany().getId()));
+//	        companyUnitPosisi.setIdCompany(comService.findById(user.getCompany().getId()));
+	        companyUnitPosisi.setIdCompany(((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getIdCompany().getIdCompany());
 	        companyUnitPosisi.setIdPosisi(posisiService.findById(user.getPosisi().getId()));
 	        companyUnitPosisi.setIdUnit(unitService.findById(user.getUnit().getId()));
 	        
