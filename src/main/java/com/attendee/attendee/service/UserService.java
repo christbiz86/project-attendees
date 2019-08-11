@@ -9,10 +9,7 @@ import java.util.Random;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-<<<<<<< HEAD
 import org.springframework.security.core.context.SecurityContextHolder;
-=======
->>>>>>> a61a5452fffee3ba7be04723c7b2b914fa2afb9f
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

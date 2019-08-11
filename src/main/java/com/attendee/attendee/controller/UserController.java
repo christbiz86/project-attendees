@@ -51,13 +51,8 @@ public class UserController {
 	public ResponseEntity<?> submit(@RequestBody User user) throws ValidationException{
 		try {
 //			user.setPassword(encoder.encode(user.getPassword()));
-<<<<<<< HEAD
 			user.setCreatedBy(userService.findById(
 					((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId()));
-=======
-//			user.setCreatedBy(userService.findById(
-//					((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId()));
->>>>>>> a61a5452fffee3ba7be04723c7b2b914fa2afb9f
 
 			userService.save(user);
 			MessageResponse mg  = new MessageResponse("Success submit");
@@ -100,11 +95,7 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/users", method = RequestMethod.GET)
-<<<<<<< HEAD
 	@PreAuthorize("hasRole('Super Admin')")
-=======
-//	@PreAuthorize("hasRole('Super Admin')")
->>>>>>> a61a5452fffee3ba7be04723c7b2b914fa2afb9f
 	public ResponseEntity<?> retrieveAll() throws ValidationException
 	{
 		 try 
@@ -125,13 +116,8 @@ public class UserController {
 	public ResponseEntity<?> submitWithCompanyUnitPosisi(@RequestBody PojoUser user) throws ValidationException{
 		try {
 //			user.getUser().setPassword(encoder.encode(user.getUser().getPassword()));
-<<<<<<< HEAD
 			user.getUser().setCreatedBy(userService.findById(
 					((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId()));
-=======
-//			user.getUser().setCreatedBy(userService.findById(
-//					((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId()));
->>>>>>> a61a5452fffee3ba7be04723c7b2b914fa2afb9f
 			userService.saveWithCompanyUnitPosisi(user);
 			MessageResponse mg  = new MessageResponse("Success submit");
 			
