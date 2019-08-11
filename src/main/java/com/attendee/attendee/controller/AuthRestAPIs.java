@@ -1,5 +1,6 @@
 package com.attendee.attendee.controller;
 
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -20,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.attendee.attendee.exception.MessageResponse;
 import com.attendee.attendee.model.User;
-import com.attendee.attendee.model.UserPrinciple;
 import com.attendee.attendee.security.jwt.JwtProvider;
 import com.attendee.attendee.security.jwt.JwtResponse;
 import com.attendee.attendee.service.Encoder;
@@ -60,8 +60,6 @@ public class AuthRestAPIs {
         SecurityContextHolder.getContext().setAuthentication(authentication);
  
         String jwt = jwtProvider.generateJwtToken(authentication);
-        System.out.println(((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).isAccountNonExpired());
-        System.out.println(((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getAuthorities());
   
         return ResponseEntity.ok(new JwtResponse(jwt));
     }
@@ -95,7 +93,7 @@ public class AuthRestAPIs {
 //			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mg);
 //		}
 //    }
-//
+
     @GetMapping(value="/logout")
     public ResponseEntity<?> logoutPage (HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -108,16 +106,4 @@ public class AuthRestAPIs {
         return ResponseEntity.ok(mg);
     }
     
-//    @GetMapping("/coba")
-//    public ResponseEntity<?> coba() {
-//    	try {
-//			return ResponseEntity.ok(((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()));
-//			
-//		}
-//		catch (Exception e) {
-//			MessageResponse mg = new MessageResponse("error" );
-//			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mg);
-//		}
-//    }
-
 }
