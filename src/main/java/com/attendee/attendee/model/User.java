@@ -41,11 +41,11 @@ public class User {
 	@Column(name="tgl_lahir")
 	private Date tglLahir;
 	
-	@Column(name="email",unique=true)
-	private String email;
-
 	@Column(name="telp")
-	private String telp;	
+	private String telp;
+	
+	@Column(name="email")
+	private String email;
 
 	@Column(name="password")
 	private String password;
@@ -53,11 +53,11 @@ public class User {
 	@Column(name="foto",unique=true)
 	private String foto;
 	
-	@JsonFormat(shape=JsonFormat.Shape.STRING,pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+7")
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="ASIA/JAKARTA")
 	@Column(name = "created_at")
  	private Timestamp createdAt;
 	
-	@JsonFormat(shape=JsonFormat.Shape.STRING,pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+7")
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="ASIA/JAKARTA")
 	@Column(name = "updated_at")
  	private Timestamp updatedAt;
 	
@@ -72,8 +72,7 @@ public class User {
 	@JoinColumn(name = "id_status", referencedColumnName = "id")
 	@OneToOne
 	private Status idStatus;
-	
-	
+
 	public UUID getId() {
 		return id;
 	}
@@ -106,6 +105,30 @@ public class User {
 		this.alamat = alamat;
 	}
 
+	public Date getTglLahir() {
+		return tglLahir;
+	}
+
+	public void setTglLahir(Date tglLahir) {
+		this.tglLahir = tglLahir;
+	}
+
+	public String getTelp() {
+		return telp;
+	}
+
+	public void setTelp(String telp) {
+		this.telp = telp;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	public String getPassword() {
 		return password;
 	}
@@ -122,13 +145,12 @@ public class User {
 		this.foto = foto;
 	}
 
-	
-	public Date getCreatedAt() {
+	public Timestamp getCreatedAt() {
 		return createdAt;
 	}
 
 	public void setCreatedAt(Timestamp createdAt) {
-		this.createdAt =createdAt;
+		this.createdAt = createdAt;
 	}
 
 	public Timestamp getUpdatedAt() {
@@ -155,30 +177,6 @@ public class User {
 		this.updatedBy = updatedBy;
 	}
 
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public Date getTglLahir() {
-		return tglLahir;
-	}
-
-	public void setTglLahir(Date tglLahir) {
-		this.tglLahir = tglLahir;
-	}
-
-	public String getTelp() {
-		return telp;
-	}
-
-	public void setTelp(String telp) {
-		this.telp = telp;
-	}
-
 	public Status getIdStatus() {
 		return idStatus;
 	}
@@ -186,5 +184,4 @@ public class User {
 	public void setIdStatus(Status idStatus) {
 		this.idStatus = idStatus;
 	}
-
 }

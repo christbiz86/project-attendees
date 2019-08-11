@@ -66,36 +66,36 @@ public class AuthRestAPIs {
         return ResponseEntity.ok(new JwtResponse(jwt));
     }
  
-    @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody User signUpRequest) {
-    	try {
-			signUpRequest.setPassword(encoder.encode(signUpRequest.getPassword()));
-	        
-			userRepository.saveWithTipeUser(signUpRequest);
-//			userRepository.save(signUpRequest);
+//    @PostMapping("/signup")
+//    public ResponseEntity<?> registerUser(@Valid @RequestBody User signUpRequest) {
+//    	try {
+//			signUpRequest.setPassword(encoder.encode(signUpRequest.getPassword()));
 //	        
-//	        UserCompany userCompany=new UserCompany();
-//	        TipeUser tu=tuService.findName("ROLE_SUPERADMIN");
-//	        userCompany.setIdUser(userRepository.findByBk(signUpRequest));
-//	        userCompany.setIdTipeUser(tu);
-//	        userCompanyRepository.save(userCompany);
-			MessageResponse mg  = new MessageResponse("User registered successfully!");
-			
-			return ResponseEntity.ok(mg);
-			
-		}
-		catch(ValidationException val) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(val.getMessage());
-			
-		 }
-		catch (Exception e) {
-			 System.out.println(e);
-
-			MessageResponse mg = new MessageResponse("User registered failled" );
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mg);
-		}
-    }
-
+//			userRepository.saveWithTipeUser(signUpRequest);
+////			userRepository.save(signUpRequest);
+////	        
+////	        UserCompany userCompany=new UserCompany();
+////	        TipeUser tu=tuService.findName("ROLE_SUPERADMIN");
+////	        userCompany.setIdUser(userRepository.findByBk(signUpRequest));
+////	        userCompany.setIdTipeUser(tu);
+////	        userCompanyRepository.save(userCompany);
+//			MessageResponse mg  = new MessageResponse("User registered successfully!");
+//			
+//			return ResponseEntity.ok(mg);
+//			
+//		}
+//		catch(ValidationException val) {
+//			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(val.getMessage());
+//			
+//		 }
+//		catch (Exception e) {
+//			 System.out.println(e);
+//
+//			MessageResponse mg = new MessageResponse("User registered failled" );
+//			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mg);
+//		}
+//    }
+//
     @GetMapping(value="/logout")
     public ResponseEntity<?> logoutPage (HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -108,16 +108,16 @@ public class AuthRestAPIs {
         return ResponseEntity.ok(mg);
     }
     
-    @GetMapping("/coba")
-    public ResponseEntity<?> coba() {
-    	try {
-			return ResponseEntity.ok(((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()));
-			
-		}
-		catch (Exception e) {
-			MessageResponse mg = new MessageResponse("error" );
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mg);
-		}
-    }
+//    @GetMapping("/coba")
+//    public ResponseEntity<?> coba() {
+//    	try {
+//			return ResponseEntity.ok(((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()));
+//			
+//		}
+//		catch (Exception e) {
+//			MessageResponse mg = new MessageResponse("error" );
+//			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mg);
+//		}
+//    }
 
 }

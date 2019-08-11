@@ -7,51 +7,54 @@ import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.GenericGenerator;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
-@Table(name = "company")
-public class Company {
+public class Request {
+	
 	@Id
-	@GeneratedValue(generator = "UUID")
-	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id")
 	private UUID id;
-
+	
 	@Column(name = "kode")
 	private String kode;
-
-	@Column(name = "nama")
-	private String nama;
-
-	@Column(name = "jatah_cuti")
-	private Integer jatahCuti;
-
-	@Column(name = "toleransi_keterlambatan")
-	private Integer toleransiKeterlambatan;
-
+	
+	@JoinColumn(name = "id_user", referencedColumnName = "id")
+	@OneToOne
+	private User user;
+	
+	@Temporal(TemporalType.DATE)
+	@Column(name = "tgl_mulai")
+	private Date tglMulai;
+	
+	@Temporal(TemporalType.DATE)
+	@Column (name = "tgl_akhir")
+	private Date tglAkhir;
+	
 	@JoinColumn(name = "id_status", referencedColumnName = "id")
 	@OneToOne
-	private Status idStatus;
-
+	private Status status;
+	
 	@Column(name = "created_at")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+7")
 	private Timestamp createdAt;
-
+	
 	@Column(name = "updated_at")
 	@JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss", timezone = "GMT+7")
 	private Timestamp updatedAt;
-
+	
 	@JoinColumn(name = "created_by", referencedColumnName = "id")
 	@OneToOne
-	private User createdBy;
-
+	private User createdBy;	
+	
 	@JoinColumn(name = "updated_by", referencedColumnName = "id")
 	@OneToOne
 	private User updatedBy;
@@ -72,39 +75,39 @@ public class Company {
 		this.kode = kode;
 	}
 
-	public String getNama() {
-		return nama;
+	public User getUser() {
+		return user;
 	}
 
-	public void setNama(String nama) {
-		this.nama = nama;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
-	public Integer getJatahCuti() {
-		return jatahCuti;
+	public Date getTglMulai() {
+		return tglMulai;
 	}
 
-	public void setJatahCuti(Integer jatahCuti) {
-		this.jatahCuti = jatahCuti;
+	public void setTglMulai(Date tglMulai) {
+		this.tglMulai = tglMulai;
 	}
 
-	public Integer getToleransiKeterlambatan() {
-		return toleransiKeterlambatan;
+	public Date getTglAkhir() {
+		return tglAkhir;
 	}
 
-	public void setToleransiKeterlambatan(Integer toleransiKeterlambatan) {
-		this.toleransiKeterlambatan = toleransiKeterlambatan;
+	public void setTglAkhir(Date tglAkhir) {
+		this.tglAkhir = tglAkhir;
 	}
 
-	public Status getIdStatus() {
-		return idStatus;
+	public Status getStatus() {
+		return status;
 	}
 
-	public void setIdStatus(Status idStatus) {
-		this.idStatus = idStatus;
+	public void setStatus(Status status) {
+		this.status = status;
 	}
 
-	public Timestamp getCreatedAt() {
+	public Date getCreatedAt() {
 		return createdAt;
 	}
 

@@ -7,54 +7,52 @@ import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.GenericGenerator;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
-@Table(name = "company")
-public class Company {
+@Table(name = "project")
+public class Project {
 	@Id
-	@GeneratedValue(generator = "UUID")
-	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id")
 	private UUID id;
-
+	
 	@Column(name = "kode")
 	private String kode;
-
-	@Column(name = "nama")
-	private String nama;
-
-	@Column(name = "jatah_cuti")
-	private Integer jatahCuti;
-
-	@Column(name = "toleransi_keterlambatan")
-	private Integer toleransiKeterlambatan;
-
-	@JoinColumn(name = "id_status", referencedColumnName = "id")
-	@OneToOne
-	private Status idStatus;
-
+	
+	@Column(name = "nama_project")
+	private String namaProject;
+	
+	@Column(name = "lokasi")
+	private String lokasi;
+	
 	@Column(name = "created_at")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+7")
 	private Timestamp createdAt;
-
+	
 	@Column(name = "updated_at")
-	@JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss", timezone = "GMT+7")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+7")
 	private Timestamp updatedAt;
-
+	
 	@JoinColumn(name = "created_by", referencedColumnName = "id")
 	@OneToOne
-	private User createdBy;
-
+	private User createdBy;	
+	
 	@JoinColumn(name = "updated_by", referencedColumnName = "id")
 	@OneToOne
 	private User updatedBy;
+	
+	@JoinColumn(name = "id_status", referencedColumnName = "id")
+	@OneToOne	
+	private Status status;
 
 	public UUID getId() {
 		return id;
@@ -72,36 +70,20 @@ public class Company {
 		this.kode = kode;
 	}
 
-	public String getNama() {
-		return nama;
+	public String getNamaProject() {
+		return namaProject;
 	}
 
-	public void setNama(String nama) {
-		this.nama = nama;
+	public void setNamaProject(String namaProject) {
+		this.namaProject = namaProject;
 	}
 
-	public Integer getJatahCuti() {
-		return jatahCuti;
+	public String getLokasi() {
+		return lokasi;
 	}
 
-	public void setJatahCuti(Integer jatahCuti) {
-		this.jatahCuti = jatahCuti;
-	}
-
-	public Integer getToleransiKeterlambatan() {
-		return toleransiKeterlambatan;
-	}
-
-	public void setToleransiKeterlambatan(Integer toleransiKeterlambatan) {
-		this.toleransiKeterlambatan = toleransiKeterlambatan;
-	}
-
-	public Status getIdStatus() {
-		return idStatus;
-	}
-
-	public void setIdStatus(Status idStatus) {
-		this.idStatus = idStatus;
+	public void setLokasi(String lokasi) {
+		this.lokasi = lokasi;
 	}
 
 	public Timestamp getCreatedAt() {
@@ -134,5 +116,13 @@ public class Company {
 
 	public void setUpdatedBy(User updatedBy) {
 		this.updatedBy = updatedBy;
+	}
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
 	}
 }

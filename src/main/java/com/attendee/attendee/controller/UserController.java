@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,10 +28,7 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
-	
-	@Autowired
-	private PasswordEncoder encoder;
-	
+		
 	@RequestMapping(value = "/user", method = RequestMethod.GET)
 	public ResponseEntity<?> retrieveByFilter(@RequestBody User user) throws ValidationException
 	{
@@ -54,7 +50,7 @@ public class UserController {
 	@RequestMapping(value = "/user", method = RequestMethod.POST)
 	public ResponseEntity<?> submit(@RequestBody User user) throws ValidationException{
 		try {
-			user.setPassword(encoder.encode(user.getPassword()));
+//			user.setPassword(encoder.encode(user.getPassword()));
 			user.setCreatedBy(userService.findById(
 					((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId()));
 
@@ -99,7 +95,7 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/users", method = RequestMethod.GET)
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasRole('Super Admin')")
 	public ResponseEntity<?> retrieveAll() throws ValidationException
 	{
 		 try 
@@ -119,7 +115,7 @@ public class UserController {
 	@RequestMapping(value = "/users", method = RequestMethod.POST)
 	public ResponseEntity<?> submitWithCompanyUnitPosisi(@RequestBody PojoUser user) throws ValidationException{
 		try {
-			user.getUser().setPassword(encoder.encode(user.getUser().getPassword()));
+//			user.getUser().setPassword(encoder.encode(user.getUser().getPassword()));
 			user.getUser().setCreatedBy(userService.findById(
 					((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId()));
 			userService.saveWithCompanyUnitPosisi(user);

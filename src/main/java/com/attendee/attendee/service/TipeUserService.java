@@ -12,19 +12,20 @@ import com.attendee.attendee.model.TipeUser;
 
 @Service
 public class TipeUserService {
-
 	@Autowired
 	private TipeUserDao tuDao;
 	
+	public TipeUser findByTipe(String tipe) {
+		return tuDao.findByTipe(tipe);
+	}
+	
 	public void valIdExist(UUID id)throws ValidationException{
-		
 		if(!tuDao.isExist(id)) {
 			throw new ValidationException("Data tidak ada");
 		}
 	}
 	
 	public void valIdNotNull(TipeUser tipeUser)throws ValidationException {
-		
 		if(tipeUser.getId()==null) {
 			throw new ValidationException("Id tidak boleh kosong");
 		}
@@ -37,7 +38,6 @@ public class TipeUserService {
 	}	
 
 	public void valBkNotNull(TipeUser tipeUser) throws ValidationException{
-		
 		if(tipeUser.getTipe()==null) {
 
 			throw new ValidationException("tipe tidak boleh kosong");
@@ -75,7 +75,6 @@ public class TipeUserService {
 		tuDao.delete(id);
 	}
 	public TipeUser findById(UUID id)throws ValidationException{
-
 		return tuDao.findById(id);
 	}
 }

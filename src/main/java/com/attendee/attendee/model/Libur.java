@@ -7,53 +7,53 @@ import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.GenericGenerator;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
-@Table(name = "company")
-public class Company {
+@Table(name = "libur")
+public class Libur {
 	@Id
-	@GeneratedValue(generator = "UUID")
-	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private UUID id;
-
-	@Column(name = "kode")
-	private String kode;
-
+	
 	@Column(name = "nama")
 	private String nama;
-
-	@Column(name = "jatah_cuti")
-	private Integer jatahCuti;
-
-	@Column(name = "toleransi_keterlambatan")
-	private Integer toleransiKeterlambatan;
-
+	
+	@Temporal(TemporalType.DATE)
+	@Column(name = "tgl_mulai")
+	private Date tglMulai;
+	
+	@Temporal(TemporalType.DATE)
+	@Column(name = "tgl_akhir")
+	private Date tglAkhir;
+	
+	@OneToOne
 	@JoinColumn(name = "id_status", referencedColumnName = "id")
-	@OneToOne
-	private Status idStatus;
-
+	private Status status;
+	
 	@Column(name = "created_at")
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+7")
+	@JsonFormat(pattern= "yyyy-MM-dd HH:mm:ss", timezone="Asia/Jakarta")
 	private Timestamp createdAt;
-
+	
 	@Column(name = "updated_at")
-	@JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss", timezone = "GMT+7")
+	@JsonFormat(pattern= "yyyy-MM-dd HH:mm:ss", timezone="GMT+7")
 	private Timestamp updatedAt;
-
+	
+	@OneToOne
 	@JoinColumn(name = "created_by", referencedColumnName = "id")
+	private User createdBy;	
+	
 	@OneToOne
-	private User createdBy;
-
 	@JoinColumn(name = "updated_by", referencedColumnName = "id")
-	@OneToOne
 	private User updatedBy;
 
 	public UUID getId() {
@@ -64,14 +64,6 @@ public class Company {
 		this.id = id;
 	}
 
-	public String getKode() {
-		return kode;
-	}
-
-	public void setKode(String kode) {
-		this.kode = kode;
-	}
-
 	public String getNama() {
 		return nama;
 	}
@@ -80,28 +72,28 @@ public class Company {
 		this.nama = nama;
 	}
 
-	public Integer getJatahCuti() {
-		return jatahCuti;
+	public Date getTglMulai() {
+		return tglMulai;
 	}
 
-	public void setJatahCuti(Integer jatahCuti) {
-		this.jatahCuti = jatahCuti;
+	public void setTglMulai(Date tglMulai) {
+		this.tglMulai = tglMulai;
 	}
 
-	public Integer getToleransiKeterlambatan() {
-		return toleransiKeterlambatan;
+	public Date getTglAkhir() {
+		return tglAkhir;
 	}
 
-	public void setToleransiKeterlambatan(Integer toleransiKeterlambatan) {
-		this.toleransiKeterlambatan = toleransiKeterlambatan;
+	public void setTglAkhir(Date tglAkhir) {
+		this.tglAkhir = tglAkhir;
 	}
 
-	public Status getIdStatus() {
-		return idStatus;
+	public Status getStatus() {
+		return status;
 	}
 
-	public void setIdStatus(Status idStatus) {
-		this.idStatus = idStatus;
+	public void setStatus(Status status) {
+		this.status = status;
 	}
 
 	public Timestamp getCreatedAt() {
