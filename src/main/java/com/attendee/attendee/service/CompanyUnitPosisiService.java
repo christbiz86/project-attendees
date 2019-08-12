@@ -98,4 +98,15 @@ public class CompanyUnitPosisiService {
 	public CompanyUnitPosisi findByBk(UUID idCompany,UUID idUnit,UUID idPosisi) {
 		return companyUnitPosisiDao.findByBk(idCompany, idUnit, idPosisi);
 	}
+	
+	public void insertSuperAdmin(CompanyUnitPosisi companyUnitPosisi) throws ValidationException{
+		
+		companyUnitPosisiDao.save(companyUnitPosisi);
+	}
+	
+	public CompanyUnitPosisi findByIdCompany(UUID idCompany) {
+	
+		return companyUnitPosisiDao.findByIdCompany(idCompany);
+	
+	}
 }
