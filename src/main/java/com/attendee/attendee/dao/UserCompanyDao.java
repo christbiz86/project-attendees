@@ -75,25 +75,25 @@ public class UserCompanyDao extends ParentDao {
 	@SuppressWarnings("unchecked")
 	@Transactional
 	public List<UserCompany> findByFilter(UserCompany userCompany) {
-		StringBuilder sb = new StringBuilder("SELECT p.id,p.id_user,p.id_company_unit_posisi,p.id_tipe_user ");
-		sb.append("FROM user_company p ");
-		sb.append(" WHERE 1=1 ");
+		StringBuilder sb = new StringBuilder();
+		sb.append("from UserCompany uc where 1=1");
 
-		if (userCompany.getIdUser().getId() != null) {
-			sb.append(" AND p.id_user LIKE '%" + userCompany.getIdUser().getId() + "%' ");
+		if (userCompany.getIdUser().getNama() != null) {
+			sb.append(" and uc.idUser.nama like '%" + userCompany.getIdUser().getNama() + "%' ");
 		}
-		if (userCompany.getIdTipeUser().getId() != null) {
-			sb.append(" AND p.id_tipe_user LIKE '%" + userCompany.getIdTipeUser().getId() + "%' ");
+		if (userCompany.getIdTipeUser().getTipe() != null) {
+			sb.append(" and uc.idTipeUser.tipe like '%" + userCompany.getIdTipeUser().getTipe() + "%' ");
 		}
-		if (userCompany.getIdCompanyUnitPosisi().getId() != null) {
-			sb.append(" AND p.id_company_unit_posisi LIKE '%" + userCompany.getIdCompanyUnitPosisi().getId() + "%' ");
-		}
+//		if (userCompany.getIdCompanyUnitPosisi() != null) {
+//			sb.append(" and uc.idCompanyUnitPosisi like '%" + userCompany.getIdCompanyUnitPosisi().getIdCompany().get + "%' ");
+//		}
 
-		List<UserCompany> list = super.entityManager.createNativeQuery(sb.toString(), UserCompany.class)
+		List<UserCompany> list = super.entityManager.createQuery(sb.toString())
 				.getResultList();
 
 		if (list.size() == 0) {
-			return new ArrayList<UserCompany>();
+			List<UserCompany> nullList = new ArrayList<UserCompany>();
+			return nullList;
 		} else {
 			return list;
 		}

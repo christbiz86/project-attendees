@@ -25,12 +25,29 @@ public class UserCompanyController {
 	@Autowired
 	private UserCompanyService userCompanyService;
 	
-	@RequestMapping(value = "/usercompany", method = RequestMethod.GET)
+	@RequestMapping(value = "/usercompany/filter", method = RequestMethod.POST)
 	public ResponseEntity<?> retrieveByFilter(@RequestBody UserCompany userCompany) throws ValidationException
 	{
 		 try 
 		 {
 			 List<UserCompany> list=userCompanyService.findByFilter(userCompany);
+
+			 return ResponseEntity.ok(list);
+		 }
+		 
+		 catch(Exception ex) 
+		 {
+			 MessageResponse mg = new MessageResponse("Retrieve Failed" );
+		     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mg);
+		 }
+	}
+	
+	@RequestMapping(value = "/usercompany", method = RequestMethod.GET)
+	public ResponseEntity<?> getAll() throws ValidationException
+	{
+		 try 
+		 {
+			 List<UserCompany> list=userCompanyService.findAll();
 
 			 return ResponseEntity.ok(list);
 		 }

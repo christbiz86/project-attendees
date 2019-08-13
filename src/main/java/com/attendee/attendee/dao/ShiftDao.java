@@ -1,5 +1,6 @@
 package com.attendee.attendee.dao;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -91,6 +92,17 @@ public class ShiftDao extends ParentDao {
 			return shiftList;
 		}
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public Integer count() {	
+		
+		List<BigInteger> list = super.entityManager
+                .createQuery("SELECT COUNT(s) FROM Shift s")
+                .getResultList();
+		Integer count = ((BigInteger)list.get(0)).intValue();
+		return count;
+	}	
 
 	public boolean isBkExist(String kode) {
 		
