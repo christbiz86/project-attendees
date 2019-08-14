@@ -49,6 +49,7 @@ public class UserService{
 	private PasswordEncoder encoder;
 	
 	public String generatePassword(User user) throws NoSuchAlgorithmException {
+		
 		String email = user.getEmail();
 		
 		Random RANDOM = new SecureRandom();

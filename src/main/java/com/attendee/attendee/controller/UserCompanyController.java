@@ -59,6 +59,23 @@ public class UserCompanyController {
 		 }
 	}
 
+	@RequestMapping(value = "/usercompany", method = RequestMethod.GET)
+	public ResponseEntity<?> retrieveAll() throws ValidationException
+	{
+		 try 
+		 {
+			 List<UserCompany> list=userCompanyService.findAll();
+
+			 return ResponseEntity.ok(list);
+		 }
+		 
+		 catch(Exception ex) 
+		 {
+			 MessageResponse mg = new MessageResponse("Retrieve Failed" );
+		     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mg);
+		 }
+	}
+
 	
 	@RequestMapping(value = "/usercompany", method = RequestMethod.POST)
 	public ResponseEntity<?> submit(@RequestBody UserCompany userCompany) throws ValidationException{
