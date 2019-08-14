@@ -166,7 +166,7 @@ public class UserService{
 		user.setUpdatedAt(null);
 		user.setUpdatedBy(null);
 		
-//		valBkNotNull(user);
+		valBkNotNull(user);
 		valBkNotExist(user);
 		valNonBk(user);
 		userDao.save(user);
@@ -238,7 +238,7 @@ public class UserService{
 	        CompanyUnitPosisi companyUnitPosisi = new CompanyUnitPosisi();
 	        
 //	        companyUnitPosisi.setIdCompany(comService.findById(user.getCompany().getId()));
-	        companyUnitPosisi.setIdCompany(((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getIdCompany().getIdCompany());
+	    	companyUnitPosisi.setIdCompany(((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserCompany().getIdCompanyUnitPosisi().getIdCompany());
 	        companyUnitPosisi.setIdPosisi(posisiService.findById(user.getPosisi().getId()));
 	        companyUnitPosisi.setIdUnit(unitService.findById(user.getUnit().getId()));
 	        
