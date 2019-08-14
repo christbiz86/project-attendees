@@ -49,6 +49,7 @@ public class UserService{
 	private PasswordEncoder encoder;
 	
 	public String generatePassword(User user) throws NoSuchAlgorithmException {
+		
 		String email = user.getEmail();
 		
 		Random RANDOM = new SecureRandom();
@@ -226,7 +227,7 @@ public class UserService{
 	        CompanyUnitPosisi companyUnitPosisi = new CompanyUnitPosisi();
 	        
 //	        companyUnitPosisi.setIdCompany(comService.findById(user.getCompany().getId()));
-	        companyUnitPosisi.setIdCompany(((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getIdCompany().getIdCompany());
+	        companyUnitPosisi.setIdCompany(((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserCompany().getIdCompanyUnitPosisi().getIdCompany());
 	        companyUnitPosisi.setIdPosisi(posisiService.findById(user.getPosisi().getId()));
 	        companyUnitPosisi.setIdUnit(unitService.findById(user.getUnit().getId()));
 	        
