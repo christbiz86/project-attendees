@@ -37,6 +37,7 @@ public class RequestService {
 		request.setCreatedBy(request.getUser());
 		request.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 		request.setStatus(staDao.findByStatus("Request"));
+		request.setKode("REQ" + aprDao.count());
 		
 		valNonBk(request);
 		valBkNotExist(request.getKode());
@@ -50,10 +51,10 @@ public class RequestService {
 	}
 	
 	public void proses(Request request, User user, String putusan) throws Exception{
-		if(!putusan.equals("accepted") && !putusan.equals("refused")) {
+		if(!putusan.equals("Approved") && !putusan.equals("Rejected")) {
 			throw new Exception("Status surat hanya bisa accepted atau refused");
 		}
-		if(!request.getStatus().getStatus().equals("request")) {
+		if(!request.getStatus().getStatus().equals("Request")) {
 			throw new Exception("Surat sudah di proses");
 		}
 		valDataNotChange(request);
