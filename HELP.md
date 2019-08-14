@@ -1,7 +1,3 @@
-test
-test
-test
-
 # Getting Started
 
 ### Reference Documentation
