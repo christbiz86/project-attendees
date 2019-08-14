@@ -36,6 +36,7 @@ public class RequestService {
 	public void insert(Request request) throws Exception {
 		request.setCreatedBy(request.getUser());
 		request.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+		request.setStatus(staDao.findByStatus("Request"));
 		
 		valNonBk(request);
 		valBkNotExist(request.getKode());
