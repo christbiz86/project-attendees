@@ -31,12 +31,29 @@ public class PosisiController {
 	@Autowired
 	private UserService userService;
 
-	@RequestMapping(value = "/posisi", method = RequestMethod.GET)
+	@RequestMapping(value = "/posisi/finter", method = RequestMethod.POST)
 	public ResponseEntity<?> retrieveByFilter(@RequestBody Posisi posisi) throws ValidationException
 	{
 		 try 
 		 {
 			 List<Posisi> posisiList=posisiService.findByFilter(posisi);
+
+			 return ResponseEntity.ok(posisiList);
+		 }
+		 
+		 catch(Exception ex) 
+		 {
+			 MessageResponse mg = new MessageResponse("Retrieve Failed" );
+		     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mg);
+		 }
+	}
+	
+	@RequestMapping(value = "/posisi", method = RequestMethod.GET)
+	public ResponseEntity<?> retrieveAll() throws ValidationException
+	{
+		 try 
+		 {
+			 List<Posisi> posisiList=posisiService.findAll();
 
 			 return ResponseEntity.ok(posisiList);
 		 }
