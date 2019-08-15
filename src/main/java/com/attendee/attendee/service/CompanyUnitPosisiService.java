@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.attendee.attendee.dao.CompanyUnitPosisiDao;
 import com.attendee.attendee.exception.ValidationException;
@@ -59,7 +60,7 @@ public class CompanyUnitPosisiService {
 		}
 	}	
 	
-	
+	@Transactional
 	public void insert(CompanyUnitPosisi companyUnitPosisi)throws ValidationException{
 		
 		valBkNotExist(companyUnitPosisi);
@@ -67,6 +68,7 @@ public class CompanyUnitPosisiService {
 		companyUnitPosisiDao.save(companyUnitPosisi);
 	}
 	
+	@Transactional
 	public void update(CompanyUnitPosisi companyUnitPosisi)throws ValidationException{
 		
 		valIdNotNull(companyUnitPosisi);

@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.attendee.attendee.exception.MessageResponse;
 import com.attendee.attendee.model.User;
-import com.attendee.attendee.model.UserPrinciple;
 import com.attendee.attendee.security.jwt.JwtProvider;
 import com.attendee.attendee.security.jwt.JwtResponse;
 import com.attendee.attendee.service.Encoder;
@@ -63,10 +62,8 @@ public class AuthRestAPIs {
         SecurityContextHolder.getContext().setAuthentication(authentication);
  
         String jwt = jwtProvider.generateJwtToken(authentication);
-        UserPrinciple user = (UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        user.setToken(new JwtResponse(jwt));
-//        return ResponseEntity.ok(new JwtResponse(jwt));
-        return ResponseEntity.ok(user);        
+  
+        return ResponseEntity.ok(new JwtResponse(jwt));
     }
  
 //    @PostMapping("/signup")

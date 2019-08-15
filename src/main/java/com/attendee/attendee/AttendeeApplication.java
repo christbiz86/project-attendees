@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @ComponentScan(basePackages= "com.attendee.attendee")
 @EnableTransactionManagement
 @EntityScan(basePackages= {"com.attendee.attendee."})
-public class AttendeeApplication extends SpringBootServletInitializer{
+public class AttendeeApplication extends SpringBootServletInitializer {
 	
 	public static void main(String[] args) {
 		SpringApplication.run(AttendeeApplication.class, args);
