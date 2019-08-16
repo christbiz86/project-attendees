@@ -50,7 +50,7 @@ public class UnitController {
 		 }
 	}
 
-	@RequestMapping(value = "/unitfilter", method = RequestMethod.POST)
+	@RequestMapping(value = "/unit/filter", method = RequestMethod.POST)
 	public ResponseEntity<?> retrieveByFilter(@RequestBody Unit unit) throws ValidationException
 	{
 		 try 

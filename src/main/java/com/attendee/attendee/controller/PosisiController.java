@@ -31,6 +31,7 @@ public class PosisiController {
 	@Autowired
 	private UserService userService;
 
+
 	@RequestMapping(value = "/posisi", method = RequestMethod.GET)
 	public ResponseEntity<?> retrieveAll() throws ValidationException
 	{
@@ -48,7 +49,7 @@ public class PosisiController {
 		 }
 	}
 
-	@RequestMapping(value = "/posisifilter", method = RequestMethod.POST)
+	@RequestMapping(value = "/posisi/filter", method = RequestMethod.POST)
 	public ResponseEntity<?> retrieveByFilter(@RequestBody Posisi posisi) throws ValidationException
 	{
 		 try 

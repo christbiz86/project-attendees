@@ -25,6 +25,7 @@ public class TipeUserController {
 	@Autowired
 	private TipeUserService tipeUserService;
 	
+
 	@RequestMapping(value = "/tipeuser", method = RequestMethod.GET)
 	public ResponseEntity<?> retrieveAll() throws ValidationException
 	{
@@ -41,8 +42,7 @@ public class TipeUserController {
 		     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mg);
 		 }
 	}
-	
-	@RequestMapping(value = "/tipeusefilterr", method = RequestMethod.POST)
+	@RequestMapping(value = "/tipeuser/filter", method = RequestMethod.POST)
 	public ResponseEntity<?> retrieveByFilter(@RequestBody TipeUser tipeUser) throws ValidationException
 	{
 		 try 
