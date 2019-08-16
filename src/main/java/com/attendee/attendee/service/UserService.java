@@ -232,6 +232,7 @@ public class UserService{
 
 	public void saveWithCompanyUnitPosisi(PojoUser user)throws ValidationException {
 		try {
+			
 			save(user.getUser());
 			
 			UserCompany userCompany=new UserCompany();
@@ -252,6 +253,7 @@ public class UserService{
 	        
 		}catch (Exception e) {
 			System.out.println(e);
+
 			delete(findByBk(user.getUser()).getId());
 			throw new ValidationException("error");
 		}

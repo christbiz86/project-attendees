@@ -63,7 +63,7 @@ public class CompanyUnitPosisiService {
 	@Transactional
 	public void insert(CompanyUnitPosisi companyUnitPosisi)throws ValidationException{
 		
-		valBkNotExist(companyUnitPosisi);
+//		valBkNotExist(companyUnitPosisi);
 		valNonBk(companyUnitPosisi);
 		companyUnitPosisiDao.save(companyUnitPosisi);
 	}
