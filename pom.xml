@@ -95,7 +95,7 @@
 				<artifactId>tomcat7-maven-plugin</artifactId>
 				<version>2.2</version>
 				<configuration>
-					<url>http://149.129.213.242:8080/manager/text</url>
+					<url>http://147.139.133.36:8080/manager/text</url>
 					<server>TomcatServer</server>
 					<path>/attendee</path>
 					<warSourceDirectory>WebContent</warSourceDirectory>
@@ -110,7 +110,7 @@
 				<artifactId>maven-war-plugin</artifactId>
 				<version>2.4</version>
 				<configuration>
-					<url>http://149.129.213.242:8080/manager/text</url>
+					<url>http://http://149.129.213.242:8080/manager/text</url>
 					<server>TomcatServer</server>
 					<path>/attendee</path>
 					<warSourceDirectory>WebContent</warSourceDirectory>
