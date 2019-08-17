@@ -59,6 +59,7 @@ public class RequestController {
 	
 	@GetMapping(value = "/{status}")
 	public ResponseEntity<?> getByStatus(@PathVariable String status) throws IOException {
+		System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 		try {
 			List<Request> request = aprServ.findByStatus(status);
 			return ResponseEntity.ok(request);

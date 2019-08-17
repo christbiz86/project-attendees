@@ -159,8 +159,10 @@ public class UserService{
 	
 	@Transactional
 	public void save(User user)throws ValidationException, NoSuchAlgorithmException{
+		
 		user.setCreatedAt(getTime());
-		user.setPassword(encoder.encode(generatePassword(user)));
+//		user.setPassword(encoder.encode(generatePassword(user)));
+		user.setPassword(encoder.encode(user.getEmail()));
 		user.setKode(kodeUser());
 		
 		user.setUpdatedAt(null);
@@ -191,6 +193,7 @@ public class UserService{
 	}
 	
 	public User findById(UUID id)throws ValidationException{
+		System.out.println("get id");
 		return userDao.findById(id);
 	}
 	
@@ -230,6 +233,7 @@ public class UserService{
         		
 	}
 
+	@Transactional
 	public void saveWithCompanyUnitPosisi(PojoUser user)throws ValidationException {
 		try {
 			
@@ -244,16 +248,15 @@ public class UserService{
 	        companyUnitPosisi.setIdUnit(unitService.findById(user.getUnit().getId()));
 	        
 	        cupService.insert(companyUnitPosisi);
-	 
+	        
 	        userCompany.setIdUser(findByBk(user.getUser()));
 	        userCompany.setIdTipeUser(user.getTipeUser());
 	        userCompany.setIdCompanyUnitPosisi(cupService.findByBk(companyUnitPosisi.getIdCompany().getId(),companyUnitPosisi.getIdUnit().getId(),companyUnitPosisi.getIdPosisi().getId()));
 	        
 	        ucService.save(userCompany);
-	        
 		}catch (Exception e) {
 			System.out.println(e);
-
+			
 			delete(findByBk(user.getUser()).getId());
 			throw new ValidationException("error");
 		}
