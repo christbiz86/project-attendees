@@ -44,7 +44,7 @@ public class FileUploadController {
     @PostMapping("/upload")
     public ResponseEntity<?> handleFileUpload(@RequestParam("file") MultipartFile file) throws Exception{
     	try {
-    		storageService.store(file);
+    		storageService.store(file,file.getOriginalFilename());
         
     		MessageResponse mg = new MessageResponse("Insert success image with name "+file.getOriginalFilename() + "!");
     		return ResponseEntity.ok(mg);
