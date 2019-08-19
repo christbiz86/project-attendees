@@ -188,7 +188,7 @@ public class UserController {
 	
     		try {
     			String pass=pwGenerator.generatePassword(user.getUser());
-        		user.getUser().setFoto(user.getUser().getEmail());
+        		user.getUser().setFoto(user.getUser().getEmail()+".jpg");
     			user.getUser().setPassword(pass);
     			user.getUser().setCreatedBy(userService.findById(
     					((UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId()));
@@ -202,12 +202,14 @@ public class UserController {
     			
     		}
     		catch(ValidationException val) {
+    			storageService.deleteOne(user.getUser().getFoto());
     			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(val.getMessage());
     			
     		 }
     		
     	}catch (Exception e) {
     		System.out.println(e);
+			storageService.deleteOne(user.getUser().getFoto());
 			MessageResponse mg = new MessageResponse("Failed insert" );
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mg);
         }
