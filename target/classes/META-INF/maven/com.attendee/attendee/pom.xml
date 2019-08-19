@@ -44,50 +44,55 @@
 			<version>9.1-901-1.jdbc4</version>
 		</dependency>
 
-			<dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-beans</artifactId>
-            </dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+		</dependency>
 
-	<dependency> 
-        <groupId>org.springframework.boot</groupId> 
-        <artifactId>spring-boot-starter-web</artifactId> 
-    </dependency> 
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
 
-	<dependency>
-	    <groupId>com.fasterxml.jackson.core</groupId>
-	    <artifactId>jackson-databind</artifactId>
-	</dependency>
-	        
-	<!-- Spring Boot Security dependency-->
-	<dependency>
-	   <groupId>org.springframework.boot</groupId>
-	   <artifactId>spring-boot-starter-security</artifactId>
-	</dependency>
-	<!-- Java JWT dependency-->
-	<dependency>
-	   <groupId>com.auth0</groupId>
-	   <artifactId>java-jwt</artifactId>
-	   <version>3.4.1</version>
-	</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+		</dependency>
 
-	<dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-data-redis</artifactId>
-     </dependency>
-     <dependency>
-		<groupId>io.jsonwebtoken</groupId>
-		<artifactId>jjwt</artifactId>
-		<version>0.9.1</version>
-	</dependency>
-	<dependency>
-		<groupId >org.springframework.boot</groupId>
-		<artifactId >spring-boot-starter-mail</artifactId>
-	</dependency>
-	<dependency>
-    	<groupId>org.springframework</groupId>
-    	<artifactId>spring-context-support</artifactId>
-	</dependency>
+		<!-- Spring Boot Security dependency -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<!-- Java JWT dependency -->
+		<dependency>
+			<groupId>com.auth0</groupId>
+			<artifactId>java-jwt</artifactId>
+			<version>3.4.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.9.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.aliyun</groupId>
+			<artifactId>aliyun-java-sdk-core</artifactId>
+			<version>4.0.3</version>
+		</dependency>
 
 	</dependencies>
 
@@ -98,35 +103,16 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 
-			<!-- <plugin>
-				<groupId>org.apache.tomcat.maven</groupId>
-				<artifactId>tomcat7-maven-plugin</artifactId>
-				<version>2.2</version>
-				<configuration>
-					<url>http://149.129.213.242:8080/manager/text</url>
-					<server>TomcatServer</server>
-					<path>/attendee</path>
-					<warSourceDirectory>WebContent</warSourceDirectory>
-					<failOnMissingWebXml>false</failOnMissingWebXml>
-					<username>admin</username>
-					<password>password</password>
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-				<version>2.4</version>
-				<configuration>
-					<url>http://149.129.213.242:8080/manager/text</url>
-					<server>TomcatServer</server>
-					<path>/attendee</path>
-					<warSourceDirectory>WebContent</warSourceDirectory>
-					<failOnMissingWebXml>false</failOnMissingWebXml>
-					<username>admin</username>
-					<password>password</password>
-				</configuration>
-			</plugin> -->
+			<!-- <plugin> <groupId>org.apache.tomcat.maven</groupId> <artifactId>tomcat7-maven-plugin</artifactId> 
+				<version>2.2</version> <configuration> <url>http://149.129.213.242:8080/manager/text</url> 
+				<server>TomcatServer</server> <path>/attendee</path> <warSourceDirectory>WebContent</warSourceDirectory> 
+				<failOnMissingWebXml>false</failOnMissingWebXml> <username>admin</username> 
+				<password>password</password> </configuration> </plugin> <plugin> <groupId>org.apache.maven.plugins</groupId> 
+				<artifactId>maven-war-plugin</artifactId> <version>2.4</version> <configuration> 
+				<url>http://149.129.213.242:8080/manager/text</url> <server>TomcatServer</server> 
+				<path>/attendee</path> <warSourceDirectory>WebContent</warSourceDirectory> 
+				<failOnMissingWebXml>false</failOnMissingWebXml> <username>admin</username> 
+				<password>password</password> </configuration> </plugin> -->
 		</plugins>
 	</build>
 
