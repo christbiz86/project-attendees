@@ -1,5 +1,6 @@
 package com.attendee.attendee.dao;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.UUID;
 
@@ -109,5 +110,40 @@ public class CompanyDao extends ParentDao {
 	public void save(Company company) {
 		super.entityManager.merge(company);
 	}
+	
+	@Transactional
+	public String countRows() {
+		BigInteger count = (BigInteger) super.entityManager
+				.createNativeQuery("SELECT count(*) FROM company").getSingleResult();
+		
+		int next = count.intValue() + 1;
+		String num = Integer.toString(next);
+		
+		if(num.length() == 1) {
+			return "00"+num;
+		} else if(num.length() == 2) {
+			return "0"+num;
+		} else {
+			return num;
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public Company findByName(String nama) {
+		List<Company> list = super.entityManager
+				.createQuery("FROM Company "
+						+ "WHERE nama = :nama")
+				.setParameter("nama", nama)
+				.getResultList();
+		
+		if (list.size() == 0) {
+			return new Company();
+		}
+		else {
+			return (Company)list.get(0);
+		}
+	}
+	
 
 }

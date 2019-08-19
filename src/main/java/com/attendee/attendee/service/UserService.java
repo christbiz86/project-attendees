@@ -1,6 +1,5 @@
 package com.attendee.attendee.service;
 
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.sql.Timestamp;
@@ -9,7 +8,10 @@ import java.util.Random;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.attendee.attendee.dao.UserDao;
 import com.attendee.attendee.exception.ValidationException;
@@ -18,6 +20,7 @@ import com.attendee.attendee.model.PojoUser;
 import com.attendee.attendee.model.TipeUser;
 import com.attendee.attendee.model.User;
 import com.attendee.attendee.model.UserCompany;
+import com.attendee.attendee.model.UserPrinciple;
 
 @Service
 public class UserService{
@@ -42,7 +45,19 @@ public class UserService{
 	@Autowired
 	private CompanyUnitPosisiService cupService;
 	
+	@Autowired
+	private PasswordEncoder encoder;
+	
+	public String kodeUser() {
+		return "USER"+userDao.countRows();
+	}
+	
+	public User findByName(String nama) {
+		return userDao.findByName(nama);
+	}
+	
 	public String generatePassword(User user) throws NoSuchAlgorithmException {
+		
 		String email = user.getEmail();
 		
 		Random RANDOM = new SecureRandom();
@@ -53,25 +68,25 @@ public class UserService{
 	        pw += letters.substring(index, index+1);
 	    }
 	    
-	    String pwd = email.substring(0,3).toLowerCase()+pw;
+	    String pwd = (email.substring(0,3).toLowerCase()+pw).toString();
 	    System.out.println(pwd);
 		
 		//MD5
-		MessageDigest alg = MessageDigest.getInstance("MD5");
-        alg.reset(); 
-        alg.update(pwd.getBytes());
-        byte[] digest = alg.digest();
-
-        StringBuffer hashedpwd = new StringBuffer();
-        String hx;
-        for (int i=0;i<digest.length;i++){
-            hx =  Integer.toHexString(0xFF & digest[i]);
-            //0x03 is equal to 0x3, but we need 0x03 for our md5sum
-            if(hx.length() == 1){hx = "0" + hx;}
-            hashedpwd.append(hx);
-        }
+//		MessageDigest alg = MessageDigest.getInstance("MD5");
+//        alg.reset(); 
+//        alg.update(pwd.getBytes());
+//        byte[] digest = alg.digest();
+//
+//        StringBuffer hashedpwd = new StringBuffer();
+//        String hx;
+//        for (int i=0;i<digest.length;i++){
+//            hx =  Integer.toHexString(0xFF & digest[i]);
+//            //0x03 is equal to 0x3, but we need 0x03 for our md5sum
+//            if(hx.length() == 1){hx = "0" + hx;}
+//            hashedpwd.append(hx);
+//        }
         
-        return hashedpwd.toString();
+        return pwd;
 	}
 	
 	private void valIdExist(UUID id)throws ValidationException{
@@ -142,19 +157,25 @@ public class UserService{
 		}
 	}
 	
+	@Transactional
 	public void save(User user)throws ValidationException, NoSuchAlgorithmException{
+		
 		user.setCreatedAt(getTime());
-		user.setPassword(generatePassword(user));
+//		user.setPassword(encoder.encode(generatePassword(user)));
+		user.setPassword(encoder.encode(user.getPassword()));
+		user.setKode(kodeUser());
 		
 		user.setUpdatedAt(null);
 		user.setUpdatedBy(null);
 		
+		valEmailNotExist(user);
 		valBkNotNull(user);
 		valBkNotExist(user);
 		valNonBk(user);
 		userDao.save(user);
 	}
 	
+	@Transactional
 	public void update(User user)throws ValidationException{
 		user.setUpdatedAt(getTime());
 		valCreatedNotChange(user);
@@ -173,6 +194,7 @@ public class UserService{
 	}
 	
 	public User findById(UUID id)throws ValidationException{
+		System.out.println("get id");
 		return userDao.findById(id);
 	}
 	
@@ -212,29 +234,44 @@ public class UserService{
         		
 	}
 
+	@Transactional
 	public void saveWithCompanyUnitPosisi(PojoUser user)throws ValidationException {
 		try {
+			
 			save(user.getUser());
 			
 			UserCompany userCompany=new UserCompany();
 	        CompanyUnitPosisi companyUnitPosisi = new CompanyUnitPosisi();
 	        
-	        companyUnitPosisi.setIdCompany(comService.findById(user.getCompany().getId()));
+//	        companyUnitPosisi.setIdCompany(comService.findById(user.getCompany().getId()));
+	    	companyUnitPosisi.setIdCompany(((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserCompany().getIdCompanyUnitPosisi().getIdCompany());
 	        companyUnitPosisi.setIdPosisi(posisiService.findById(user.getPosisi().getId()));
 	        companyUnitPosisi.setIdUnit(unitService.findById(user.getUnit().getId()));
 	        
 	        cupService.insert(companyUnitPosisi);
-	 
+	        
 	        userCompany.setIdUser(findByBk(user.getUser()));
 	        userCompany.setIdTipeUser(user.getTipeUser());
 	        userCompany.setIdCompanyUnitPosisi(cupService.findByBk(companyUnitPosisi.getIdCompany().getId(),companyUnitPosisi.getIdUnit().getId(),companyUnitPosisi.getIdPosisi().getId()));
 	        
 	        ucService.save(userCompany);
-	        
-		}catch (Exception e) {
+		}catch (ValidationException e) {
 			System.out.println(e);
+			
+			throw e;
+		}
+		catch (Exception e) {
+			System.out.println(e);
+			
 			delete(findByBk(user.getUser()).getId());
 			throw new ValidationException("error");
+		}
+	}
+	
+	private void valEmailNotExist(User user) throws ValidationException{
+		if(userDao.findByEmail(user).getId()!=null) {
+			System.out.println("email sudah digunakan");
+			throw new ValidationException("Email sudah digunakan");
 		}
 	}
 

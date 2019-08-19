@@ -1,5 +1,6 @@
 package com.attendee.attendee.controller;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.attendee.attendee.exception.MessageResponse;
+import com.attendee.attendee.exception.ValidationException;
 import com.attendee.attendee.model.Company;
 import com.attendee.attendee.model.CompanyUnitPosisi;
 import com.attendee.attendee.model.RegistrationForm;
@@ -51,75 +53,91 @@ public class CompanyController {
 	@Autowired
 	private CompanyUnitPosisiService cupServ;
 	
-	@PostMapping(value = "/company")
-	public ResponseEntity<?> save(@RequestBody RegistrationForm regForm) throws Exception {
-		List<MessageResponse> messagesSuccess = new ArrayList();
-		List<MessageResponse> messagesExist = new ArrayList();
-		List<MessageResponse> messagesException = new ArrayList();
-	    List allMessages =  new ArrayList();
+	public Company splitCompany(RegistrationForm regForm) throws ValidationException {
+		Company company = new Company();
+	    Status s = stServ.findByStatus("Non-active");
 	    
-	    Company company = new Company();	    
-	    User user = new User();
-	    
-	    Status sc = stServ.findByStatus(regForm.getStatusCompany());
-	    Status su = stServ.findByStatus(regForm.getStatusUser());
-	    
-	    //set company
-	    company.setKode(regForm.getKodeCompany());
 	    company.setNama(regForm.getNamaCompany());
 	    company.setJatahCuti(regForm.getJatahCuti());
 	    company.setToleransiKeterlambatan(regForm.getToleransiKeterlambatan());
-	    company.setIdStatus(sc);
+	    company.setIdStatus(s);
 	    
-	    //set user
-	    user.setKode(regForm.getKodeUser());
-	    user.setNama(regForm.getNamaUser());
+		return company;
+	}
+	
+	public User splitUser(RegistrationForm regForm) throws ValidationException, NoSuchAlgorithmException {
+		User user = new User();
+		Status s = stServ.findByStatus("Non-active");
+		
+		user.setNama(regForm.getNamaUser());
 	    user.setAlamat(regForm.getAlamat());
 	    user.setEmail(regForm.getEmail());
 	    user.setTglLahir(regForm.getTglLahir());
 	    user.setTelp(regForm.getTelp());
 	    user.setFoto(regForm.getFoto());
-	    user.setIdStatus(su);
+	    user.setIdStatus(s);
 	    
-		try {
-			comServ.insert(company);
-			userServ.save(user);
-			
+		return user;
+	}
+	
+	@PostMapping(value = "/company")
+	public ResponseEntity<?> save(@RequestBody RegistrationForm regForm) throws Exception {
+		List<MessageResponse> messagesSuccess = new ArrayList<MessageResponse>();
+		List<MessageResponse> messagesExist = new ArrayList<MessageResponse>();
+		List<MessageResponse> messagesException = new ArrayList<MessageResponse>();
+	    List allMessages =  new ArrayList();
+	    
+	    Company company = new Company();
+	    User user = new User();
+	    
+	    comServ.insert(splitCompany(regForm));
+	    userServ.save(splitUser(regForm));
+	    	    
+		try {						
 			CompanyUnitPosisi cup = new CompanyUnitPosisi(); 
 			
-			Company kc = comServ.findByBk(regForm.getKodeCompany());
+			Company c = comServ.findByName(regForm.getNamaCompany());
 			
 			//set company unit posisi
-			cup.setIdCompany(kc);			
+			cup.setIdCompany(c);			
 			
 			try {
-				cupServ.insert(cup);
+				cupServ.insertSuperAdmin(cup);
 				
+				User u = new User();
+				TipeUser tu = new TipeUser();
 				UserCompany uc = new UserCompany();
 				
-				User uBk = new User(); 
-				uBk.setKode(regForm.getKodeUser());
-				uBk=userServ.findByBk(uBk);
-				TipeUser tuTipe = tuServ.findByTipe("Super Admin");
+				u = userServ.findByName(regForm.getNamaUser());
+				tu = tuServ.findByTipe("Super Admin");
+				cup = cupServ.findByIdCompany(c.getId());
 				
 				//set user company
-				uc.setIdUser(uBk);
-				uc.setIdTipeUser(tuTipe);
+				System.out.println(u.getId());
+				System.out.println(tu.getId());
+				System.out.println(cup.getId());
+				
+				uc.setIdUser(u);
+				uc.setIdTipeUser(tu);
+				uc.setIdCompanyUnitPosisi(cup);
 				
 				try {
 					ucServ.save(uc);
-					MessageResponse mr = new MessageResponse("Insert success with company name "+company.getNama()+ " and user name "+user.getNama());
+					
+					MessageResponse mr = new MessageResponse("Insert success with company name "+regForm.getNamaCompany()+ " and user name "+regForm.getNamaUser());
 					messagesSuccess.add(mr);
 					return ResponseEntity.status(HttpStatus.CREATED).body(mr);
+					
 				} catch (Exception e) {
+					System.out.println(e.getMessage());
 					System.out.println(e);
-					MessageResponse mr = new MessageResponse("Insert company unit posisi failed!");
+					MessageResponse mr = new MessageResponse("Insert user company failed!");
 					messagesException.add(mr);
 				}
 				
 			} catch (Exception e) {
 				System.out.println(e);
-				MessageResponse mr = new MessageResponse("Insert user company failed!");
+				MessageResponse mr = new MessageResponse("Insert company unit posisi failed!");
 				messagesException.add(mr);
 			}
 			

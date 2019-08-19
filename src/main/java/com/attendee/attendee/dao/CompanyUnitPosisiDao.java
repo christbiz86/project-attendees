@@ -116,4 +116,23 @@ public class CompanyUnitPosisiDao extends ParentDao{
 			return list;
 		}
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public CompanyUnitPosisi findByIdCompany(UUID idCompany) {	
+		
+		List<CompanyUnitPosisi> list = super.entityManager
+                .createQuery("from CompanyUnitPosisi where idCompany.id=:idCompany ")
+                .setParameter("idCompany", idCompany)
+                .getResultList();
+
+		if (list.size() == 0) {
+			return new CompanyUnitPosisi();
+		}
+		else {
+			return (CompanyUnitPosisi)list.get(0);
+		}
+	}
+
+	
 }
