@@ -16,7 +16,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
  
     @Autowired
     UserCompanyDao userCompanyService;
- 
+    
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

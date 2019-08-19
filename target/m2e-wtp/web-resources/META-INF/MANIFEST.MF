@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Implementation-Title: attendee
 Implementation-Version: 0.0.1-SNAPSHOT
-Built-By: AgungDamassaputra
+Built-By: asus
 Implementation-Vendor-Id: com.attendee
-Build-Jdk: 1.8.0_60
+Build-Jdk: 1.8.0_31
 Created-By: Maven Integration for Eclipse
 Implementation-Vendor: Pivotal Software, Inc.
 

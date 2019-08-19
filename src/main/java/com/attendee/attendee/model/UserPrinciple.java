@@ -23,8 +23,8 @@ public class UserPrinciple implements UserDetails {
     private UserCompany userCompany;
     private Collection<? extends GrantedAuthority> authorities;
     private JwtResponse token;
- 
-    public UserPrinciple(UUID id, String name, 
+    
+	public UserPrinciple(UUID id, String name, 
               String email, String password,UserCompany userCompany,
               Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
@@ -38,7 +38,7 @@ public class UserPrinciple implements UserDetails {
     public static UserPrinciple build(UserCompany userCompany) {
     	List<GrantedAuthority> authorities = new ArrayList<>();
     	authorities.add(new SimpleGrantedAuthority(userCompany.getIdTipeUser().getTipe()));
-
+    	
         return new UserPrinciple(
         		userCompany.getIdUser().getId(),
         		userCompany.getIdUser().getNama(),

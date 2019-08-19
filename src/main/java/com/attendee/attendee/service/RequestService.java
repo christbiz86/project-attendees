@@ -10,9 +10,11 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.attendee.attendee.dao.NotificationDao;
 import com.attendee.attendee.dao.RequestDao;
 import com.attendee.attendee.dao.StatusDao;
 import com.attendee.attendee.exception.InvalidDataException;
+import com.attendee.attendee.model.Notification;
 import com.attendee.attendee.model.Request;
 import com.attendee.attendee.model.User;
 
@@ -24,6 +26,9 @@ public class RequestService {
 	@Autowired
 	private StatusDao staDao;
 	
+	@Autowired
+	private NotificationDao notifDao;
+	
 	public List<Request> findAll(){
 		return aprDao.findAll();
 	}
@@ -34,7 +39,7 @@ public class RequestService {
 	
 	@Transactional
 	public void insert(Request request) throws Exception {
-		request.setCreatedBy(request.getUser());
+		request.setCreatedBy(request.getUserCompany().getIdUser());
 		request.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 		request.setStatus(staDao.findByStatus("Request"));
 		request.setKode("REQ"+aprDao.countRows());
@@ -42,6 +47,11 @@ public class RequestService {
 		valNonBk(request);
 		valBkNotExist(request.getKode());
 		aprDao.save(request);
+		
+		Notification notif = new Notification();
+		notif.setRequest(request);
+		notif.setStatus(staDao.findByStatus("Unread"));
+		notifDao.save(notif);
 	}
 	
 	@Transactional
@@ -52,9 +62,12 @@ public class RequestService {
 	
 	public void proses(Request request, User user, String putusan) throws Exception{
 		if(!putusan.equals("Approved") && !putusan.equals("Rejected")) {
-			throw new Exception("Status surat hanya bisa accepted atau refused");
+
+			throw new Exception("Status surat hanya bisa Approved atau Rejected");
 		}
+		
 		if(!request.getStatus().getStatus().equals("Request")) {
+
 			throw new Exception("Surat sudah di proses");
 		}
 		valDataNotChange(request);
@@ -90,7 +103,7 @@ public class RequestService {
 	
 	private void valNonBk(Request request) throws InvalidDataException{
 		List<String> listErr = new ArrayList<String>();
-		if(request.getUser().getId().equals(null)) {
+		if(request.getUserCompany().getIdUser().getId().equals(null)) {
 			listErr.add("Harus memiliki user");
 		}
 		if(request.getTglMulai() == null) {
