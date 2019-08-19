@@ -10,7 +10,6 @@ import java.util.UUID;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.attendee.attendee.model.Company;
 import com.attendee.attendee.model.User;
 
 @Repository
@@ -175,6 +174,23 @@ public class UserDao extends ParentDao {
 				.createQuery("FROM User "
 						+ "WHERE nama = :nama")
 				.setParameter("nama", nama)
+				.getResultList();
+		
+		if (list.size() == 0) {
+			return new User();
+		}
+		else {
+			return (User)list.get(0);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public User findByEmail(User user) {
+		List<User> list = super.entityManager
+				.createQuery("FROM User "
+						+ "WHERE email = :email")
+				.setParameter("email", user.getEmail())
 				.getResultList();
 		
 		if (list.size() == 0) {
