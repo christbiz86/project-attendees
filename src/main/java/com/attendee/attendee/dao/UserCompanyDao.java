@@ -75,21 +75,38 @@ public class UserCompanyDao extends ParentDao {
 	@SuppressWarnings("unchecked")
 	@Transactional
 	public List<UserCompany> findByFilter(UserCompany userCompany) {
-		StringBuilder sb = new StringBuilder("SELECT p.id,p.id_user,p.id_company_unit_posisi,p.id_tipe_user ");
-		sb.append("FROM user_company p ");
-		sb.append(" WHERE 1=1 ");
+		StringBuilder sb = new StringBuilder("from UserCompany where 1=1 ");
+	
 
-		if (userCompany.getIdUser().getId() != null) {
-			sb.append(" AND p.id_user LIKE '%" + userCompany.getIdUser().getId() + "%' ");
+		if (userCompany.getIdUser().getNama() != null) {
+			sb.append(" AND idUser.nama LIKE '%" + userCompany.getIdUser().getNama() + "%' ");
 		}
-		if (userCompany.getIdTipeUser().getId() != null) {
-			sb.append(" AND p.id_tipe_user LIKE '%" + userCompany.getIdTipeUser().getId() + "%' ");
+		if (userCompany.getIdUser().getAlamat() != null) {
+			sb.append(" AND idUser.alamat LIKE '%" + userCompany.getIdUser().getAlamat() + "%' ");
 		}
-		if (userCompany.getIdCompanyUnitPosisi().getId() != null) {
-			sb.append(" AND p.id_company_unit_posisi LIKE '%" + userCompany.getIdCompanyUnitPosisi().getId() + "%' ");
+		if (userCompany.getIdUser().getEmail() != null) {
+			sb.append(" AND idUser.email = " + userCompany.getIdUser().getEmail() + " ");
 		}
-
-		List<UserCompany> list = super.entityManager.createNativeQuery(sb.toString(), UserCompany.class)
+		if (userCompany.getIdUser().getTglLahir() != null) {
+			sb.append(" AND idUser.tglLahir = " + userCompany.getIdUser().getTglLahir() + " ");
+		}
+		if (userCompany.getIdUser().getTelp() != null) {
+			sb.append(" AND idUser.telp = " + userCompany.getIdUser().getTelp() + " ");
+		}
+		if (userCompany.getIdTipeUser().getTipe() != null) {
+			sb.append(" AND idTipeUser.tipe = " + userCompany.getIdTipeUser().getTipe() + " ");
+		}
+		if (userCompany.getIdCompanyUnitPosisi().getIdUnit().getUnit() != null) {
+			sb.append(" AND idCompanyUnitPosisi.idUnit.unit = " + userCompany.getIdCompanyUnitPosisi().getIdUnit().getUnit() + " ");
+		}
+		if (userCompany.getIdCompanyUnitPosisi().getIdPosisi().getPosisi() != null) {
+			sb.append(" AND idCompanyUnitPosisi.idPosisi.posisi = " + userCompany.getIdCompanyUnitPosisi().getIdPosisi().getPosisi() + " ");
+		}
+		if (userCompany.getIdCompanyUnitPosisi().getIdCompany().getNama() != null) {
+			sb.append(" AND idCompanyUnitPosisi.idCompany.nama = " + userCompany.getIdCompanyUnitPosisi().getIdCompany().getNama() + " ");
+		}
+		
+		List<UserCompany> list = super.entityManager.createQuery(sb.toString())
 				.getResultList();
 
 		if (list.size() == 0) {
