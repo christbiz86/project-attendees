@@ -34,7 +34,7 @@ public class RequestService {
 	
 	@Transactional
 	public void insert(Request request) throws Exception {
-		request.setCreatedBy(request.getUser());
+		request.setCreatedBy(request.getUserCompany().getIdUser());
 		request.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 		request.setStatus(staDao.findByStatus("Request"));
 		request.setKode("REQ"+aprDao.countRows());
@@ -93,7 +93,7 @@ public class RequestService {
 	
 	private void valNonBk(Request request) throws InvalidDataException{
 		List<String> listErr = new ArrayList<String>();
-		if(request.getUser().getId().equals(null)) {
+		if(request.getUserCompany().getIdUser().getId().equals(null)) {
 			listErr.add("Harus memiliki user");
 		}
 		if(request.getTglMulai() == null) {
