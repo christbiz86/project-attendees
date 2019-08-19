@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.attendee.attendee.dao.UserCompanyDao;
 import com.attendee.attendee.exception.ValidationException;
@@ -51,7 +52,6 @@ public class UserCompanyService {
 	}
 	
 	private void valBkNotExist(UserCompany userCompany)throws ValidationException{
-		System.out.println("ooooo");
 		if(userCompanyDao.isBkExist(userCompany.getIdUser().getId())) {
 			throw new ValidationException("Data sudah ada");
 		}
@@ -73,14 +73,15 @@ public class UserCompanyService {
 		}
 	}
 	
+	@Transactional
 	public void save(UserCompany userCompany)throws ValidationException{
-		System.out.println("save");
 		valBkNotNull(userCompany);
 		valBkNotExist(userCompany);
 		valNonBk(userCompany);
 		userCompanyDao.save(userCompany);
 	}
 	
+	@Transactional
 	public void update(UserCompany userCompany)throws ValidationException{
 		
 		valIdNotNull(userCompany);

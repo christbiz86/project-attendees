@@ -6,7 +6,7 @@
 
 	<groupId>com.attendee</groupId>
 	<artifactId>attendee</artifactId>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>attendee</name>
 	<description>Demo project for Spring Boot</description>
@@ -83,7 +83,15 @@
 	<dependency>
 	  <groupId>javax.xml.bind</groupId>
 	  <artifactId>jaxb-api</artifactId>
-	  <version>2.3.0</version>
+	  <version>2.3.0</version
+	</dependency>
+	<dependency>
+		<groupId >org.springframework.boot</groupId>
+		<artifactId >spring-boot-starter-mail</artifactId>
+	</dependency>
+	<dependency>
+    	<groupId>org.springframework</groupId>
+    	<artifactId>spring-context-support</artifactId>
 	</dependency>
 
 	</dependencies>
@@ -95,7 +103,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 
-			<plugin>
+			<!-- <plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
 				<artifactId>tomcat7-maven-plugin</artifactId>
 				<version>2.2</version>
@@ -123,7 +131,7 @@
 					<username>admin</username>
 					<password>password</password>
 				</configuration>
-			</plugin>
+			</plugin> -->
 		</plugins>
 	</build>
 
