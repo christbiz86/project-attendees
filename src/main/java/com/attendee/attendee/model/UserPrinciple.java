@@ -10,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.attendee.attendee.security.jwt.JwtResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
  
 public class UserPrinciple implements UserDetails {
@@ -19,35 +20,45 @@ public class UserPrinciple implements UserDetails {
     private String username;
      @JsonIgnore
     private String password;
-    private CompanyUnitPosisi idCompany;
+    private UserCompany userCompany;
     private Collection<? extends GrantedAuthority> authorities;
- 
-    public UserPrinciple(UUID id, String name, 
-              String email, String password,CompanyUnitPosisi idCompany,
+    private JwtResponse token;
+    
+	public UserPrinciple(UUID id, String name, 
+              String email, String password,UserCompany userCompany,
               Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.name = name;
         this.username = email;
         this.password = password;
-        this.idCompany=idCompany;
+        this.userCompany=userCompany;
         this.authorities = authorities;
     }
  
     public static UserPrinciple build(UserCompany userCompany) {
     	List<GrantedAuthority> authorities = new ArrayList<>();
     	authorities.add(new SimpleGrantedAuthority(userCompany.getIdTipeUser().getTipe()));
-
+    	
         return new UserPrinciple(
         		userCompany.getIdUser().getId(),
         		userCompany.getIdUser().getNama(),
         		userCompany.getIdUser().getEmail(),
         		userCompany.getIdUser().getPassword(),
-        		userCompany.getIdCompanyUnitPosisi(),
+        		userCompany,
                 authorities
         );
     }
  
-    public UUID getId() {
+    
+    public JwtResponse getToken() {
+		return token;
+	}
+
+	public void setToken(JwtResponse token) {
+		this.token = token;
+	}
+
+	public UUID getId() {
         return id;
     }
  
@@ -65,8 +76,8 @@ public class UserPrinciple implements UserDetails {
         return password;
     }
     
-    public CompanyUnitPosisi getIdCompany() {
-		return idCompany;
+    public UserCompany getUserCompany() {
+		return userCompany;
 	}
 
 	@Override

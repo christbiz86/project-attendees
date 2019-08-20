@@ -58,6 +58,7 @@ public class UserCompanyController {
 		     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mg);
 		 }
 	}
+
 	
 	@RequestMapping(value = "/usercompany", method = RequestMethod.POST)
 	public ResponseEntity<?> submit(@RequestBody UserCompany userCompany) throws ValidationException{

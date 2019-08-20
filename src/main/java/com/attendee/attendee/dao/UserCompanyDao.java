@@ -110,8 +110,7 @@ public class UserCompanyDao extends ParentDao {
 				.getResultList();
 
 		if (list.size() == 0) {
-			List<UserCompany> nullList = new ArrayList<UserCompany>();
-			return nullList;
+			return new ArrayList<UserCompany>();
 		} else {
 			return list;
 		}

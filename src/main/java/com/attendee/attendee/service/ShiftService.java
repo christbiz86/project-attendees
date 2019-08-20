@@ -89,11 +89,6 @@ public class ShiftService {
 	
 	public void save(Shift shift) throws Exception {
 		shift.setCreatedAt(new Timestamp(System.currentTimeMillis()));
-		Integer count = shiftDao.count() + 1;
-		System.out.println(count);
-		String kode = String.format("DC%03d", count);
-		System.out.println(kode);
-		shift.setKode(kode);
 		valBkNotNull(shift);
 		valBkNotExist(shift);
 		valNonBk(shift);
