@@ -159,13 +159,16 @@ public class UserService{
 	
 	@Transactional
 	public void save(User user)throws ValidationException, NoSuchAlgorithmException{
+		
 		user.setCreatedAt(getTime());
-		user.setPassword(encoder.encode(generatePassword(user)));
+//		user.setPassword(encoder.encode(generatePassword(user)));
+		user.setPassword(encoder.encode(user.getPassword()));
 		user.setKode(kodeUser());
 		
 		user.setUpdatedAt(null);
 		user.setUpdatedBy(null);
 		
+		valEmailNotExist(user);
 		valBkNotNull(user);
 		valBkNotExist(user);
 		valNonBk(user);
@@ -191,6 +194,7 @@ public class UserService{
 	}
 	
 	public User findById(UUID id)throws ValidationException{
+		System.out.println("get id");
 		return userDao.findById(id);
 	}
 	
@@ -230,8 +234,10 @@ public class UserService{
         		
 	}
 
+	@Transactional
 	public void saveWithCompanyUnitPosisi(PojoUser user)throws ValidationException {
 		try {
+			
 			save(user.getUser());
 			
 			UserCompany userCompany=new UserCompany();
@@ -243,17 +249,29 @@ public class UserService{
 	        companyUnitPosisi.setIdUnit(unitService.findById(user.getUnit().getId()));
 	        
 	        cupService.insert(companyUnitPosisi);
-	 
+	        
 	        userCompany.setIdUser(findByBk(user.getUser()));
 	        userCompany.setIdTipeUser(user.getTipeUser());
 	        userCompany.setIdCompanyUnitPosisi(cupService.findByBk(companyUnitPosisi.getIdCompany().getId(),companyUnitPosisi.getIdUnit().getId(),companyUnitPosisi.getIdPosisi().getId()));
 	        
 	        ucService.save(userCompany);
-	        
-		}catch (Exception e) {
+		}catch (ValidationException e) {
 			System.out.println(e);
+			
+			throw e;
+		}
+		catch (Exception e) {
+			System.out.println(e);
+			
 			delete(findByBk(user.getUser()).getId());
 			throw new ValidationException("error");
+		}
+	}
+	
+	private void valEmailNotExist(User user) throws ValidationException{
+		if(userDao.findByEmail(user).getId()!=null) {
+			System.out.println("email sudah digunakan");
+			throw new ValidationException("Email sudah digunakan");
 		}
 	}
 
