@@ -27,9 +27,9 @@ public class Request {
 	@Column(name = "kode")
 	private String kode;
 	
-	@JoinColumn(name = "id_user_company", referencedColumnName = "id")
+	@JoinColumn(name = "id_user", referencedColumnName = "id")
 	@OneToOne
-	private UserCompany userCompany;
+	private User user;
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name = "tgl_mulai")
@@ -38,9 +38,6 @@ public class Request {
 	@Temporal(TemporalType.DATE)
 	@Column (name = "tgl_akhir")
 	private Date tglAkhir;
-	
-	@Column(name="keterangan")
-	private String keterangan;
 	
 	@JoinColumn(name = "id_status", referencedColumnName = "id")
 	@OneToOne
@@ -78,12 +75,12 @@ public class Request {
 		this.kode = kode;
 	}
 
-	public UserCompany getUserCompany() {
-		return userCompany;
+	public User getUser() {
+		return user;
 	}
 
-	public void setUserCompany(UserCompany userCompany) {
-		this.userCompany = userCompany;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public Date getTglMulai() {
@@ -108,14 +105,6 @@ public class Request {
 
 	public void setStatus(Status status) {
 		this.status = status;
-	}
-
-	public String getKeterangan() {
-		return keterangan;
-	}
-
-	public void setKeterangan(String keterangan) {
-		this.keterangan = keterangan;
 	}
 
 	public Date getCreatedAt() {

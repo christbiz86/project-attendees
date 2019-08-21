@@ -33,24 +33,6 @@ public class UnitController {
 
 	
 	@RequestMapping(value = "/unit", method = RequestMethod.GET)
-	public ResponseEntity<?> retrieveAll() throws ValidationException
-	{
-		 try 
-		 {
-			 List<Unit> unitList=unitService.findAll();
-
-			 return ResponseEntity.ok(unitList);
-		 }
-		 
-		 catch(Exception ex) 
-		 {
-			 System.out.println(ex);
-			 MessageResponse mg = new MessageResponse("Retrieve Failed" );
-		     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mg);
-		 }
-	}
-
-	@RequestMapping(value = "/unit/filter", method = RequestMethod.POST)
 	public ResponseEntity<?> retrieveByFilter(@RequestBody Unit unit) throws ValidationException
 	{
 		 try 
@@ -64,9 +46,10 @@ public class UnitController {
 		 {
 			 System.out.println(ex);
 			 MessageResponse mg = new MessageResponse("Retrieve Failed" );
-		     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mg);	 
+		     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mg);
 		 }
 	}
+
 	
 	@RequestMapping(value = "/unit", method = RequestMethod.POST)
 	public ResponseEntity<?> submit(@RequestBody Unit unit) throws ValidationException{

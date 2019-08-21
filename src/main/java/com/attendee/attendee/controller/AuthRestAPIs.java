@@ -59,8 +59,9 @@ public class AuthRestAPIs {
                         loginRequest.getPassword()
                 )
         );
-
+ 
         SecurityContextHolder.getContext().setAuthentication(authentication);
+ 
         String jwt = jwtProvider.generateJwtToken(authentication);
         UserPrinciple user = (UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         user.setToken(new JwtResponse(jwt));

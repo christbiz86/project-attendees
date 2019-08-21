@@ -25,29 +25,12 @@ public class TipeUserController {
 	@Autowired
 	private TipeUserService tipeUserService;
 	
-	@RequestMapping(value = "/tipeuser/filter", method = RequestMethod.POST)
+	@RequestMapping(value = "/tipeuser", method = RequestMethod.GET)
 	public ResponseEntity<?> retrieveByFilter(@RequestBody TipeUser tipeUser) throws ValidationException
 	{
 		 try 
 		 {
 			 List<TipeUser> list=tipeUserService.findByFilter(tipeUser);
-
-			 return ResponseEntity.ok(list);
-		 }
-		 
-		 catch(Exception ex) 
-		 {
-			 MessageResponse mg = new MessageResponse("Retrieve Failed" );
-		     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mg);
-		 }
-	}
-	
-	@RequestMapping(value = "/tipeuser", method = RequestMethod.GET)
-	public ResponseEntity<?> retrieveAll() throws ValidationException
-	{
-		 try 
-		 {
-			 List<TipeUser> list=tipeUserService.findAll();
 
 			 return ResponseEntity.ok(list);
 		 }
