@@ -38,7 +38,7 @@ public class AttendeeRecapController {
 	public ResponseEntity<?> generateReport(@PathVariable @DateTimeFormat(pattern="yyyy-MM-dd") Date startDate, 
 			@PathVariable @DateTimeFormat(pattern="yyyy-MM-dd") Date endDate) throws Exception {
 		try {
-			String msg = attendeeRecapService.generateReport(startDate, endDate);
+			MessageResponse msg = new MessageResponse(attendeeRecapService.generateReport(startDate, endDate));
 			return ResponseEntity.ok(msg);
 		} catch (Exception e) {
 			System.out.println(e);
