@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,11 +23,21 @@ public class AnnualLeaveController {
 	@Autowired
 	private AnnualLeaveService anLevServ;
 	
-	@GetMapping(value = "/saldo")
+	@GetMapping(value = "/saldos")
 	public ResponseEntity<?> findAll() throws Exception {
 		try {
 			List<AnnualLeave> annualLeave = anLevServ.findAll();
 			return ResponseEntity.ok(annualLeave);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		}
+	}
+	
+	@GetMapping(value = "/saldo")
+	public ResponseEntity<?> findByFilter(@RequestBody AnnualLeave annualLeave) throws Exception {
+		try {
+			List<AnnualLeave> annualLeaveList = anLevServ.findByFilter(annualLeave);
+			return ResponseEntity.ok(annualLeaveList);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}

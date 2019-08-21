@@ -74,6 +74,8 @@ public class RequestController {
 			aprServ.insert(request);
 			return ResponseEntity.status(HttpStatus.CREATED).body("Data Request Berhasil Disimpan");
 		}catch (InvalidDataException e) {
+			System.out.println(e);
+			System.out.println(e.getMessage());
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessages());
 		}catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
