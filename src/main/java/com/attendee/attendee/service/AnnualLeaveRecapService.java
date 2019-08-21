@@ -32,7 +32,7 @@ public class AnnualLeaveRecapService {
 	
 	@Transactional
 	public String generateReport(String company, Date startDate, Date endDate) throws JRException {
-		String reportPath = "D:\\Quda\\project-attendees\\src\\main\\resources";
+		String reportPath = "src\\main\\resources";
 
 		// Compile the Jasper report from .jrxml to .japser
 		JasperReport jasperReport = JasperCompileManager.compileReport(reportPath + "\\ann-leave-recap-rpt.jrxml");
