@@ -10,9 +10,11 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.attendee.attendee.dao.NotificationDao;
 import com.attendee.attendee.dao.RequestDao;
 import com.attendee.attendee.dao.StatusDao;
 import com.attendee.attendee.exception.InvalidDataException;
+import com.attendee.attendee.model.Notification;
 import com.attendee.attendee.model.Request;
 import com.attendee.attendee.model.User;
 
@@ -23,6 +25,9 @@ public class RequestService {
 	
 	@Autowired
 	private StatusDao staDao;
+	
+	@Autowired
+	private NotificationDao notifDao;
 	
 	public List<Request> findAll(){
 		return aprDao.findAll();
@@ -42,6 +47,11 @@ public class RequestService {
 		valNonBk(request);
 		valBkNotExist(request.getKode());
 		aprDao.save(request);
+		
+		Notification notif = new Notification();
+		notif.setRequest(request);
+		notif.setStatus(staDao.findByStatus("Unread"));
+		notifDao.save(notif);
 	}
 	
 	@Transactional
