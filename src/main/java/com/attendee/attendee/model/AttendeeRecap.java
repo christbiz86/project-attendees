@@ -1,6 +1,7 @@
 package com.attendee.attendee.model;
 
 import java.util.Date;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +10,7 @@ import javax.persistence.NamedStoredProcedureQueries;
 import javax.persistence.NamedStoredProcedureQuery;
 import javax.persistence.ParameterMode;
 import javax.persistence.StoredProcedureParameter;
+import javax.persistence.Table;
 
 @NamedStoredProcedureQueries({
 	@NamedStoredProcedureQuery(
@@ -18,12 +20,13 @@ import javax.persistence.StoredProcedureParameter;
 	    parameters = {
 	            @StoredProcedureParameter(
 	                    mode = ParameterMode.IN, 
-	                    name = "start_date", 
+	                    name = "startDate", 
 	                    type = Date.class),
 	            @StoredProcedureParameter(
 	            		mode = ParameterMode.IN,
-	            		name = "end_date",
+	            		name = "endDate",
 	                    type = Date.class)
+	            
 	    }
 	)
 })
