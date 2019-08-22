@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,8 +41,11 @@ public class AnnualLeaveRecapController {
 			@PathVariable @DateTimeFormat(pattern="yyyy-MM-dd") Date startDate, 
 			@PathVariable @DateTimeFormat(pattern="yyyy-MM-dd") Date endDate) throws Exception {
 		try {
-			MessageResponse msg = new MessageResponse(alpServ.generateReport(company, startDate, endDate));
-			return ResponseEntity.ok(msg);
+			byte[] pdf =alpServ.generateReport(company, startDate, endDate);
+//			MessageResponse msg = new MessageResponse(alpServ.generateReport(company, startDate, endDate));
+//			return ResponseEntity.ok(alpServ.generateReport(company, startDate, endDate));
+//			return ResponseEntity.ok(pdf);
+			return ResponseEntity.status(HttpStatus.OK).body(pdf);
 		} catch (Exception e) {
 			System.out.println(e);
 			MessageResponse mr = new MessageResponse("Report making failed!");

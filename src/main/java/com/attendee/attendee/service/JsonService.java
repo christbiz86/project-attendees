@@ -14,6 +14,6 @@ public class JsonService {
 	public void save() throws JsonIOException, IOException {
 		Gson gson = new Gson();
 		
-		gson.toJson("123.45", new FileWriter("gson.json"));
+		gson.toJson("{123.45}", new FileWriter("gson.json"));
 		}
 }

@@ -37,8 +37,8 @@ public class AnnualLeaveRecapService {
 	}
 	
 	@Transactional
-	public String generateReport(String company, Date startDate, Date endDate) throws JRException {
-		String reportPath = "\\src\\main\\report";
+	public byte[] generateReport(String company, Date startDate, Date endDate) throws JRException {
+		String reportPath = "src\\main\\report";
 
 		// Compile the Jasper report from .jrxml to .japser
 		JasperReport jasperReport = JasperCompileManager.compileReport(reportPath + "\\ann-leave-recap-rpt.jrxml");
@@ -58,11 +58,14 @@ public class AnnualLeaveRecapService {
 				jrBeanCollectionDataSource);
 
 		// Export the report to a PDF file
-		JasperExportManager.exportReportToPdfFile(jasperPrint, reportPath + "\\Ann-Leave-Recap-Rpt.pdf");
+//		JasperExportManager.exportReportToPdfFile(jasperPrint, reportPath + "\\Ann-Leave-Recap-Rpt.pdf");
+		byte[] pdf=JasperExportManager.exportReportToPdf(jasperPrint);
 
 		System.out.println("Done");
-
-		return ("Report successfully generated @path= " + reportPath);
+		
+//		return ("Report successfully generated @path= " + reportPath);
+//		return getReport();
+		return pdf;
 	}
 	
 	public Resource getReport() {
