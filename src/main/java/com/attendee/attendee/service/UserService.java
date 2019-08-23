@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.attendee.attendee.dao.StatusDao;
 import com.attendee.attendee.dao.UserDao;
 import com.attendee.attendee.exception.ValidationException;
 import com.attendee.attendee.model.CompanyUnitPosisi;
@@ -47,6 +48,9 @@ public class UserService{
 	
 	@Autowired
 	private PasswordEncoder encoder;
+	
+	@Autowired
+	private StatusDao staDao;
 	
 	public String kodeUser() {
 		return "USER"+userDao.countRows();
@@ -162,6 +166,7 @@ public class UserService{
 		user.setCreatedAt(getTime());
 		user.setPassword(encoder.encode(generatePassword(user)));
 		user.setKode(kodeUser());
+		user.setIdStatus(staDao.findByStatus("Active"));
 		
 		user.setUpdatedAt(null);
 		user.setUpdatedBy(null);
