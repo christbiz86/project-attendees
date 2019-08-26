@@ -6,50 +6,53 @@ import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
-@Table(name="company")
+@Table(name = "company")
 public class Company {
-
 	@Id
-	@Column(name="id")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(generator = "UUID")
+	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
 	private UUID id;
-	
-	@Column(name="kode")
+
+	@Column(name = "kode")
 	private String kode;
-	
-	
-	@Column(name="nama")
+
+	@Column(name = "nama")
 	private String nama;
-	
-	@Column(name="jatah_cuti")
+
+	@Column(name = "jatah_cuti")
 	private Integer jatahCuti;
-	
-	@Column(name="toleransi_keterlambatan")
+
+	@Column(name = "toleransi_keterlambatan")
 	private Integer toleransiKeterlambatan;
-	
-	@JsonFormat(shape=JsonFormat.Shape.STRING,pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+7")
+
+	@JoinColumn(name = "id_status", referencedColumnName = "id")
+	@OneToOne
+	private Status idStatus;
+
 	@Column(name = "created_at")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+7")
 	private Timestamp createdAt;
 
-	@JsonFormat(shape=JsonFormat.Shape.STRING,pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+7")
 	@Column(name = "updated_at")
+	@JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss", timezone = "GMT+7")
 	private Timestamp updatedAt;
-	
-	@OneToOne
+
 	@JoinColumn(name = "created_by", referencedColumnName = "id")
-	private User createdBy;	
-	
 	@OneToOne
+	private User createdBy;
+
 	@JoinColumn(name = "updated_by", referencedColumnName = "id")
+	@OneToOne
 	private User updatedBy;
 
 	public UUID getId() {
@@ -92,6 +95,14 @@ public class Company {
 		this.toleransiKeterlambatan = toleransiKeterlambatan;
 	}
 
+	public Status getIdStatus() {
+		return idStatus;
+	}
+
+	public void setIdStatus(Status idStatus) {
+		this.idStatus = idStatus;
+	}
+
 	public Timestamp getCreatedAt() {
 		return createdAt;
 	}
@@ -123,5 +134,4 @@ public class Company {
 	public void setUpdatedBy(User updatedBy) {
 		this.updatedBy = updatedBy;
 	}
-	
 }

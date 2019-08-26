@@ -48,14 +48,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
  
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();//ganti md5
+        
+    	return new BCryptPasswordEncoder();//ganti md5
     }
     
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+    	
         http.cors().and().csrf().disable().
                 authorizeRequests()
-                .antMatchers("/api/auth/**").permitAll()
+                .antMatchers("/signin").permitAll()
+                .antMatchers("/api/shift").permitAll().antMatchers("/attendees/libur").permitAll()
+                .antMatchers("/api/project").permitAll() .antMatchers("/upload").permitAll()
+                .antMatchers("/image").permitAll().antMatchers("/posisi").permitAll().antMatchers("/unit").permitAll()
+                .antMatchers("/companies").permitAll().antMatchers("/tipeuser").permitAll()
+                .antMatchers("/send").permitAll().antMatchers("/api/attendee-recap/*").permitAll()
+                .antMatchers("/usercompany").permitAll().antMatchers("/usercompany/filter").permitAll()
+                .antMatchers("/users").permitAll().antMatchers("/user").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()

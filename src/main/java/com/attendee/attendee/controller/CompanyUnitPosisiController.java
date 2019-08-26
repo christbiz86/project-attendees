@@ -46,7 +46,7 @@ public class CompanyUnitPosisiController {
 	@RequestMapping(value = "/companyunitposisi", method = RequestMethod.POST)
 	public ResponseEntity<?> submit(@RequestBody CompanyUnitPosisi companyUnitPosisi) throws ValidationException{
 		try {
-			companyUnitPosisiService.save(companyUnitPosisi);
+			companyUnitPosisiService.insert(companyUnitPosisi);
 			MessageResponse mg  = new MessageResponse("Success submit");
 			
 			return ResponseEntity.ok(mg);
