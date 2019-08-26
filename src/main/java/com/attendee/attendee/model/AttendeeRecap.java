@@ -37,6 +37,12 @@ public class AttendeeRecap{
 	@Column(name = "nama_user")
 	private String name;
 	
+	@Column(name = "unit")
+	private String unit;
+	
+	@Column(name = "posisi")
+	private String posisi;
+	
 	@Column(name = "jml_terlambat")
 	private Integer terlambat;
 	
@@ -49,6 +55,22 @@ public class AttendeeRecap{
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getUnit() {
+		return unit;
+	}
+
+	public void setUnit(String unit) {
+		this.unit = unit;
+	}
+
+	public String getPosisi() {
+		return posisi;
+	}
+
+	public void setPosisi(String posisi) {
+		this.posisi = posisi;
 	}
 
 	public Integer getTerlambat() {

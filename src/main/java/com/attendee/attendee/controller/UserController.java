@@ -45,7 +45,7 @@ public class UserController {
 	@Autowired
     private StorageService storageService;
 	
-	@RequestMapping(value = "/user", method = RequestMethod.GET)
+	@RequestMapping(value = "/user/filter", method = RequestMethod.POST)
 	public ResponseEntity<?> retrieveByFilter(@RequestBody User user) throws ValidationException
 	{
 		 try 
@@ -94,7 +94,7 @@ public class UserController {
 		 try 
 		 {
 			 user.setUpdatedBy(userService.findById(
-						((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId()));
+						((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId()).getNama());
 			 userService.update(user);
 			 MessageResponse mg = new MessageResponse("Success update");
 			 return ResponseEntity.ok(mg);

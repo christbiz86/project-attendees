@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.attendee.attendee.exception.MessageResponse;
 import com.attendee.attendee.model.AttendeeRecap;
-import com.attendee.attendee.model.LiburCompany;
 import com.attendee.attendee.service.AttendeeRecapService;
 
 @CrossOrigin(origins = "*")

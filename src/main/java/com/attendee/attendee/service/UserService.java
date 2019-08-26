@@ -106,7 +106,7 @@ public class UserService{
 		int error=0;
 
 		if(user.getNama() == null) {
-			sb.append("Alamat tidak boleh kosong!");
+			sb.append("Nama tidak boleh kosong!");
 			error++;
 		}
 		if(user.getAlamat() == null) {
@@ -194,7 +194,6 @@ public class UserService{
 	}
 	
 	public User findById(UUID id)throws ValidationException{
-		System.out.println("get id");
 		return userDao.findById(id);
 	}
 	

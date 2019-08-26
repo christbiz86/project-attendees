@@ -77,6 +77,10 @@ public class RequestService {
 		request.setStatus(staDao.findByStatus(putusan));
 		
 		aprDao.save(request);
+		
+		Notification notif = notifDao.findByBk(request.getId());
+		notif.setStatus(staDao.findByStatus("Unread"));
+		notifDao.save(notif);
 	}
 	
 	private void valDataNotChange(Request approve) throws Exception {
