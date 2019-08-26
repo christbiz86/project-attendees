@@ -130,4 +130,9 @@ public class RequestService {
 			throw new InvalidDataException(listErr);
 		}
 	}
+	
+	public List<Request> findByCompanyAndStatus(UUID idCompany,String status){
+		return aprDao.findByCompanyAndStatus(idCompany,status);
+	} 
+
 }

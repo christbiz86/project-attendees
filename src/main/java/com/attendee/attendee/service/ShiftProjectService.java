@@ -3,6 +3,7 @@ package com.attendee.attendee.service;
 import java.util.List;
 import java.util.UUID;
 
+import javax.transaction.Transactional;
 import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,14 +36,17 @@ public class ShiftProjectService {
 		}
 	}
 	
+	@Transactional
 	public ShiftProject findById(UUID id) throws ValidationException {
 		return shiftProjectDao.findById(id);
 	}
 	
+	@Transactional
 	public ShiftProject findByBk(ShiftProject shiftProject) {
 		return shiftProjectDao.findByBk(shiftProject.getShift().getId(), shiftProject.getProject().getId());
 	}
 	
+	@Transactional
 	public List<ShiftProject> findAll() throws ValidationException {
 		return shiftProjectDao.findAll();
 	}
@@ -63,12 +67,14 @@ public class ShiftProjectService {
 		}
 	}
 	
+	@Transactional
 	public void save(ShiftProject shiftProject) throws ValidationException {
 		valNonBk(shiftProject);
 		valBkNotExist(shiftProject);
 		shiftProjectDao.save(shiftProject);
 	}
 	
+	@Transactional
 	public void update(ShiftProject shiftProject) throws ValidationException {
 		valIdNotNull(shiftProject);
 		valIdExist(shiftProject.getId());
@@ -76,6 +82,7 @@ public class ShiftProjectService {
 		shiftProjectDao.save(shiftProject);
 	}
 	
+	@Transactional
 	public void delete(UUID id) throws ValidationException {
 		valIdExist(id);
 		shiftProjectDao.delete(id);

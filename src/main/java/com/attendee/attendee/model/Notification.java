@@ -1,7 +1,7 @@
 package com.attendee.attendee.model;
 
 import java.util.UUID;
-
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,7 +18,7 @@ public class Notification {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private UUID id;
 	
-	@OneToOne
+	@OneToOne()
 	@JoinColumn(name = "id_request", referencedColumnName = "id")
 	private Request request;
 	
