@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.attendee.attendee.dao.CompanyDao;
+import com.attendee.attendee.dao.StatusDao;
 import com.attendee.attendee.exception.ValidationException;
 import com.attendee.attendee.model.Company;
 
@@ -16,6 +17,9 @@ import com.attendee.attendee.model.Company;
 public class CompanyService {
 	@Autowired
 	private CompanyDao companyDao;
+	
+	@Autowired
+	private StatusDao staDao;
 	
 	public String kodeCompany() {
 		return "COM"+companyDao.countRows();
@@ -97,6 +101,7 @@ public class CompanyService {
 	@Transactional
 	public void insert(Company company) throws ValidationException {
 		company.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+		company.setIdStatus(staDao.findByStatus("Active"));
 //		valBkNotNull(company);
 		valBkNotExist(company);
 		valNonBk(company);

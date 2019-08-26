@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import javax.transaction.Transactional;
 import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,6 +88,7 @@ public class ShiftService {
 		}
 	}
 	
+	@Transactional
 	public void save(Shift shift) throws Exception {
 		shift.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 		valBkNotNull(shift);
@@ -95,6 +97,7 @@ public class ShiftService {
 		shiftDao.save(shift);
 	}
 	
+	@Transactional
 	public void update(Shift shift) throws Exception {
 		shift.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
 		valIdNotNull(shift);
@@ -105,23 +108,28 @@ public class ShiftService {
 		shiftDao.save(shift);
 	}
 	
+	@Transactional
 	public void delete(UUID id) throws ValidationException {
 		valIdExist(id);
 		shiftDao.delete(id);
 	}
 	
+	@Transactional
 	public Shift findById(UUID id) throws ValidationException {
 		return shiftDao.findById(id);
 	}
 	
+	@Transactional
 	public Shift findByBk(Shift shift) {
 		return shiftDao.findByBk(shift.getKode());
 	}
 	
+	@Transactional
 	public List<Shift> findAll() throws ValidationException {
 		return shiftDao.findAll();
 	}
 	
+	@Transactional
 	public List<Shift> filterShift(String status) throws Exception {
 		List<Shift> list = shiftDao.filterShift(status);
 		if(list.size() == 0) {

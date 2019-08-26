@@ -74,6 +74,8 @@ public class RequestController {
 			aprServ.insert(request);
 			return ResponseEntity.status(HttpStatus.CREATED).body("Data Request Berhasil Disimpan");
 		}catch (InvalidDataException e) {
+			System.out.println(e);
+			System.out.println(e.getMessage());
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessages());
 		}catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -86,6 +88,17 @@ public class RequestController {
 			//user dari UserPrinciple (belum)
 			aprServ.proses(request, ((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserCompany().getIdUser(), status);
 			return ResponseEntity.ok("Data Request Berhasil Diubah");
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		}
+	}
+	
+	@GetMapping(value = "/company/{status}")
+	public ResponseEntity<?> getByCompanyAndStatus(@PathVariable String status) throws IOException {
+
+		try {
+			List<Request> request = aprServ.findByCompanyAndStatus(((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserCompany().getIdCompanyUnitPosisi().getIdCompany().getId(),status);
+			return ResponseEntity.ok(request);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
