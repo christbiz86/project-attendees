@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.attendee.attendee.exception.InvalidDataException;
 import com.attendee.attendee.model.Request;
+import com.attendee.attendee.model.UserPrinciple;
 import com.attendee.attendee.service.RequestService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -81,7 +83,7 @@ public class RequestController {
 	public ResponseEntity<?> persetujuan(@RequestBody Request request, @PathVariable String status) throws IOException{
 		try {
 			//user dari UserPrinciple (belum)
-			aprServ.proses(request, request.getUser(), status);
+			aprServ.proses(request, ((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserCompany().getIdUser(), status);
 			return ResponseEntity.ok("Data Request Berhasil Diubah");
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());

@@ -1,4 +1,4 @@
-package com.attendee.attendee.service;
+	package com.attendee.attendee.service;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -6,8 +6,10 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.attendee.attendee.dao.CompanyDao;
+import com.attendee.attendee.dao.StatusDao;
 import com.attendee.attendee.exception.ValidationException;
 import com.attendee.attendee.model.Company;
 
@@ -15,6 +17,17 @@ import com.attendee.attendee.model.Company;
 public class CompanyService {
 	@Autowired
 	private CompanyDao companyDao;
+	
+	@Autowired
+	private StatusDao staDao;
+	
+	public String kodeCompany() {
+		return "COM"+companyDao.countRows();
+	}
+	
+	public Company findByName(String nama) {
+		return companyDao.findByName(nama);
+	}
 	
 	public void valIdExist(Company company) throws ValidationException {
 		if (!companyDao.isIdExist(company.getId())) {
@@ -85,14 +98,18 @@ public class CompanyService {
 		}	
 	}
 	
+	@Transactional
 	public void insert(Company company) throws ValidationException {
 		company.setCreatedAt(new Timestamp(System.currentTimeMillis()));
-		valBkNotNull(company);
+		company.setIdStatus(staDao.findByStatus("Active"));
+//		valBkNotNull(company);
 		valBkNotExist(company);
 		valNonBk(company);
+		company.setKode(kodeCompany());
 		companyDao.save(company);
 	}
 	
+	@Transactional
 	public void update(Company company) throws ValidationException {
 		company.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
 		valIdNotNull(company);
