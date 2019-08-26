@@ -1,5 +1,6 @@
 package com.attendee.attendee.dao;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -45,6 +46,23 @@ public class RequestDao extends ParentDao {
 			return new ArrayList<Request>();
 		else {
 			return list;
+		}
+	}
+	
+	@Transactional
+	public String countRows() {
+		BigInteger count = (BigInteger) super.entityManager
+				.createNativeQuery("SELECT count(*) FROM users").getSingleResult();
+		
+		int next = count.intValue() + 1;
+		String num = Integer.toString(next);
+		
+		if(num.length() == 1) {
+			return "00"+num;
+		} else if(num.length() == 2) {
+			return "0"+num;
+		} else {
+			return num;
 		}
 	}
 	

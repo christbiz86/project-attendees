@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.attendee.attendee.exception.MessageResponse;
 import com.attendee.attendee.model.User;
+import com.attendee.attendee.model.UserPrinciple;
 import com.attendee.attendee.security.jwt.JwtProvider;
 import com.attendee.attendee.security.jwt.JwtResponse;
 import com.attendee.attendee.service.Encoder;
@@ -29,6 +31,7 @@ import com.attendee.attendee.service.UserService;
  
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
+@Controller
 public class AuthRestAPIs {
  
     @Autowired
@@ -56,12 +59,13 @@ public class AuthRestAPIs {
                         loginRequest.getPassword()
                 )
         );
- 
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
- 
         String jwt = jwtProvider.generateJwtToken(authentication);
-  
-        return ResponseEntity.ok(new JwtResponse(jwt));
+        UserPrinciple user = (UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        user.setToken(new JwtResponse(jwt));
+//        return ResponseEntity.ok(new JwtResponse(jwt));
+        return ResponseEntity.ok(user);        
     }
  
 //    @PostMapping("/signup")

@@ -3,13 +3,11 @@ package com.attendee.attendee.model;
 import java.util.Date;
 
 public class RegistrationForm {
-	private String kodeCompany;
 	private String namaCompany;
 	private int jatahCuti;
 	private int toleransiKeterlambatan;
 	private String statusCompany;
 	
-	private String kodeUser;
 	private String namaUser;
 	private String alamat;
 	private Date tglLahir;
@@ -18,12 +16,6 @@ public class RegistrationForm {
 	private String foto;
 	private String statusUser;
 	
-	public String getKodeCompany() {
-		return kodeCompany;
-	}
-	public void setKodeCompany(String kodeCompany) {
-		this.kodeCompany = kodeCompany;
-	}
 	public String getNamaCompany() {
 		return namaCompany;
 	}
@@ -47,12 +39,6 @@ public class RegistrationForm {
 	}
 	public void setStatusCompany(String statusCompany) {
 		this.statusCompany = statusCompany;
-	}
-	public String getKodeUser() {
-		return kodeUser;
-	}
-	public void setKodeUser(String kodeUser) {
-		this.kodeUser = kodeUser;
 	}
 	public String getNamaUser() {
 		return namaUser;

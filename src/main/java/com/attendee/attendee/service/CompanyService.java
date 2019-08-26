@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.attendee.attendee.dao.CompanyDao;
 import com.attendee.attendee.exception.ValidationException;
@@ -15,6 +16,14 @@ import com.attendee.attendee.model.Company;
 public class CompanyService {
 	@Autowired
 	private CompanyDao companyDao;
+	
+	public String kodeCompany() {
+		return "COM"+companyDao.countRows();
+	}
+	
+	public Company findByName(String nama) {
+		return companyDao.findByName(nama);
+	}
 	
 	public void valIdExist(Company company) throws ValidationException {
 		if (!companyDao.isIdExist(company.getId())) {
@@ -85,14 +94,17 @@ public class CompanyService {
 		}	
 	}
 	
+	@Transactional
 	public void insert(Company company) throws ValidationException {
 		company.setCreatedAt(new Timestamp(System.currentTimeMillis()));
-		valBkNotNull(company);
+//		valBkNotNull(company);
 		valBkNotExist(company);
 		valNonBk(company);
+		company.setKode(kodeCompany());
 		companyDao.save(company);
 	}
 	
+	@Transactional
 	public void update(Company company) throws ValidationException {
 		company.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
 		valIdNotNull(company);

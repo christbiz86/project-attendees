@@ -1,5 +1,6 @@
 package com.attendee.attendee.dao;
 
+import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -146,6 +147,57 @@ public class UserDao extends ParentDao {
 			return new User();
 		} else {
 			return (User) list.get(0);
+		}
+	}
+	
+	@Transactional
+	public String countRows() {
+		BigInteger count = (BigInteger) super.entityManager
+				.createNativeQuery("SELECT count(*) FROM users").getSingleResult();
+		
+		int next = count.intValue() + 1;
+		String num = Integer.toString(next);
+		
+		if(num.length() == 1) {
+			return "00"+num;
+		} else if(num.length() == 2) {
+			return "0"+num;
+		} else {
+			return num;
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public User findByName(String nama) {
+		List<User> list = super.entityManager
+				.createQuery("FROM User "
+						+ "WHERE nama = :nama")
+				.setParameter("nama", nama)
+				.getResultList();
+		
+		if (list.size() == 0) {
+			return new User();
+		}
+		else {
+			return (User)list.get(0);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public User findByEmail(User user) {
+		List<User> list = super.entityManager
+				.createQuery("FROM User "
+						+ "WHERE email = :email")
+				.setParameter("email", user.getEmail())
+				.getResultList();
+		
+		if (list.size() == 0) {
+			return new User();
+		}
+		else {
+			return (User)list.get(0);
 		}
 	}
 
