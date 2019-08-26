@@ -46,9 +46,6 @@ public class UserController {
     	private StorageService storageService;
 	
 	@RequestMapping(value = "/user/filter", method = RequestMethod.POST)
-
-	@RequestMapping(value = "/user", method = RequestMethod.GET)
-
 	public ResponseEntity<?> retrieveByFilter(@RequestBody User user) throws ValidationException
 	{
 		 try 
