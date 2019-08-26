@@ -59,7 +59,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 authorizeRequests()
                 .antMatchers("/signin").permitAll().antMatchers("/company").permitAll()
                 .antMatchers("/api/shift").permitAll().antMatchers("/attendees/libur").permitAll()
-                .antMatchers("/api/project").permitAll() .antMatchers("/upload").permitAll()
+                .antMatchers("/api/project").permitAll().antMatchers("/upload").permitAll()
                 .antMatchers("/image").permitAll().antMatchers("/posisi").permitAll().antMatchers("/unit").permitAll()
                 .antMatchers("/companies").permitAll().antMatchers("/tipeuser").permitAll()
                 .antMatchers("/send").permitAll()
