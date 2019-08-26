@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,13 +31,12 @@ public class UserDescriptorController {
 		}
 	}
 	
-//	@GetMapping
-//	public ResponseEntity<?> getDescriptor() throws Exception{
-//		try {
-//			usdServ.add(userDescriptor);
-//			return ResponseEntity.ok("berhasil");
-//		} catch (Exception e) {
-//			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage()); 
-//		}
-//	}
+	@PostMapping(value = "/coba")
+	public ResponseEntity<?> getDescriptor(@RequestBody UserDescriptor userDescriptor) throws Exception{
+		try {
+			return ResponseEntity.ok(usdServ.getDescriptor(userDescriptor));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage()); 
+		}
+	}
 }
