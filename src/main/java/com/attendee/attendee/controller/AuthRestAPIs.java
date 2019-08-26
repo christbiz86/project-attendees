@@ -52,7 +52,8 @@ public class AuthRestAPIs {
  
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody User loginRequest) {
- 
+    	System.out.println(loginRequest.getEmail());
+    	System.out.println(loginRequest.getPassword());
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getEmail(),

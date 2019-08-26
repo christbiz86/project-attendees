@@ -92,4 +92,15 @@ public class RequestController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
 	}
+	
+	@GetMapping(value = "/company/{status}")
+	public ResponseEntity<?> getByCompanyAndStatus(@PathVariable String status) throws IOException {
+
+		try {
+			List<Request> request = aprServ.findByCompanyAndStatus(((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserCompany().getIdCompanyUnitPosisi().getIdCompany().getId(),status);
+			return ResponseEntity.ok(request);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		}
+	}
 }

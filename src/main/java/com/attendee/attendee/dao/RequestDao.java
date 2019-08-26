@@ -52,11 +52,12 @@ public class RequestDao extends ParentDao {
 	@Transactional
 	public String countRows() {
 		BigInteger count = (BigInteger) super.entityManager
-				.createNativeQuery("SELECT count(*) FROM users").getSingleResult();
+				.createNativeQuery("SELECT count(*) FROM request").getSingleResult();
 		
 		int next = count.intValue() + 1;
 		String num = Integer.toString(next);
-		
+		System.out.println(num);
+		System.out.println(next);
 		if(num.length() == 1) {
 			return "00"+num;
 		} else if(num.length() == 2) {
@@ -110,6 +111,23 @@ public class RequestDao extends ParentDao {
 			return false;
 		} else {
 			return true;
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public List<Request> findByCompanyAndStatus(UUID id,String status) {
+		List<Request> list = super.entityManager
+				.createQuery("FROM Request WHERE userCompany.idCompanyUnitPosisi.idCompany.id=:id"
+						+ " and status.status=:status ")
+				.setParameter("id", id)
+				.setParameter("status", status)
+				.getResultList();
+		
+		if (list.size() == 0)
+			return new ArrayList<Request>();
+		else {
+			return list;
 		}
 	}
 }
