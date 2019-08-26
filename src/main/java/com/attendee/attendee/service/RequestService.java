@@ -54,6 +54,9 @@ public class RequestService {
 		System.out.println(notif.getStatus().getId());
 		notifDao.save(notif);
 		System.out.println("saved");
+		notif.setRequest(request);
+		notif.setStatus(staDao.findByStatus("Unread"));
+		notifDao.save(notif);
 	}
 	
 	@Transactional

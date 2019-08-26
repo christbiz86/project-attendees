@@ -1,22 +1,16 @@
 package com.attendee.attendee.service;
 
-import java.net.MalformedURLException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.attendee.attendee.dao.AnnualLeaveRecapDao;
 import com.attendee.attendee.model.AnnualLeaveRecap;
-import com.attendee.attendee.storage.StorageFileNotFoundException;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -37,8 +31,8 @@ public class AnnualLeaveRecapService {
 	}
 	
 	@Transactional
-	public byte[] generateReport(String company, Date startDate, Date endDate) throws JRException {
-		String reportPath = "src\\main\\report";
+	public String generateReport(String company, Date startDate, Date endDate) throws JRException {
+		String reportPath = "D:\\Quda\\project-attendees\\src\\main\\report";
 
 		// Compile the Jasper report from .jrxml to .japser
 		JasperReport jasperReport = JasperCompileManager.compileReport(reportPath + "\\ann-leave-recap-rpt.jrxml");
@@ -58,38 +52,10 @@ public class AnnualLeaveRecapService {
 				jrBeanCollectionDataSource);
 
 		// Export the report to a PDF file
-//		JasperExportManager.exportReportToPdfFile(jasperPrint, reportPath + "\\Ann-Leave-Recap-Rpt.pdf");
-		byte[] pdf=JasperExportManager.exportReportToPdf(jasperPrint);
+		JasperExportManager.exportReportToPdfFile(jasperPrint, reportPath + "\\Ann-Leave-Recap-Rpt.pdf");
 
 		System.out.println("Done");
-		
-//		return ("Report successfully generated @path= " + reportPath);
-//		return getReport();
-		return pdf;
+
+		return ("Report successfully generated @path= " + reportPath);
 	}
-	
-	public Resource getReport() {
-		try {
-            Path file = load("Ann-Leave-Recap-Rpt.pdf");
-            Resource resource = new UrlResource(file.toUri());
-            if (resource.exists() || resource.isReadable()) {
-                return resource;
-            }
-            else {
-                throw new StorageFileNotFoundException(
-                        "Could not read file: Ann-Leave-Recap-Rpt.pdf" );
-
-            }
-        }
-        catch (MalformedURLException e) {
-            throw new StorageFileNotFoundException("Could not read file: Ann-Leave-Recap-Rpt.pdf", e);
-        }
-
-	}
-
-    public Path load(String filename) {
-    	Path rootLocation=Paths.get("src\\main\\report\\");
-        return rootLocation.resolve(filename);
-    }
-	
 }

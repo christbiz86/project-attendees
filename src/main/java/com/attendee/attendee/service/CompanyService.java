@@ -1,4 +1,4 @@
-	package com.attendee.attendee.service;
+package com.attendee.attendee.service;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -21,6 +21,7 @@ public class CompanyService {
 	@Autowired
 	private StatusDao staDao;
 	
+
 	public String kodeCompany() {
 		return "COM"+companyDao.countRows();
 	}

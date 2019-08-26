@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.attendee.attendee.exception.MessageResponse;
 import com.attendee.attendee.service.JsonService;
 import com.attendee.attendee.storage.StorageFileNotFoundException;

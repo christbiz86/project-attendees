@@ -95,9 +95,8 @@ public class UserController {
 		 {
 //			 user.setUpdatedBy(userService.findById(
 //						((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId()));
-			 user.setUpdatedBy(
-				((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId());
-
+			 user.setUpdatedBy(userService.findById(
+						((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId()).getNama());
 			 userService.update(user);
 			 MessageResponse mg = new MessageResponse("Success update");
 			 return ResponseEntity.ok(mg);
@@ -196,8 +195,7 @@ public class UserController {
     			user.getUser().setCreatedBy(userService.findById(
     					((UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId()));
     			userService.saveWithCompanyUnitPosisi(user);
-    			eService.sendSimpleMessage(user.getUser().getEmail(), "Registration Attendee App Password", 
-    					("Your email : "+user.getUser().getEmail()+"\n"
+    			eService.sendSimpleMessage(user.getUser().getEmail(), "Registration Attendee App Password", ("Your email : "+user.getUser().getEmail()+"\n"
     					+ "password : "+pass+"\n Thank you "));
 
     			MessageResponse mg  = new MessageResponse("Success submit");

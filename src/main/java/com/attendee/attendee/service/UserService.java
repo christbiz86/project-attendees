@@ -168,8 +168,7 @@ public class UserService{
 //		user.setPassword(encoder.encode(generatePassword(user)));
 		user.setPassword(encoder.encode(user.getPassword()));
 		user.setKode(kodeUser());
-		user.setIdStatus(staDao.findByStatus("Active"));
-		
+		user.setIdStatus(staDao.findByStatus("Active"));		
 		user.setUpdatedAt(null);
 		user.setUpdatedBy(null);
 		
@@ -281,3 +280,4 @@ public class UserService{
 	}
 
 }
+

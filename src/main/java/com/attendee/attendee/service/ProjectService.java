@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import javax.transaction.Transactional;
 import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,18 +65,22 @@ public class ProjectService {
 		}
 	}
 	
+	@Transactional
 	public Project findById(UUID id) throws ValidationException {
 		return projectDao.findById(id);
 	}
 	
+	@Transactional
 	public Project findByBk(Project project) {
 		return projectDao.findByBk(project.getKode());
 	}
 	
+	@Transactional
 	public List<Project> findAll() throws ValidationException {
 		return projectDao.findAll();
 	}
 	
+	@Transactional
 	public List<Project> filterProject(String status, String lokasi) throws Exception {
 		List<Project> proList = projectDao.filterProject(status, lokasi);
 		if(proList.size() == 0) {
@@ -104,6 +109,7 @@ public class ProjectService {
 		}
 	}
 	
+	@Transactional
 	public void save(Project project) throws Exception {
 		project.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 		
@@ -113,6 +119,7 @@ public class ProjectService {
 		projectDao.save(project);
 	}
 	
+	@Transactional
 	public void update(Project project) throws Exception {
 		project.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
 		
@@ -124,6 +131,7 @@ public class ProjectService {
 		projectDao.save(project);
 	}
 	
+	@Transactional
 	public void delete(UUID id) throws ValidationException {
 		valIdExist(id);
 		projectDao.delete(id);

@@ -3,6 +3,7 @@ package com.attendee.attendee.service;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ public class AttendeeRecapService {
 	@Autowired
 	private AttendeeRecapDao attendeeRecapDao;
 	
+	@Transactional
 	public List<AttendeeRecap> getAll(Date startDate, Date endDate) {
 		List<AttendeeRecap> list = attendeeRecapDao.getAllRecap(startDate, endDate);
 		return list;
@@ -34,6 +36,8 @@ public class AttendeeRecapService {
 	public String generateReport(Date startDate, Date endDate) throws JRException {
 		String reportPath = "src\\main\\report";
 
+	public byte[] generateReport(Date startDate, Date endDate) throws JRException {
+		String reportPath = "src\\main\\report";
 
 		// Compile the Jasper report from .jrxml to .japser
 		JasperReport jasperReport = JasperCompileManager.compileReport(reportPath + "\\att-recap-rpt.jrxml");
@@ -57,5 +61,10 @@ public class AttendeeRecapService {
 		System.out.println("Done");
 
 		return ("Report successfully generated @path= " + reportPath);
+//		JasperExportManager.exportReportToPdfFile(jasperPrint, reportPath + "\\Att-Recap-Rpt.pdf");
+		byte[] pdf = JasperExportManager.exportReportToPdf(jasperPrint);
+
+//		return ("Report successfully generated @path= " + reportPath);
+		return pdf;
 	}
 }

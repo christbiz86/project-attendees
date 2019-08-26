@@ -10,7 +10,7 @@ import com.attendee.attendee.model.AnnualLeave;
 
 @Service
 public class AnnualLeaveService {
-	
+
 	@Autowired
 	private AnnualLeaveDao anLevDao;
 	
