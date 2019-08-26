@@ -264,11 +264,6 @@ public class UserService{
 		}
 		catch (Exception e) {
 			System.out.println(e);
-			System.out.println(e);
-			throw e;
-		}
-		catch (Exception e) {
-			System.out.println(e);
 			delete(findByBk(user.getUser()).getId());
 			throw new ValidationException("error");
 		}
