@@ -96,7 +96,7 @@ public class UserController {
 //			 user.setUpdatedBy(userService.findById(
 //						((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId()));
 			 user.setUpdatedBy(userService.findById(
-						((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId()).getNama());
+						((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId()).getName());
 			 userService.update(user);
 			 MessageResponse mg = new MessageResponse("Success update");
 			 return ResponseEntity.ok(mg);
