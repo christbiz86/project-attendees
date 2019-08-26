@@ -168,11 +168,11 @@ public class User {
 		this.createdBy = createdBy;
 	}
 
-	public String getUpdatedBy() {
+	public UUID getUpdatedBy() {
 		return updatedBy;
 	}
 
-	public void setUpdatedBy(String updatedBy) {
+	public void setUpdatedBy(UUID updatedBy) {
 		this.updatedBy = updatedBy;
 	}
 
