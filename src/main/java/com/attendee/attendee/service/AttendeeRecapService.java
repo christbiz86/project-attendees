@@ -32,7 +32,8 @@ public class AttendeeRecapService {
 	
 	@Transactional
 	public String generateReport(Date startDate, Date endDate) throws JRException {
-		String reportPath = "D:\\Quda\\project-attendees\\src\\main\\report";
+		String reportPath = "src\\main\\report";
+
 
 		// Compile the Jasper report from .jrxml to .japser
 		JasperReport jasperReport = JasperCompileManager.compileReport(reportPath + "\\att-recap-rpt.jrxml");

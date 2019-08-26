@@ -65,9 +65,8 @@ public class User {
 	@OneToOne
 	private User createdBy;
 	
-	@JoinColumn(name = "updated_by", referencedColumnName = "id")
-	@OneToOne
-	private User updatedBy;
+	@Column(name = "updated_by")
+	private UUID updatedBy;
 	
 	@JoinColumn(name = "id_status", referencedColumnName = "id")
 	@OneToOne
@@ -169,11 +168,11 @@ public class User {
 		this.createdBy = createdBy;
 	}
 
-	public User getUpdatedBy() {
+	public UUID getUpdatedBy() {
 		return updatedBy;
 	}
 
-	public void setUpdatedBy(User updatedBy) {
+	public void setUpdatedBy(UUID updatedBy) {
 		this.updatedBy = updatedBy;
 	}
 

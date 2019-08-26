@@ -10,10 +10,15 @@ import com.attendee.attendee.model.AnnualLeave;
 
 @Service
 public class AnnualLeaveService {
+	
 	@Autowired
 	private AnnualLeaveDao anLevDao;
 	
 	public List<AnnualLeave> findAll() {
 		return anLevDao.findAll();
+	}
+	
+	public List<AnnualLeave> findByFilter(AnnualLeave annualLeave) {
+		return anLevDao.findByFilter(annualLeave.getIdCompany(), annualLeave.getId().getTahun());
 	}
 }

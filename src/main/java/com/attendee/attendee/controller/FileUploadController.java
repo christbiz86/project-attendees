@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.attendee.attendee.exception.MessageResponse;
+import com.attendee.attendee.service.JsonService;
 import com.attendee.attendee.storage.StorageFileNotFoundException;
 import com.attendee.attendee.storage.StorageService;
 
@@ -26,6 +27,9 @@ import com.attendee.attendee.storage.StorageService;
 public class FileUploadController {
 
     private final StorageService storageService;
+    
+    @Autowired
+    private JsonService json;
 
     @Autowired
     public FileUploadController(StorageService storageService) {
@@ -61,4 +65,17 @@ public class FileUploadController {
         return ResponseEntity.notFound().build();
     }
 
+    @PostMapping("/convert")
+    public ResponseEntity<?> handleFileUpload() throws Exception{
+    	try {
+    		json.save();
+    		MessageResponse mg = new MessageResponse("Insert success image with name !");
+    		return ResponseEntity.ok(mg);
+    		
+    	}catch (Exception e) {
+    		System.out.println(e);
+			MessageResponse mg = new MessageResponse("Failed insert" );
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mg);
+        }
+    }
 }
