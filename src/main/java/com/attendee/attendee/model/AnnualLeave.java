@@ -1,11 +1,10 @@
 package com.attendee.attendee.model;
 
 import java.util.UUID;
-
+import javax.persistence.Id;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-
 import org.hibernate.annotations.Immutable;
 
 @Entity

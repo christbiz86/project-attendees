@@ -1,12 +1,14 @@
 package com.attendee.attendee.dao;
 
+import java.util.List;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
+import java.util.List;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.attendee.attendee.model.AnnualLeave;
 
 @Repository
@@ -20,11 +22,10 @@ public class AnnualLeaveDao extends ParentDao {
 				.getResultList();
 		return list;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Transactional
 	public List<AnnualLeave> findByCompany(UUID idCompany) {
-		
 		List<AnnualLeave> list = super.entityManager
 				.createQuery("FROM AnnualLeave where idCompany =:idCompany")
 				.setParameter("idCompany", idCompany)
@@ -35,7 +36,6 @@ public class AnnualLeaveDao extends ParentDao {
 	@SuppressWarnings("unchecked")
 	@Transactional
 	public List<AnnualLeave> findByFilter(UUID idCompany,Long tahun) {
-		
 		StringBuilder sb = new StringBuilder();
 		sb.append("FROM AnnualLeave WHERE 1=1");
 		

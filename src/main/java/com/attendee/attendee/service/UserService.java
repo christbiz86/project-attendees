@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.attendee.attendee.dao.StatusDao;
 import com.attendee.attendee.dao.UserDao;
 import com.attendee.attendee.exception.ValidationException;
 import com.attendee.attendee.model.CompanyUnitPosisi;
@@ -47,6 +48,9 @@ public class UserService{
 	
 	@Autowired
 	private PasswordEncoder encoder;
+	
+	@Autowired
+	private StatusDao staDao;
 	
 	public String kodeUser() {
 		return "USER"+userDao.countRows();
@@ -106,7 +110,7 @@ public class UserService{
 		int error=0;
 
 		if(user.getNama() == null) {
-			sb.append("Alamat tidak boleh kosong!");
+			sb.append("Nama tidak boleh kosong!");
 			error++;
 		}
 		if(user.getAlamat() == null) {
@@ -159,12 +163,11 @@ public class UserService{
 	
 	@Transactional
 	public void save(User user)throws ValidationException, NoSuchAlgorithmException{
-		
 		user.setCreatedAt(getTime());
 //		user.setPassword(encoder.encode(generatePassword(user)));
 		user.setPassword(encoder.encode(user.getPassword()));
 		user.setKode(kodeUser());
-		
+		user.setIdStatus(staDao.findByStatus("Active"));		
 		user.setUpdatedAt(null);
 		user.setUpdatedBy(null);
 		
@@ -257,12 +260,10 @@ public class UserService{
 	        ucService.save(userCompany);
 		}catch (ValidationException e) {
 			System.out.println(e);
-			
 			throw e;
 		}
 		catch (Exception e) {
 			System.out.println(e);
-			
 			delete(findByBk(user.getUser()).getId());
 			throw new ValidationException("error");
 		}

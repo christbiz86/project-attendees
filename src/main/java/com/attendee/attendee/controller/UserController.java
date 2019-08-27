@@ -43,9 +43,9 @@ public class UserController {
 	private PasswordGenerator pwGenerator;
 
 	@Autowired
-    private StorageService storageService;
+    	private StorageService storageService;
 	
-	@RequestMapping(value = "/user", method = RequestMethod.GET)
+	@RequestMapping(value = "/user/filter", method = RequestMethod.POST)
 	public ResponseEntity<?> retrieveByFilter(@RequestBody User user) throws ValidationException
 	{
 		 try 
@@ -94,10 +94,9 @@ public class UserController {
 		 try 
 		 {
 //			 user.setUpdatedBy(userService.findById(
-//						((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId()));
-			 user.setUpdatedBy(
-				((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId());
-
+//						((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId()).getName());
+			 user.setUpdatedBy(userService.findById(
+						((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId()).getId());
 			 userService.update(user);
 			 MessageResponse mg = new MessageResponse("Success update");
 			 return ResponseEntity.ok(mg);
@@ -196,8 +195,7 @@ public class UserController {
     			user.getUser().setCreatedBy(userService.findById(
     					((UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId()));
     			userService.saveWithCompanyUnitPosisi(user);
-    			eService.sendSimpleMessage(user.getUser().getEmail(), "Registration Attendee App Password", 
-    					("Your email : "+user.getUser().getEmail()+"\n"
+    			eService.sendSimpleMessage(user.getUser().getEmail(), "Registration Attendee App Password", ("Your email : "+user.getUser().getEmail()+"\n"
     					+ "password : "+pass+"\n Thank you "));
 
     			MessageResponse mg  = new MessageResponse("Success submit");

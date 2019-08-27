@@ -3,6 +3,7 @@ package com.attendee.attendee.service;
 import java.util.List;
 import java.util.UUID;
 
+import javax.transaction.Transactional;
 import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ public class UserShiftProjectService {
 	@Autowired
 	private UserShiftProjectDao userShiftProjectDao;
 	
+	@Transactional
 	public List<UserShiftProject> filterUserShift(String worktime) throws Exception {
 		List<UserShiftProject> userShiftList = userShiftProjectDao.filterUserShift(worktime);
 		if(userShiftList.size() == 0) {
@@ -43,14 +45,17 @@ public class UserShiftProjectService {
 		}
 	}
 	
+	@Transactional
 	public UserShiftProject findById(UUID id) throws ValidationException {
 		return userShiftProjectDao.findById(id);
 	}
 	
+	@Transactional
 	public UserShiftProject findByBk(UserShiftProject shiftProject) {
 		return userShiftProjectDao.findByBk(shiftProject.getUserCompany().getId(), shiftProject.getShiftProject().getId());
 	}
 	
+	@Transactional
 	public List<UserShiftProject> findAll() throws ValidationException {
 		return userShiftProjectDao.findAll();
 	}
@@ -93,6 +98,7 @@ public class UserShiftProjectService {
 		}
 	}
 	
+	@Transactional
 	public void save(UserShiftProject userShiftProject) throws ValidationException {
 		valBkNotNull(userShiftProject);
 		valBkNotExist(userShiftProject);
@@ -100,6 +106,7 @@ public class UserShiftProjectService {
 		userShiftProjectDao.save(userShiftProject);
 	}
 	
+	@Transactional
 	public void update(UserShiftProject userShiftProject) throws ValidationException {
 		valIdNotNull(userShiftProject);
 		valIdExist(userShiftProject.getId());
@@ -107,6 +114,7 @@ public class UserShiftProjectService {
 		userShiftProjectDao.save(userShiftProject);
 	}
 	
+	@Transactional
 	public void delete(UUID id) throws ValidationException {
 		valIdExist(id);
 		userShiftProjectDao.delete(id);

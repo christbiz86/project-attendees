@@ -1,7 +1,6 @@
 package com.attendee.attendee.model;
 
 import java.util.UUID;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;

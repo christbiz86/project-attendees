@@ -52,12 +52,9 @@ public class RequestDao extends ParentDao {
 	@Transactional
 	public String countRows() {
 		BigInteger count = (BigInteger) super.entityManager
-				.createNativeQuery("SELECT count(*) FROM request").getSingleResult();
-		
+		.createNativeQuery("SELECT count(*) FROM request").getSingleResult();
 		int next = count.intValue() + 1;
 		String num = Integer.toString(next);
-		System.out.println(num);
-		System.out.println(next);
 		if(num.length() == 1) {
 			return "00"+num;
 		} else if(num.length() == 2) {

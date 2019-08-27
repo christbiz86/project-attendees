@@ -49,11 +49,9 @@ public class RequestService {
 		aprDao.save(request);
 		
 		Notification notif = new Notification();
-		notif.setRequest(aprDao.findByBk(request.getKode()));
+		notif.setRequest(request);
 		notif.setStatus(staDao.findByStatus("Unread"));
-		System.out.println(notif.getStatus().getId());
 		notifDao.save(notif);
-		System.out.println("saved");
 	}
 	
 	@Transactional
@@ -79,6 +77,10 @@ public class RequestService {
 		request.setStatus(staDao.findByStatus(putusan));
 		
 		aprDao.save(request);
+		
+		Notification notif = notifDao.findByBk(request.getId());
+		notif.setStatus(staDao.findByStatus("Unread"));
+		notifDao.save(notif);
 	}
 	
 	private void valDataNotChange(Request approve) throws Exception {

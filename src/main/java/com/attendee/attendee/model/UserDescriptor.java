@@ -3,13 +3,13 @@ package com.attendee.attendee.model;
 import java.util.List;
 
 public class UserDescriptor {
-	private String nama;
+	private String name;
 	private List<List<String>> Descriptors;
-	public String getNama() {
-		return nama;
+	public String getName() {
+		return name;
 	}
-	public void setNama(String nama) {
-		this.nama = nama;
+	public void setName(String name) {
+		this.name = name;
 	}
 	public List<List<String>> getDescriptors() {
 		return Descriptors;

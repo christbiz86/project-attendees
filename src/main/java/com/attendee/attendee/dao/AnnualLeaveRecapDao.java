@@ -14,8 +14,6 @@ public class AnnualLeaveRecapDao extends ParentDao {
 	@SuppressWarnings("unchecked")
 	@Transactional
 	public List<AnnualLeaveRecap> getAllRecap(String company, Date startDate, Date endDate) {
-		System.out.println(company);
-		System.out.println(startDate);
 		List<AnnualLeaveRecap> query = super.entityManager
 				.createNativeQuery("SELECT * FROM annual_leave_recap(:company, :start_date, :end_date)", 
 						AnnualLeaveRecap.class)

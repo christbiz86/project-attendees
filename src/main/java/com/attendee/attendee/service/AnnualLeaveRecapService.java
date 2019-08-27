@@ -63,8 +63,6 @@ public class AnnualLeaveRecapService {
 
 		System.out.println("Done");
 		
-//		return ("Report successfully generated @path= " + reportPath);
-//		return getReport();
 		return pdf;
 	}
 	
