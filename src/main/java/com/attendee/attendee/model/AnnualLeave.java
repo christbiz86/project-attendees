@@ -31,7 +31,7 @@ public class AnnualLeave {
 	private String posisi;
 	
 	@Column(name="sisa_cuti")
-	private Integer sisaCuit;
+	private Integer sisaCuti;
 	
 	public String getNama() {
 		return nama;
@@ -73,12 +73,12 @@ public class AnnualLeave {
 		this.posisi = posisi;
 	}
 
-	public Integer getSisaCuit() {
-		return sisaCuit;
+	public Integer getSisaCuti() {
+		return sisaCuti;
 	}
 
-	public void setSisaCuit(Integer sisaCuit) {
-		this.sisaCuit = sisaCuit;
+	public void setSisaCuti(Integer sisaCuti) {
+		this.sisaCuti = sisaCuti;
 	}
 
 	public AnnualLeaveBk getId() {

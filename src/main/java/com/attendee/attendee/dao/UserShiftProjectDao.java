@@ -97,4 +97,21 @@ public class UserShiftProjectDao extends ParentDao {
 			return true;
 		}	 
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public UserShiftProject findByUser(UUID userCompany) {		
+		List<UserShiftProject> list = super.entityManager.createNativeQuery("SELECT * "
+				+ "FROM user_shift_project "
+				+ "WHERE id_user_company=:userCompany ", UserShiftProject.class)
+                .setParameter("userCompany", userCompany)
+                .getResultList();
+
+		if (list.size() == 0) {
+			return new UserShiftProject();
+		}
+		else {
+			return (UserShiftProject)list.get(0);
+		}
+	}
 }
