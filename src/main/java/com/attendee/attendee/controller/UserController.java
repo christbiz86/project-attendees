@@ -179,42 +179,5 @@ public class UserController {
 		 }	
 	}
 
-    @PostMapping("/coba")
-    public ResponseEntity<?> saveNewEmployee(@RequestParam("file") MultipartFile file, 
-            @RequestParam("user") PojoUser user) throws Exception,ValidationException{
-    	try {
-    		System.out.println(file.getOriginalFilename());
-    		System.out.println(user.getUser().getNama());
-    		
-    		storageService.store(file,user.getUser().getEmail());
-	
-    		try {
-    			String pass=pwGenerator.generatePassword(user.getUser());
-        		user.getUser().setFoto(user.getUser().getEmail()+".jpg");
-    			user.getUser().setPassword(pass);
-    			user.getUser().setCreatedBy(userService.findById(
-    					((UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId()));
-    			userService.saveWithCompanyUnitPosisi(user);
-    			eService.sendSimpleMessage(user.getUser().getEmail(), "Registration Attendee App Password", ("Your email : "+user.getUser().getEmail()+"\n"
-    					+ "password : "+pass+"\n Thank you "));
-
-    			MessageResponse mg  = new MessageResponse("Success submit");
-    			
-    			return ResponseEntity.ok(mg);
-    			
-    		}
-    		catch(ValidationException val) {
-    			storageService.deleteOne(user.getUser().getFoto());
-    			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(val.getMessage());
-    			
-    		 }
-    		
-    	}catch (Exception e) {
-    		System.out.println(e);
-			storageService.deleteOne(user.getUser().getFoto());
-			MessageResponse mg = new MessageResponse("Failed insert" );
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mg);
-        }
-    }
 
 }
