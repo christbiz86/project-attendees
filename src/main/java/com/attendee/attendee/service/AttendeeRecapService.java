@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.attendee.attendee.dao.AttendeeRecapDao;
 import com.attendee.attendee.model.AttendeeRecap;
+import com.attendee.attendee.storage.StorageProperties;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -26,6 +27,8 @@ public class AttendeeRecapService {
 	@Autowired
 	private AttendeeRecapDao attendeeRecapDao;
 	
+	private StorageProperties properties;
+	
 	@Transactional
 	public List<AttendeeRecap> getAll(Date startDate, Date endDate) {
 		List<AttendeeRecap> list = attendeeRecapDao.getAllRecap(startDate, endDate);
@@ -34,7 +37,7 @@ public class AttendeeRecapService {
 	
 	@Transactional
 	public byte[] generateReport(Date startDate, Date endDate) throws JRException {
-		String reportPath = "src\\main\\report";
+		String reportPath = properties.getReportPath();
 
 		// Compile the Jasper report from .jrxml to .japser
 		JasperReport jasperReport = JasperCompileManager.compileReport(reportPath + "\\att-recap-rpt.jrxml");
@@ -53,7 +56,6 @@ public class AttendeeRecapService {
 				jrBeanCollectionDataSource);
 
 		// Export the report to a PDF file
-//		JasperExportManager.exportReportToPdfFile(jasperPrint, reportPath + "\\Att-Recap-Rpt.pdf");
 		byte[] pdf = JasperExportManager.exportReportToPdf(jasperPrint);
 
 //		return ("Report successfully generated @path= " + reportPath);

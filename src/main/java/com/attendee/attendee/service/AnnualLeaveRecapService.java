@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.attendee.attendee.dao.AnnualLeaveRecapDao;
 import com.attendee.attendee.model.AnnualLeaveRecap;
+import com.attendee.attendee.storage.StorageProperties;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -25,14 +26,16 @@ public class AnnualLeaveRecapService {
 	@Autowired
 	private AnnualLeaveRecapDao alrDao;
 	
+	private StorageProperties properties;
+	
 	public List<AnnualLeaveRecap> getAll(String company, Date startDate, Date endDate) {
 		List<AnnualLeaveRecap> list = alrDao.getAllRecap(company, startDate, endDate);
 		return list;
 	}
 	
 	@Transactional
-	public String generateReport(String company, Date startDate, Date endDate) throws JRException {
-		String reportPath = "D:\\Quda\\project-attendees\\src\\main\\report";
+	public byte[] generateReport(String company, Date startDate, Date endDate) throws JRException {
+		String reportPath = properties.getReportPath();
 
 		// Compile the Jasper report from .jrxml to .japser
 		JasperReport jasperReport = JasperCompileManager.compileReport(reportPath + "\\ann-leave-recap-rpt.jrxml");
@@ -52,10 +55,8 @@ public class AnnualLeaveRecapService {
 				jrBeanCollectionDataSource);
 
 		// Export the report to a PDF file
-		JasperExportManager.exportReportToPdfFile(jasperPrint, reportPath + "\\Ann-Leave-Recap-Rpt.pdf");
+		byte[] pdf = JasperExportManager.exportReportToPdf(jasperPrint);
 
-		System.out.println("Done");
-
-		return ("Report successfully generated @path= " + reportPath);
+		return pdf;
 	}
 }

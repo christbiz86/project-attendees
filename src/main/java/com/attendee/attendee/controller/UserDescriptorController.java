@@ -16,12 +16,12 @@ import com.attendee.attendee.service.UserDescriptorService;
 @CrossOrigin(origins = "*")
 @Controller
 @RestController
-@RequestMapping({"/coba"})
+@RequestMapping({"/user"})
 public class UserDescriptorController {
 	@Autowired
 	private UserDescriptorService usdServ;
 	
-	@PostMapping
+	@PostMapping(value = "/descriptor/register")
 	public ResponseEntity<?> register(@RequestBody UserDescriptor userDescriptor) throws Exception {
 		try {
 			usdServ.add(userDescriptor);
@@ -31,7 +31,7 @@ public class UserDescriptorController {
 		}
 	}
 	
-	@PostMapping(value = "/coba")
+	@PostMapping(value = "/descriptor")
 	public ResponseEntity<?> getDescriptor(@RequestBody UserDescriptor userDescriptor) throws Exception{
 		try {
 			return ResponseEntity.ok(usdServ.getDescriptor(userDescriptor));

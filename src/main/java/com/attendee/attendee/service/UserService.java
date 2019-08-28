@@ -175,6 +175,7 @@ public class UserService{
 		valBkNotNull(user);
 		valBkNotExist(user);
 		valNonBk(user);
+
 		userDao.save(user);
 	}
 	

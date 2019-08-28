@@ -40,8 +40,8 @@ public class AnnualLeaveRecapController {
 			@PathVariable @DateTimeFormat(pattern="yyyy-MM-dd") Date startDate, 
 			@PathVariable @DateTimeFormat(pattern="yyyy-MM-dd") Date endDate) throws Exception {
 		try {
-			MessageResponse msg = new MessageResponse(alpServ.generateReport(company, startDate, endDate));
-			return ResponseEntity.ok(msg);
+			byte[] pdf = alpServ.generateReport(company, startDate, endDate);
+			return ResponseEntity.ok(pdf);
 		} catch (Exception e) {
 			System.out.println(e);
 			MessageResponse mr = new MessageResponse("Report making failed!");
