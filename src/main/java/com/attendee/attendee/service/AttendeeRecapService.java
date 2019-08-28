@@ -1,9 +1,9 @@
 package com.attendee.attendee.service;
 
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,10 +37,8 @@ public class AttendeeRecapService {
 	
 	@Transactional
 	public byte[] generateReport(Date startDate, Date endDate) throws JRException {
-		String reportPath = properties.getReportPath();
-
 		// Compile the Jasper report from .jrxml to .japser
-		JasperReport jasperReport = JasperCompileManager.compileReport(reportPath + "\\att-recap-rpt.jrxml");
+		JasperReport jasperReport = JasperCompileManager.compileReport(Paths.get(properties.getLocation()).resolve("att-recap-rpt.jrxml").toString());
 
 		// Get your data source
 		JRBeanCollectionDataSource jrBeanCollectionDataSource = new JRBeanCollectionDataSource(attendeeRecapDao.getAllRecap(startDate, endDate));

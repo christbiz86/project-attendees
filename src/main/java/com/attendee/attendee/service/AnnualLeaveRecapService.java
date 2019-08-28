@@ -1,5 +1,6 @@
 package com.attendee.attendee.service;
 
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -35,10 +36,9 @@ public class AnnualLeaveRecapService {
 	
 	@Transactional
 	public byte[] generateReport(String company, Date startDate, Date endDate) throws JRException {
-		String reportPath = properties.getReportPath();
 
 		// Compile the Jasper report from .jrxml to .japser
-		JasperReport jasperReport = JasperCompileManager.compileReport(reportPath + "\\ann-leave-recap-rpt.jrxml");
+		JasperReport jasperReport = JasperCompileManager.compileReport(Paths.get(properties.getLocation()).resolve("ann-leave-recap-rpt.jrxml").toString());
 
 		// Get your data source
 		JRBeanCollectionDataSource jrBeanCollectionDataSource = new JRBeanCollectionDataSource(alrDao.getAllRecap(company, startDate, endDate));
