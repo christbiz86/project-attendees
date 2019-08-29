@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.attendee.attendee.model.Notification;
+import com.attendee.attendee.model.UserPrinciple;
 import com.attendee.attendee.service.NotificationService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -41,6 +43,7 @@ public class NotificationController {
 	@PostMapping(value = "/filter")
 	public ResponseEntity<?> getByFilter(@RequestBody Notification notification) throws IOException {
 		try {
+			notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().setIdCompany(((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserCompany().getIdCompanyUnitPosisi().getIdCompany());
 			List<Notification> notifList = notifService.findByFilter(notification);
 			return ResponseEntity.ok(notifList);
 		} catch (Exception e) {
@@ -58,3 +61,4 @@ public class NotificationController {
 		}
 	}
 }
+	

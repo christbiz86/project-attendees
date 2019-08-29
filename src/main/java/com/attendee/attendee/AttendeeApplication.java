@@ -10,9 +10,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import com.attendee.attendee.storage.StorageProperties;
-
-import com.attendee.attendee.storage.StorageProperties;
 
 import com.attendee.attendee.storage.StorageProperties;
 
@@ -26,8 +23,8 @@ public class AttendeeApplication extends SpringBootServletInitializer {
 	
 	public static void main(String[] args) {
 		
-		new File("upload-dir").mkdir();
-
+		new File("src/main/resources/upload-dir").mkdir();
+		new File("src/main/resources/report").mkdir();
 		 
 		SpringApplication.run(AttendeeApplication.class, args);
 	}

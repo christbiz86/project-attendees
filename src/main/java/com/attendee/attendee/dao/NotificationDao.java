@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.attendee.attendee.model.Notification;
-import com.attendee.attendee.model.Request;
 
 @Repository
 public class NotificationDao extends ParentDao {
@@ -22,19 +21,25 @@ public class NotificationDao extends ParentDao {
 			sb.append(" and request.kode like '%"+ notification.getRequest().getKode() +"%'");
 		}
 		if (notification.getRequest().getStatus() != null) {
-			sb.append(" and request.status like '%"+ notification.getRequest().getStatus() +"%'");
+			sb.append(" and request.status like '%"+ notification.getRequest().getStatus().getStatus() +"%'");
 		}
-		if (notification.getRequest().getUserCompany().getIdUser().getNama() != null) {
-			sb.append(" and request.userCompany.idUser.nama like '%"+ notification.getRequest().getUserCompany().getIdUser().getNama() +"%'");
-		}
-		if (notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().getIdCompany().getNama() != null) {
-			sb.append(" and request.userCompany.idCompanyUnitPosisi.idCompany.nama like '%"+ notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().getIdCompany().getNama() +"%'");
-		}
-		if (notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().getIdUnit().getUnit() != null) {
-			sb.append(" and request.userCompany.idCompanyUnitPosisi.idUnit.unit like '%"+ notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().getIdUnit().getUnit() +"%'");
-		}
-		if (notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().getIdPosisi().getPosisi() != null) {
-			sb.append(" and request.userCompany.idCompanyUnitPosisi.idPosisi.posisi like '%"+ notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().getIdPosisi().getPosisi() +"%'");
+		if(notification.getRequest().getUserCompany() != null) {
+			if (notification.getRequest().getUserCompany().getIdUser() != null) {
+				if (notification.getRequest().getUserCompany().getIdUser().getNama() != null) {
+					sb.append(" and request.userCompany.idUser.nama like '%"+ notification.getRequest().getUserCompany().getIdUser().getNama() +"%'");
+				}
+			}
+			if (notification.getRequest().getUserCompany().getIdCompanyUnitPosisi() != null) {
+				if (notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().getIdCompany() != null) {
+					sb.append(" and request.userCompany.idCompanyUnitPosisi.idCompany.nama like '"+ notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().getIdCompany().getNama() +"'");
+				}
+				if (notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().getIdUnit() != null) {
+					sb.append(" and request.userCompany.idCompanyUnitPosisi.idUnit.unit like '%"+ notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().getIdUnit().getUnit() +"%'");
+				}
+				if (notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().getIdPosisi() != null) {
+					sb.append(" and request.userCompany.idCompanyUnitPosisi.idPosisi.posisi like '%"+ notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().getIdPosisi().getPosisi() +"%'");
+				}
+			}
 		}
 		
 		List<Notification> list = super.entityManager.createQuery(sb.toString(), Notification.class)
