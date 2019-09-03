@@ -3,7 +3,6 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-
 	<groupId>com.attendee</groupId>
 	<artifactId>attendee</artifactId>
 	<packaging>war</packaging>
@@ -48,6 +47,8 @@
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-beans</artifactId>
             </dependency>
+            
+            
 
 	<dependency> 
         <groupId>org.springframework.boot</groupId> 
@@ -108,10 +109,24 @@
 		<version>4.0.3</version>
 	</dependency>
 	<dependency>
-        	<groupId>com.aliyun</groupId>
-        	<artifactId>aliyun-java-sdk-dm</artifactId>
-        	<version>3.1.1</version>
-    	</dependency>
+        <groupId>com.aliyun</groupId>
+        <artifactId>aliyun-java-sdk-dm</artifactId>
+        <version>3.1.1</version>
+    </dependency>
+	<dependency>
+	    <groupId>com.aliyun.oss</groupId>
+	    <artifactId>aliyun-sdk-oss</artifactId>
+	    <version>2.8.3</version>
+	</dependency>
+	<dependency>
+	    <groupId>com.alibaba.cloud</groupId>
+	    <artifactId>spring-cloud-alicloud-context</artifactId>
+	    <version>1.5.0.RELEASE</version>
+	</dependency>
+	<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+	</dependency>
 	</dependencies>
 
 	<build>
@@ -126,7 +141,7 @@
 				<artifactId>tomcat7-maven-plugin</artifactId>
 				<version>2.2</version>
 				<configuration>
-					<url>http://147.139.133.36:8080/manager/text</url>
+					<url>http://api.attendees.today:8080/manager/text</url>
 					<server>TomcatServer</server>
 					<path>/attendee</path>
 					<warSourceDirectory>WebContent</warSourceDirectory>
@@ -139,9 +154,8 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
-				<version>2.4</version>
 				<configuration>
-					<url>http://147.139.133.36:8080/manager/text</url>
+					<url>http://api.attendees.today:8080/manager/text</url>
 					<server>TomcatServer</server>
 					<path>/attendee</path>
 					<warSourceDirectory>WebContent</warSourceDirectory>

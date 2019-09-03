@@ -76,38 +76,51 @@ public class UserCompanyDao extends ParentDao {
 	@Transactional
 	public List<UserCompany> findByFilter(UserCompany userCompany) {
 		StringBuilder sb = new StringBuilder("from UserCompany where 1=1 ");
-	
 
-		if (userCompany.getIdUser().getNama() != null) {
-			sb.append(" AND idUser.nama LIKE '%" + userCompany.getIdUser().getNama() + "%' ");
-		}
-		if (userCompany.getIdUser().getAlamat() != null) {
-			sb.append(" AND idUser.alamat LIKE '%" + userCompany.getIdUser().getAlamat() + "%' ");
-		}
-		if (userCompany.getIdUser().getEmail() != null) {
-			sb.append(" AND idUser.email = " + userCompany.getIdUser().getEmail() + " ");
-		}
-		if (userCompany.getIdUser().getTglLahir() != null) {
-			sb.append(" AND idUser.tglLahir = " + userCompany.getIdUser().getTglLahir() + " ");
-		}
-		if (userCompany.getIdUser().getTelp() != null) {
-			sb.append(" AND idUser.telp = " + userCompany.getIdUser().getTelp() + " ");
+		if (userCompany.getIdUser() != null) {
+			if (userCompany.getIdUser().getNama() != null) {
+				sb.append(" AND idUser.nama LIKE '%" + userCompany.getIdUser().getNama() + "%' ");
+			}
+			if (userCompany.getIdUser().getAlamat() != null) {
+				sb.append(" AND idUser.alamat LIKE '%" + userCompany.getIdUser().getAlamat() + "%' ");
+			}
+			if (userCompany.getIdUser().getEmail() != null) {
+				sb.append(" AND idUser.email LIKE '" + userCompany.getIdUser().getEmail() + "' ");
+			}
+			if (userCompany.getIdUser().getTglLahir() != null) {
+				sb.append(" AND idUser.tglLahir LIKE '" + userCompany.getIdUser().getTglLahir() + "' ");
+			}
+			if (userCompany.getIdUser().getTelp() != null) {
+				sb.append(" AND idUser.telp LIKE '" + userCompany.getIdUser().getTelp() + "' ");
+			}
 		}
 		if (userCompany.getIdTipeUser().getTipe() != null) {
-			sb.append(" AND idTipeUser.tipe = " + userCompany.getIdTipeUser().getTipe() + " ");
+			if (userCompany.getIdTipeUser().getTipe() != null) {
+				sb.append(" AND idTipeUser.tipe LIKE '" + userCompany.getIdTipeUser().getTipe() + "' ");
+			}
 		}
-		if (userCompany.getIdCompanyUnitPosisi().getIdUnit().getUnit() != null) {
-			sb.append(" AND idCompanyUnitPosisi.idUnit.unit = " + userCompany.getIdCompanyUnitPosisi().getIdUnit().getUnit() + " ");
+		if (userCompany.getIdCompanyUnitPosisi() != null) {
+			if (userCompany.getIdCompanyUnitPosisi().getIdUnit() != null) {
+				if (userCompany.getIdCompanyUnitPosisi().getIdUnit().getUnit() != null) {
+					sb.append(" AND idCompanyUnitPosisi.idUnit.unit LIKE '"
+							+ userCompany.getIdCompanyUnitPosisi().getIdUnit().getUnit() + "' ");
+				}
+			}
+			if (userCompany.getIdCompanyUnitPosisi().getIdPosisi() != null) {
+				if (userCompany.getIdCompanyUnitPosisi().getIdPosisi().getPosisi() != null) {
+					sb.append(" AND idCompanyUnitPosisi.idPosisi.posisi LIKE '"
+							+ userCompany.getIdCompanyUnitPosisi().getIdPosisi().getPosisi() + "' ");
+				}
+			}
+			if (userCompany.getIdCompanyUnitPosisi().getIdCompany() != null) {
+				if (userCompany.getIdCompanyUnitPosisi().getIdCompany().getId() != null) {
+					sb.append(" AND idCompanyUnitPosisi.idCompany.id = '"
+							+ userCompany.getIdCompanyUnitPosisi().getIdCompany().getId() + "' ");
+				}
+			}
 		}
-		if (userCompany.getIdCompanyUnitPosisi().getIdPosisi().getPosisi() != null) {
-			sb.append(" AND idCompanyUnitPosisi.idPosisi.posisi = " + userCompany.getIdCompanyUnitPosisi().getIdPosisi().getPosisi() + " ");
-		}
-		if (userCompany.getIdCompanyUnitPosisi().getIdCompany().getNama() != null) {
-			sb.append(" AND idCompanyUnitPosisi.idCompany.nama = " + userCompany.getIdCompanyUnitPosisi().getIdCompany().getNama() + " ");
-		}
-		
-		List<UserCompany> list = super.entityManager.createQuery(sb.toString())
-				.getResultList();
+		System.out.println(sb.toString());
+		List<UserCompany> list = super.entityManager.createQuery(sb.toString()).getResultList();
 
 		if (list.size() == 0) {
 			return new ArrayList<UserCompany>();

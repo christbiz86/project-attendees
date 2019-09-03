@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.attendee.attendee.dao.StatusDao;
 import com.attendee.attendee.dao.UserDao;
@@ -51,6 +52,9 @@ public class UserService{
 	
 	@Autowired
 	private StatusDao staDao;
+	
+	@Autowired
+	private CloudService cloudService;
 	
 	public String kodeUser() {
 		return "USER"+userDao.countRows();
@@ -175,6 +179,7 @@ public class UserService{
 		valBkNotNull(user);
 		valBkNotExist(user);
 		valNonBk(user);
+
 		userDao.save(user);
 	}
 	
@@ -238,7 +243,7 @@ public class UserService{
 	}
 
 	@Transactional
-	public void saveWithCompanyUnitPosisi(PojoUser user)throws ValidationException {
+	public void saveWithCompanyUnitPosisi(PojoUser user, MultipartFile file)throws ValidationException {
 		try {
 			
 			save(user.getUser());
@@ -258,6 +263,7 @@ public class UserService{
 	        userCompany.setIdCompanyUnitPosisi(cupService.findByBk(companyUnitPosisi.getIdCompany().getId(),companyUnitPosisi.getIdUnit().getId(),companyUnitPosisi.getIdPosisi().getId()));
 	        
 	        ucService.save(userCompany);
+	        cloudService.save(file, userCompany.getIdUser().getKode()+userCompany.getIdUser().getNama());
 		}catch (ValidationException e) {
 			System.out.println(e);
 			throw e;

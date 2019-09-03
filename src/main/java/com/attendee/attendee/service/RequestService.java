@@ -8,6 +8,7 @@ import java.util.UUID;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.attendee.attendee.dao.NotificationDao;
@@ -17,6 +18,7 @@ import com.attendee.attendee.exception.InvalidDataException;
 import com.attendee.attendee.model.Notification;
 import com.attendee.attendee.model.Request;
 import com.attendee.attendee.model.User;
+import com.attendee.attendee.model.UserPrinciple;
 
 @Service
 public class RequestService {
@@ -39,7 +41,9 @@ public class RequestService {
 	
 	@Transactional
 	public void insert(Request request) throws Exception {
-		request.setCreatedBy(request.getUserCompany().getIdUser());
+		request.setCreatedBy(
+				((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal())
+				.getUserCompany().getIdUser());
 		request.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 		request.setStatus(staDao.findByStatus("Request"));
 		request.setKode("REQ"+aprDao.countRows());

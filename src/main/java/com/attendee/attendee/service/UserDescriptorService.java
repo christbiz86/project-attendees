@@ -1,54 +1,45 @@
 package com.attendee.attendee.service;
 
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.nio.file.Paths;
-
 import javax.transaction.Transactional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import com.attendee.attendee.model.UserDescriptor;
+import com.aliyun.oss.OSSClient;
+import com.attendee.attendee.dao.UserDescriptorDao;
+import com.attendee.attendee.model.UserDescriptorPojo;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 @Service
 public class UserDescriptorService {
-	private JsonParser parser = new JsonParser();
-	private JsonObject jsonObject = new JsonObject();
-	private JsonArray jsonArray = new JsonArray();
+//	private JsonObject jsonObject = new JsonObject();
 	private Gson gson = new Gson();
 	
+	private final String BUCKET_NAME = "attendee-storage";
+	String endpoint = "oss-ap-southeast-5.aliyuncs.com";
+	String accessKeyId = "LTAIgIip5nffvLF5";
+	String accessKeySecret = "HhLtxTftFss1tEevTDMQRmbxyFwJue";
+	
+	private OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
+	
+	@Autowired
+	private UserDescriptorDao usdDao;
+
 	@Transactional
-	public void add(UserDescriptor userDescriptor) throws Exception {
-		//load
-		Object obj = parser.parse(new FileReader(Paths.get("upload-dir").resolve("Employee.json").toString()));
-		jsonArray = (JsonArray) obj;
-		
+	public void addJson(UserDescriptorPojo userDescriptor) throws Exception {
 		JsonObject inputObj  = gson.fromJson(gson.toJson(userDescriptor), JsonObject.class);
-		jsonArray.add(inputObj);
-		
-		FileWriter writer = new FileWriter(Paths.get("upload-dir").resolve("Employee.json").toString(),false);
-		writer.write(jsonArray.toString());
-		writer.close();
+		usdDao.save(userDescriptor.getName(), inputObj);
 	}
 	
-	public UserDescriptor getDescriptor(UserDescriptor userDescriptor) throws Exception {
-		//load
-		Object obj = parser.parse(new FileReader(Paths.get("upload-dir").resolve("Employee.json").toString()));
-		jsonArray = (JsonArray) obj;
-		
-		for (JsonElement jsonElement : jsonArray) {
-			System.out.println(jsonElement.toString());
-			if(jsonElement.getAsJsonObject().get("name").toString().contains(userDescriptor.getName())) {
-				jsonObject = (JsonObject) jsonElement;
-				break;
-			}
-		}
-		UserDescriptor output = gson.fromJson(jsonObject, UserDescriptor.class);
-		return output;
+	@Transactional
+	public void addImage(MultipartFile file, String id) throws Exception {
+		ossClient.putObject(BUCKET_NAME, id+".jpg",
+				file.getInputStream());
+	}
+	
+	public UserDescriptorPojo getDescriptor(String id) throws Exception {
+		return usdDao.load(id);
 	}
 }

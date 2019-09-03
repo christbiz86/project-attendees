@@ -1,14 +1,30 @@
 package com.attendee.attendee.model;
 
 import java.util.UUID;
-import javax.persistence.Id;
+
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import org.hibernate.annotations.Immutable;
+import javax.persistence.NamedStoredProcedureQueries;
+import javax.persistence.NamedStoredProcedureQuery;
+import javax.persistence.ParameterMode;
+import javax.persistence.StoredProcedureParameter;
+
+@NamedStoredProcedureQueries({
+	@NamedStoredProcedureQuery(
+	    name = "getAnnualLeave", 
+	    procedureName = "annual_leave", 
+	    resultClasses = { AnnualLeave.class },
+	    parameters = {
+	    		@StoredProcedureParameter(
+	    				mode = ParameterMode.IN, 
+	                    name = "id_company", 
+	                    type = UUID.class)
+	    }
+	)
+})
 
 @Entity
-@Immutable
 public class AnnualLeave {
 
 	@EmbeddedId
@@ -30,7 +46,7 @@ public class AnnualLeave {
 	private String posisi;
 	
 	@Column(name="sisa_cuti")
-	private Integer sisaCuit;
+	private Integer sisaCuti;
 	
 	public String getNama() {
 		return nama;
@@ -72,12 +88,12 @@ public class AnnualLeave {
 		this.posisi = posisi;
 	}
 
-	public Integer getSisaCuit() {
-		return sisaCuit;
+	public Integer getSisaCuti() {
+		return sisaCuti;
 	}
 
-	public void setSisaCuit(Integer sisaCuit) {
-		this.sisaCuit = sisaCuit;
+	public void setSisaCuti(Integer sisaCuti) {
+		this.sisaCuti = sisaCuti;
 	}
 
 	public AnnualLeaveBk getId() {

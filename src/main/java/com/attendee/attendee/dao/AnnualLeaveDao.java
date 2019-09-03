@@ -1,14 +1,12 @@
 package com.attendee.attendee.dao;
 
-import java.util.List;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.List;
+
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.attendee.attendee.model.AnnualLeave;
 
 @Repository
@@ -16,40 +14,17 @@ public class AnnualLeaveDao extends ParentDao {
 	
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public List<AnnualLeave> findAll() {
-		List<AnnualLeave> list = super.entityManager
-				.createQuery("FROM AnnualLeave")
-				.getResultList();
-		return list;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Transactional
-	public List<AnnualLeave> findByCompany(UUID idCompany) {
-		List<AnnualLeave> list = super.entityManager
-				.createQuery("FROM AnnualLeave where idCompany =:idCompany")
-				.setParameter("idCompany", idCompany)
-				.getResultList();
-		return list;
-	}
-	
-	@SuppressWarnings("unchecked")
-	@Transactional
-	public List<AnnualLeave> findByFilter(UUID idCompany,Long tahun) {
+	public List<AnnualLeave> findByFilter(UUID idCompany,String kode) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("FROM AnnualLeave WHERE 1=1");
-		
-		if(idCompany != null) {
+		sb.append("SELECT * FROM annual_leave(:id_company) WHERE 1=1 ");
 
-			sb.append(" AND idCompany='"+idCompany+"'");
+		if (kode != null) {
+			sb.append(" AND kode='"+kode+"'");
 		}
 		
-		if (tahun != null) {
-			sb.append(" AND tahun='"+tahun+"'");
-		}
-
 		List<AnnualLeave> list = super.entityManager
-                .createQuery(sb.toString())
+                .createNativeQuery(sb.toString(),AnnualLeave.class)
+                .setParameter("id_company", idCompany)
                 .getResultList();
 
 		if (list.size() == 0) {

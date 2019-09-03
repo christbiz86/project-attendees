@@ -25,7 +25,7 @@ public class User {
 	
 	@Id
 	@Column(name="id")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private UUID id;
 	
 	@Column(name="kode")
@@ -71,6 +71,9 @@ public class User {
 	@JoinColumn(name = "id_status", referencedColumnName = "id")
 	@OneToOne
 	private Status idStatus;
+	
+	@Column(name="foto_attendee")
+	private String fotoAttendee;
 
 	public UUID getId() {
 		return id;
@@ -182,5 +185,13 @@ public class User {
 
 	public void setIdStatus(Status idStatus) {
 		this.idStatus = idStatus;
+	}
+
+	public String getFotoAttendee() {
+		return fotoAttendee;
+	}
+
+	public void setFotoAttendee(String fotoAttendee) {
+		this.fotoAttendee = fotoAttendee;
 	}
 }
