@@ -109,7 +109,7 @@ public class UserController {
     		System.out.println(file.getOriginalFilename());
     		System.out.println(user.getUser().getNama());
     		
-    		storageService.store(file,user.getUser().getEmail()+".jpg");
+//    		storageService.store(file,user.getUser().getEmail()+".jpg");
 	
     		try {
     			String pass=pwGenerator.generatePassword(user.getUser());
@@ -117,7 +117,7 @@ public class UserController {
     			user.getUser().setPassword(pass);
     			user.getUser().setCreatedBy(userService.findById(
     					((UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId()));
-    			userService.saveWithCompanyUnitPosisi(user);
+    			userService.saveWithCompanyUnitPosisi(user, file);
     			eService.sendSimpleMessage(user.getUser().getEmail(), "Registration Attendee App Password", ("Your email : "+user.getUser().getEmail()+"\n"
     					+ "password : "+pass+"\n Thank you "));
 

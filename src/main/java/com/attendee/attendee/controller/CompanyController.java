@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.attendee.attendee.email.PasswordGenerator;
 import com.attendee.attendee.exception.MessageResponse;
 import com.attendee.attendee.exception.ValidationException;
 import com.attendee.attendee.model.Company;
@@ -53,32 +54,8 @@ public class CompanyController {
 	@Autowired
 	private CompanyUnitPosisiService cupServ;
 	
-	public Company splitCompany(RegistrationForm regForm) throws ValidationException {
-		Company company = new Company();
-	    Status s = stServ.findByStatus("Non-active");
-	    
-	    company.setNama(regForm.getNamaCompany());
-	    company.setJatahCuti(regForm.getJatahCuti());
-	    company.setToleransiKeterlambatan(regForm.getToleransiKeterlambatan());
-	    company.setIdStatus(s);
-	    
-		return company;
-	}
-	
-	public User splitUser(RegistrationForm regForm) throws ValidationException, NoSuchAlgorithmException {
-		User user = new User();
-		Status s = stServ.findByStatus("Non-active");
-		
-		user.setNama(regForm.getNamaUser());
-	    user.setAlamat(regForm.getAlamat());
-	    user.setEmail(regForm.getEmail());
-	    user.setTglLahir(regForm.getTglLahir());
-	    user.setTelp(regForm.getTelp());
-	    user.setFoto(regForm.getFoto());
-	    user.setIdStatus(s);
-	    
-		return user;
-	}
+	@Autowired
+	private PasswordGenerator pwGenerator;
 	
 	@PostMapping(value = "/company")
 	public ResponseEntity<?> save(@RequestBody RegistrationForm regForm) throws Exception {
@@ -87,60 +64,60 @@ public class CompanyController {
 		List<MessageResponse> messagesException = new ArrayList<MessageResponse>();
 	    List allMessages =  new ArrayList();
 	    
-	    Company company = new Company();
-	    User user = new User();
-	    
-	    comServ.insert(splitCompany(regForm));
-	    userServ.save(splitUser(regForm));
-	    	    
-		try {						
-			CompanyUnitPosisi cup = new CompanyUnitPosisi(); 
-			
-			Company c = comServ.findByName(regForm.getNamaCompany());
-			
-			//set company unit posisi
-			cup.setIdCompany(c);			
-			
-			try {
-				cupServ.insertSuperAdmin(cup);
+	    try {
+		    comServ.insert(regForm.getCompany());
+		    
+			String pass=pwGenerator.generatePassword(regForm.getUser());
+			regForm.getUser().setPassword(pass);
+		    userServ.save(regForm.getUser());
+		    try {						
+				CompanyUnitPosisi cup = new CompanyUnitPosisi(); 
+				Company c = comServ.findByName(regForm.getCompany().getNama());
 				
-				User u = new User();
-				TipeUser tu = new TipeUser();
-				UserCompany uc = new UserCompany();
-				
-				u = userServ.findByName(regForm.getNamaUser());
-				tu = tuServ.findByTipe("Super Admin");
-				cup = cupServ.findByIdCompany(c.getId());
-				
-				//set user company
-				System.out.println(u.getId());
-				System.out.println(tu.getId());
-				System.out.println(cup.getId());
-				
-				uc.setIdUser(u);
-				uc.setIdTipeUser(tu);
-				uc.setIdCompanyUnitPosisi(cup);
-				
+				//set company unit posisi
+				cup.setIdCompany(c);			
 				try {
-					ucServ.save(uc);
+					cupServ.insertSuperAdmin(cup);
 					
-					MessageResponse mr = new MessageResponse("Insert success with company name "+regForm.getNamaCompany()+ " and user name "+regForm.getNamaUser());
-					messagesSuccess.add(mr);
-					return ResponseEntity.status(HttpStatus.CREATED).body(mr);
+					User u = userServ.findByName(regForm.getUser().getNama());
+					TipeUser tu = tuServ.findByTipe("Super Admin");
+
+					cup = cupServ.findByIdCompany(c.getId());
+
+					//set user company
+					System.out.println(u.getId());
+					System.out.println(tu.getId());
+					System.out.println(cup.getId());
+
+					UserCompany uc = new UserCompany();
+					uc.setIdUser(u);
+					uc.setIdTipeUser(tu);
+					uc.setIdCompanyUnitPosisi(cup);
+					try {
+						ucServ.save(uc);
+						
+						MessageResponse mr = new MessageResponse("Insert success with company name "+regForm.getCompany().getNama()+ " and user name "+regForm.getUser().getNama());
+						messagesSuccess.add(mr);
+						return ResponseEntity.status(HttpStatus.CREATED).body(mr);
+						
+					} catch (Exception e) {
+						System.out.println(e.getMessage());
+						System.out.println(e);
+						MessageResponse mr = new MessageResponse("Insert user company failed!");
+						messagesException.add(mr);
+					}
 					
 				} catch (Exception e) {
-					System.out.println(e.getMessage());
 					System.out.println(e);
-					MessageResponse mr = new MessageResponse("Insert user company failed!");
+					MessageResponse mr = new MessageResponse("Insert company unit posisi failed!");
 					messagesException.add(mr);
 				}
 				
 			} catch (Exception e) {
 				System.out.println(e);
-				MessageResponse mr = new MessageResponse("Insert company unit posisi failed!");
+				MessageResponse mr = new MessageResponse("Insert all failed!");
 				messagesException.add(mr);
 			}
-			
 		} catch (Exception e) {
 			System.out.println(e);
 			MessageResponse mr = new MessageResponse("Insert all failed!");
@@ -200,4 +177,3 @@ public class CompanyController {
 	}
 		
 }
-

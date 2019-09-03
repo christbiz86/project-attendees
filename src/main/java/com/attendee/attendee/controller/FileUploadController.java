@@ -1,9 +1,8 @@
 package com.attendee.attendee.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -15,8 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
 import com.attendee.attendee.exception.MessageResponse;
-import com.attendee.attendee.exception.MessageResponse;
+import com.attendee.attendee.service.CloudService;
 import com.attendee.attendee.service.JsonService;
 import com.attendee.attendee.storage.StorageFileNotFoundException;
 import com.attendee.attendee.storage.StorageService;
@@ -30,19 +30,26 @@ public class FileUploadController {
 
     @Autowired
     private JsonService json;
+    
+    @Autowired
+    private CloudService cloudService;
 
     @Autowired
     public FileUploadController(StorageService storageService) {
         this.storageService = storageService;
     }
-
-    @GetMapping("/image/{filename:.+}")
-    @ResponseBody
-    public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
-
-        Resource file = storageService.loadAsResource(filename);
-        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
-                "attachment; filename=\"" + file.getFilename() + "\"").body(file);
+    
+    @GetMapping(
+    		  value = "/image/{filename}",
+    		  produces = MediaType.IMAGE_JPEG_VALUE
+    		)
+    public @ResponseBody ResponseEntity<?> serveFile(@PathVariable String filename) {
+    	try {
+			return ResponseEntity.ok().body(cloudService.load(filename));
+		} catch (Exception e) {
+			MessageResponse mg = new MessageResponse("Failed insert" );
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mg);
+		}
     }
 
     @PostMapping("/upload")

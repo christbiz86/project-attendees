@@ -1,7 +1,5 @@
 package com.attendee.attendee;
 
-import java.io.File;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -22,10 +20,6 @@ import com.attendee.attendee.storage.StorageProperties;
 public class AttendeeApplication extends SpringBootServletInitializer {
 	
 	public static void main(String[] args) {
-		
-		new File("src/main/resources/upload-dir").mkdir();
-		new File("src/main/resources/report").mkdir();
-		 
 		SpringApplication.run(AttendeeApplication.class, args);
 	}
 
