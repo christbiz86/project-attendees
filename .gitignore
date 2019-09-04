@@ -1,0 +1,17 @@
+target/*
+
+.dbeaver/*
+
+.mvn/*
+
+.settings/*
+
+.classpath
+
+.project
+
+src/main/resources/*
+
+/target
+/
+WebContent/*
