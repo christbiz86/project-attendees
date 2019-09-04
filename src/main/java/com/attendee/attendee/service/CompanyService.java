@@ -4,6 +4,8 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -97,6 +99,7 @@ public class CompanyService {
 		}	
 	}
 	
+	@Transactional
 	public void insert(Company company) throws ValidationException {
 		company.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 		company.setIdStatus(staDao.findByStatus("Active"));
@@ -107,6 +110,7 @@ public class CompanyService {
 		companyDao.save(company);
 	}
 	
+	@Transactional
 	public void update(Company company) throws ValidationException {
 		company.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
 		valIdNotNull(company);

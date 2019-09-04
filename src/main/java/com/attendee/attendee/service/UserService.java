@@ -8,6 +8,7 @@ import java.util.Random;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,12 +16,13 @@ import com.attendee.attendee.dao.StatusDao;
 import com.attendee.attendee.dao.UserDao;
 import com.attendee.attendee.exception.ValidationException;
 import com.attendee.attendee.model.User;
+import com.attendee.attendee.model.UserPrinciple;
 
 @Service
 public class UserService{
 	@Autowired
 	private UserDao userDao;
-
+	
 	@Autowired
 	private PasswordEncoder encoder;
 	
@@ -168,9 +170,13 @@ public class UserService{
 		userDao.save(user);
 	}
 	
-	public void delete(UUID id)throws ValidationException{
-		valIdExist(id);
-		userDao.delete(id);
+	public void delete(User user)throws ValidationException{
+		valIdExist(user.getId());
+		user.setUpdatedAt(getTime());
+		user.setUpdatedBy(((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId());
+		user.setIdStatus(staDao.findByStatus("Inactive"));
+		
+		userDao.save(user);
 	}
 	
 	public User findById(UUID id)throws ValidationException{

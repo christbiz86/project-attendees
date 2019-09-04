@@ -90,7 +90,7 @@ public class PosisiDao extends ParentDao {
 		if (posisi.getPosisi() != null) {
 			sb.append(" AND p.posisi LIKE '%" + posisi.getPosisi() + "%' ");
 		}
-		if (posisi.getIdStatus().getId() != null) {
+		if (posisi.getIdStatus() != null) {
 			sb.append(" AND p.id_status LIKE '%" + posisi.getIdStatus().getId() + "%' ");
 		}
 

@@ -83,4 +83,24 @@ public class UserController {
 		     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mg);
 		 }
 	}
+	
+	@RequestMapping(value =  "/user", method = RequestMethod.PATCH)
+	public ResponseEntity<?> delete(@RequestBody User user) throws Exception
+	{
+		 try 
+		 {
+			 userService.delete(user);
+			 MessageResponse mg = new MessageResponse("Success delete");
+			 return ResponseEntity.ok(mg);
+		 }
+		 		 
+		 catch(ValidationException val) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(val.getMessage());
+				
+		 }
+		catch (Exception e) {
+			MessageResponse mg = new MessageResponse("Failed delete" );
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mg);
+		}
+	}
 }

@@ -88,6 +88,7 @@ public class PosisiService {
 		jabatan.setIdStatus(statusService.findByStatus("Active"));
 		jabatan.setUpdatedAt(null);
 		jabatan.setUpdatedBy(null);
+		jabatan.setIdStatus(statusService.findByStatus("Active"));
 		
 		valBkNotNull(jabatan);
 		valBkNotExist(jabatan);

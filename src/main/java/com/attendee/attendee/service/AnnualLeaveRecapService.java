@@ -52,8 +52,7 @@ public class AnnualLeaveRecapService {
 				jasperReport, 
 				parameters,
 				jrBeanCollectionDataSource);
-		
-		// Export the report to a PDF file
+
 		byte[] pdf = JasperExportManager.exportReportToPdf(jasperPrint);
 
 		return pdf;

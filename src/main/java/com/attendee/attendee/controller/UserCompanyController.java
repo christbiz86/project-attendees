@@ -75,7 +75,6 @@ public class UserCompanyController {
 	public ResponseEntity<?> retrieveAll() throws ValidationException {
 		try {
 			List<UserCompany> list = userCompanyService.findAll();
-
 			return ResponseEntity.ok(list);
 		}
 

@@ -11,6 +11,7 @@ import com.attendee.attendee.model.Company;
 
 @Repository
 public class CompanyDao extends ParentDao {
+	
 	@SuppressWarnings("unchecked")
 	@Transactional
 	public Company findById(UUID id) {

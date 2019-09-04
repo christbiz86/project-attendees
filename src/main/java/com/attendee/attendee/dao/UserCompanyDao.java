@@ -12,19 +12,16 @@ import com.attendee.attendee.model.UserCompany;
 @Repository
 public class UserCompanyDao extends ParentDao {
 	
-	@Transactional
 	public void save(UserCompany userCompany) {
 		super.entityManager.merge(userCompany);
 	}
 
-	@Transactional
 	public void delete(UUID id) {
 		UserCompany userCompany = findById(id);
 		super.entityManager.remove(userCompany);
 	}
 
 	@SuppressWarnings("unchecked")
-	@Transactional
 	public UserCompany findById(UUID id) {
 
 		List<UserCompany> list = super.entityManager.createQuery("from UserCompany where id=:id").setParameter("id", id)
@@ -38,7 +35,6 @@ public class UserCompanyDao extends ParentDao {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Transactional
 	public List<UserCompany> findAll() {
 		List<UserCompany> list = super.entityManager.createQuery("from UserCompany ").getResultList();
 		return list;
@@ -53,7 +49,7 @@ public class UserCompanyDao extends ParentDao {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Transactional
+//	@Transactional
 	public UserCompany findByBk(UUID idUser) {
 		List<UserCompany> list = super.entityManager.createQuery("from UserCompany where idUser.id=:idUser")
 				.setParameter("idUser", idUser).getResultList();
@@ -74,10 +70,8 @@ public class UserCompanyDao extends ParentDao {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Transactional
 	public List<UserCompany> findByFilter(UserCompany userCompany) {
 		StringBuilder sb = new StringBuilder("from UserCompany where 1=1 ");
-
 		if (userCompany.getIdUser() != null) {
 			if (userCompany.getIdUser().getNama() != null) {
 				sb.append(" AND idUser.nama LIKE '%" + userCompany.getIdUser().getNama() + "%' ");
@@ -93,6 +87,9 @@ public class UserCompanyDao extends ParentDao {
 			}
 			if (userCompany.getIdUser().getTelp() != null) {
 				sb.append(" AND idUser.telp LIKE '" + userCompany.getIdUser().getTelp() + "' ");
+			}
+			if (userCompany.getIdUser().getIdStatus().getStatus() != null) {
+				sb.append(" AND idUser.idStatus.status LIKE '" + userCompany.getIdUser().getIdStatus().getStatus() + "' ");
 			}
 		}
 		if (userCompany.getIdTipeUser().getTipe() != null) {
@@ -120,7 +117,6 @@ public class UserCompanyDao extends ParentDao {
 				}
 			}
 		}
-		System.out.println(sb.toString());
 		List<UserCompany> list = super.entityManager.createQuery(sb.toString()).getResultList();
 
 		if (list.size() == 0) {
@@ -131,7 +127,6 @@ public class UserCompanyDao extends ParentDao {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Transactional
 	public UserCompany findByUsername(String username) {
 		List<UserCompany> list = super.entityManager.createQuery("from UserCompany where idUser.username=:username")
 				.setParameter("username", username).getResultList();
@@ -144,7 +139,7 @@ public class UserCompanyDao extends ParentDao {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Transactional
+//	@Transactional
 	public UserCompany findByEmail(String email) {
 		List<UserCompany> list = super.entityManager.createQuery("from UserCompany where idUser.email=:email")
 				.setParameter("email", email).getResultList();
@@ -153,6 +148,19 @@ public class UserCompanyDao extends ParentDao {
 			return new UserCompany();
 		} else {
 			return (UserCompany) list.get(0);
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public List<UserCompany> findByTipe(String tipe) {
+		List<UserCompany> list = super.entityManager.createQuery("from UserCompany where idTipeUser.tipe not like :tipe")
+				.setParameter("tipe", tipe).getResultList();
+
+		if (list.size() == 0) {
+			return new ArrayList<UserCompany>();
+		} else {
+			return list;
 		}
 	}
 }

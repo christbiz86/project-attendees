@@ -19,15 +19,16 @@ public class UserShiftProject {
 	@Column(name = "id")
 	private UUID id;
 	
-	@Column(name = "worktime")
-	private String worktime;
+	@JoinColumn(name = "worktime", referencedColumnName = "id")
+	@OneToOne
+	private Status worktime;
 	
 	@JoinColumn(name = "id_user_company", referencedColumnName = "id")
-	@OneToOne(optional = false)
+	@OneToOne
 	private UserCompany userCompany;
 	
 	@JoinColumn(name = "id_shift_project", referencedColumnName = "id")
-	@OneToOne(optional = false)
+	@OneToOne
 	private ShiftProject shiftProject;
 
 	public UUID getId() {
@@ -54,11 +55,11 @@ public class UserShiftProject {
 		this.shiftProject = shiftProject;
 	}
 
-	public String getWorktime() {
+	public Status getWorktime() {
 		return worktime;
 	}
 
-	public void setWorktime(String worktime) {
+	public void setWorktime(Status worktime) {
 		this.worktime = worktime;
 	}
 }

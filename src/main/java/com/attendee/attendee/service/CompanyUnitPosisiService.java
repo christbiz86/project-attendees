@@ -16,6 +16,7 @@ public class CompanyUnitPosisiService {
 	@Autowired
 	private CompanyUnitPosisiDao companyUnitPosisiDao;
 
+
 	public void valIdExist(UUID id)throws ValidationException{
 			System.out.println("validasi cup");
 		if(!companyUnitPosisiDao.isExist(id)) {

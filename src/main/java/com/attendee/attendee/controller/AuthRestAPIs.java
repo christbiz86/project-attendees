@@ -11,7 +11,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -25,8 +24,6 @@ import com.attendee.attendee.model.User;
 import com.attendee.attendee.model.UserPrinciple;
 import com.attendee.attendee.security.jwt.JwtProvider;
 import com.attendee.attendee.security.jwt.JwtResponse;
-import com.attendee.attendee.service.Encoder;
-import com.attendee.attendee.service.UserService;
 
  
 @CrossOrigin(origins = "*", maxAge = 3600)

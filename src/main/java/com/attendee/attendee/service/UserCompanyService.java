@@ -86,6 +86,7 @@ public class UserCompanyService {
 		}
 	}
 	
+	@Transactional
 	public void save(UserCompany userCompany)throws ValidationException{
 		valBkNotNull(userCompany);
 		valBkNotExist(userCompany);
@@ -93,6 +94,7 @@ public class UserCompanyService {
 		userCompanyDao.save(userCompany);
 	}
 	
+	@Transactional
 	public void update(UserCompany userCompany)throws ValidationException{
 		
 		valIdNotNull(userCompany);
@@ -119,18 +121,23 @@ public class UserCompanyService {
 		return userCompanyDao.findByBk(userCompany.getIdUser().getId());
 	}
 	
+	@Transactional
 	public List<UserCompany> findAll( )throws ValidationException{
 		return userCompanyDao.findAll();
 	}
 	
+	@Transactional
 	public List<UserCompany> findByFilter(UserCompany userCompany )throws ValidationException{
 		return userCompanyDao.findByFilter(userCompany);
 	}
 
 	public UserCompany findByUsername(String username) {
-	
 		return userCompanyDao.findByUsername(username);
 	}	
+	
+	public List<UserCompany> findByTipe(String tipe) {
+		return userCompanyDao.findByTipe(tipe);
+	}
 	
 	public void saveWithCompanyUnitPosisi(PojoUser user)throws ValidationException {
 		try {
