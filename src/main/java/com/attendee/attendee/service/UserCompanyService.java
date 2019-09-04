@@ -36,10 +36,6 @@ public class UserCompanyService {
 	@Autowired
 	private PosisiService posisiService;
 	
-	@Autowired
-	private CompanyService comService;
-			
-	
 	private void valIdExist(UUID id)throws ValidationException{
 		
 		if(!userCompanyDao.isExist(id)) {
@@ -59,10 +55,6 @@ public class UserCompanyService {
 		StringBuilder sb=new StringBuilder();
 		int error=0;
 
-//		if(userCompany.getIdCompanyunitPosisi()==null || userCompany.getIdCompanyunitPosisi().getId()==null) {
-//			sb.append("company divisi jabatan tidak boleh kosong \n");
-//			error++;
-//		}
 		if(userCompany.getIdTipeUser()==null) {
 			sb.append("tipe user tidak boleh kosong \n");
 			error++;
@@ -94,7 +86,6 @@ public class UserCompanyService {
 		}
 	}
 	
-//	@Transactional
 	public void save(UserCompany userCompany)throws ValidationException{
 		valBkNotNull(userCompany);
 		valBkNotExist(userCompany);
@@ -102,7 +93,6 @@ public class UserCompanyService {
 		userCompanyDao.save(userCompany);
 	}
 	
-//	@Transactional
 	public void update(UserCompany userCompany)throws ValidationException{
 		
 		valIdNotNull(userCompany);

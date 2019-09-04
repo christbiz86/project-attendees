@@ -58,5 +58,4 @@ public class AnnualLeaveRecapService {
 
 		return pdf;
 	}
-	
 }

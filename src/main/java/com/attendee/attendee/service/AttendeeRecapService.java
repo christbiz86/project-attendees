@@ -55,7 +55,6 @@ public class AttendeeRecapService {
 		// Export the report to a PDF file
 		byte[] pdf = JasperExportManager.exportReportToPdf(jasperPrint);
 
-//		return ("Report successfully generated @path= " + reportPath);
 		return pdf;
 	}
 }

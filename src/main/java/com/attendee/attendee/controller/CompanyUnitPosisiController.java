@@ -77,10 +77,8 @@ public class CompanyUnitPosisiController {
 				
 		 }
 		catch (Exception e) {
-			System.out.println(e);
 			MessageResponse mg = new MessageResponse("Failed update" );
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mg);
 		}
 	}
-	
 }

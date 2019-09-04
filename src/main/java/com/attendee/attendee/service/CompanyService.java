@@ -6,7 +6,6 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.attendee.attendee.dao.CompanyDao;
 import com.attendee.attendee.dao.StatusDao;
@@ -98,7 +97,6 @@ public class CompanyService {
 		}	
 	}
 	
-//	@Transactional
 	public void insert(Company company) throws ValidationException {
 		company.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 		company.setIdStatus(staDao.findByStatus("Active"));
@@ -109,7 +107,6 @@ public class CompanyService {
 		companyDao.save(company);
 	}
 	
-//	@Transactional
 	public void update(Company company) throws ValidationException {
 		company.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
 		valIdNotNull(company);
@@ -119,5 +116,4 @@ public class CompanyService {
 		valNonBk(company);
 		companyDao.save(company);
 	}
-
 }

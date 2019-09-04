@@ -27,23 +27,23 @@ public class Unit {
 	private String unit;
 	
 	@JoinColumn(name = "id_status", referencedColumnName = "id")
-	@OneToOne
+	@OneToOne(optional = false)
 	private Status idStatus;
 	
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+7")
+	@JsonFormat(shape=JsonFormat.Shape.STRING,pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+7")
 	@Column(name = "created_at")
 	private Timestamp createdAt;
 	
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+7")
+	@JsonFormat(shape=JsonFormat.Shape.STRING,pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+7")
 	@Column(name = "updated_at")
 	private Timestamp updatedAt;
 	
 	@JoinColumn(name = "created_by", referencedColumnName = "id")
-	@OneToOne
+	@OneToOne(optional = false)
 	private User createdBy;
 	
 	@JoinColumn(name = "updated_by", referencedColumnName = "id")
-	@OneToOne
+	@OneToOne(optional = false)
 	private User updatedBy;
 
 	public UUID getId() {

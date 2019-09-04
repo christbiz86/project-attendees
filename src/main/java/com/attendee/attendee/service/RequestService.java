@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import com.attendee.attendee.dao.NotificationDao;
 import com.attendee.attendee.dao.RequestDao;
 import com.attendee.attendee.dao.StatusDao;
 import com.attendee.attendee.exception.InvalidDataException;
@@ -29,7 +28,7 @@ public class RequestService {
 	private StatusDao staDao;
 	
 	@Autowired
-	private NotificationDao notifDao;
+	private NotificationService notifService;
 	
 	public List<Request> findAll(){
 		return aprDao.findAll();
@@ -53,11 +52,9 @@ public class RequestService {
 		aprDao.save(request);
 		
 		Notification notif = new Notification();
-		notif.setRequest(aprDao.findByBk(request.getKode()));
+		notif.setRequest(request);
 		notif.setStatus(staDao.findByStatus("Unread"));
-		System.out.println(notif.getStatus().getId());
-		notifDao.save(notif);
-		System.out.println("saved");
+		notifService.insert(notif);
 	}
 	
 	@Transactional
@@ -84,9 +81,8 @@ public class RequestService {
 		
 		aprDao.save(request);
 		
-		Notification notif = notifDao.findByBk(request.getId());
-		notif.setStatus(staDao.findByStatus("Unread"));
-		notifDao.save(notif);
+		Notification notif = notifService.findByBk(request.getId());
+		notifService.update(notif);
 	}
 	
 	private void valDataNotChange(Request approve) throws Exception {

@@ -30,11 +30,11 @@ public class Posisi {
 	@OneToOne
 	private Status idStatus;
 	
-	@JsonFormat(shape=JsonFormat.Shape.STRING,pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+7")
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="ASIA/JAKARTA")
 	@Column(name = "created_at")
 	private Timestamp createdAt;
 	
-	@JsonFormat(shape=JsonFormat.Shape.STRING,pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+7")
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="ASIA/JAKARTA")
 	@Column(name = "updated_at")
 	private Timestamp updatedAt;
 	

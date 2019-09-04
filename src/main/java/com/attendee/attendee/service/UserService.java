@@ -20,7 +20,7 @@ import com.attendee.attendee.model.User;
 public class UserService{
 	@Autowired
 	private UserDao userDao;
-		
+
 	@Autowired
 	private PasswordEncoder encoder;
 	
@@ -133,7 +133,6 @@ public class UserService{
 					System.out.println(tempUser.getCreatedAt());
 					System.out.println(user.getCreatedAt());
 		if(tempUser.getCreatedAt()!=user.getCreatedAt() && tempUser.getCreatedBy().getId()!=user.getCreatedBy().getId()) {
-			
 			throw new ValidationException("created tidak boleh berubah");
 		}
 	}

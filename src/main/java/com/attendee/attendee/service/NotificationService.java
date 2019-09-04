@@ -17,6 +17,13 @@ public class NotificationService {
 	@Autowired
 	private NotificationDao notifDao;
 	
+	@Autowired
+	private StatusService statusService;
+	
+	public Notification findByBk(UUID id)throws ValidationException{
+		return notifDao.findByBk(id);
+	}
+	
 	private void valIdExist(UUID id)throws ValidationException {
 		if(!notifDao.isIdExist(id)) {
 			throw new ValidationException("Data tidak ada");
@@ -72,12 +79,28 @@ public class NotificationService {
 	
 	@Transactional
 	public void update(Notification notification)throws ValidationException {
-		valIdNotNull(notification);
-		valIdExist(notification.getId());
-		valBkNotNull(notification);
-		valBkNotChange(notification);
-		valNonBk(notification);
-		notifDao.save(notification);
+		if(notification.getStatus().getStatus().equals("Unread") && 
+				(notification.getRequest().getStatus().getStatus().equals("Request") || 
+						notification.getRequest().getStatus().getStatus().equals("Approved") || 
+						notification.getRequest().getStatus().getStatus().equals("Rejected"))) {
+			notification.setStatus(statusService.findByStatus("Read"));
+			valIdNotNull(notification);
+			valIdExist(notification.getId());
+			valBkNotNull(notification);
+			valBkNotChange(notification);
+			valNonBk(notification);
+			notifDao.save(notification);
+		} else if (notification.getStatus().getStatus().equals("Read") && 
+				(notification.getRequest().getStatus().getStatus().equals("Approved") || 
+						notification.getRequest().getStatus().getStatus().equals("Rejected"))) {
+			notification.setStatus(statusService.findByStatus("Unread"));
+			valIdNotNull(notification);
+			valIdExist(notification.getId());
+			valBkNotNull(notification);
+			valBkNotChange(notification);
+			valNonBk(notification);
+			notifDao.save(notification);
+		}
 	}
 	
 	public Notification findById(UUID id)throws ValidationException{
@@ -88,7 +111,11 @@ public class NotificationService {
 		return notifDao.findAll();
 	}
 	
-	public List<Notification> findByFilter(Notification notification )throws ValidationException{
-		return notifDao.findByFilter(notification);
+	public List<Notification> findByFilterRequest(Notification notification )throws ValidationException{
+		return notifDao.findByFilterRequest(notification);
+	}
+	
+	public List<Notification> findByFilterNotRequest(Notification notification )throws ValidationException{
+		return notifDao.findByFilterNotRequest(notification);
 	}
 }

@@ -20,7 +20,6 @@ public class UnitService {
 	@Autowired
 	private StatusService statusService;
 	
-	
 	public void valIdExist(UUID id)throws ValidationException{
 		
 		if(!divisiDao.isExist(id)) {
@@ -76,7 +75,6 @@ public class UnitService {
 		Unit tempUnit=findById(unit.getId());
 			
 		if(tempUnit.getCreatedAt()!=unit.getCreatedAt() && tempUnit.getCreatedBy().getId()!=unit.getCreatedBy().getId()) {
-			
 			throw new ValidationException("created tidak boleh berubah");
 		}
 	}

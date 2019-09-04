@@ -10,12 +10,10 @@ import java.util.UUID;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.attendee.attendee.model.Company;
 import com.attendee.attendee.model.User;
 
 @Repository
 public class UserDao extends ParentDao {
-	
 	@SuppressWarnings("unchecked")
 	@Transactional
 	public User findPassword(String pass) throws NoSuchAlgorithmException {
@@ -137,7 +135,7 @@ public class UserDao extends ParentDao {
 			return list;
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Transactional
 	public User userLogin(String email) {
@@ -152,7 +150,6 @@ public class UserDao extends ParentDao {
 		}
 	}
 	
-//	@Transactional
 	public String countRows() {
 		BigInteger count = (BigInteger) super.entityManager
 				.createNativeQuery("SELECT count(*) FROM users").getSingleResult();

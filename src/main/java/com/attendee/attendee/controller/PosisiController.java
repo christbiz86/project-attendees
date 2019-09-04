@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.attendee.attendee.exception.MessageResponse;
 import com.attendee.attendee.exception.ValidationException;
 import com.attendee.attendee.model.Posisi;
+import com.attendee.attendee.model.Status;
 import com.attendee.attendee.model.UserPrinciple;
 import com.attendee.attendee.service.PosisiService;
+import com.attendee.attendee.service.StatusService;
 import com.attendee.attendee.service.UserService;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -27,6 +29,9 @@ public class PosisiController {
 
 	@Autowired
 	private PosisiService posisiService;
+	
+	@Autowired
+	private StatusService statusService;
 
 	@Autowired
 	private UserService userService;
@@ -94,6 +99,8 @@ public class PosisiController {
 	{
 		 try 
 		 {
+			Status stat = statusService.findByStatus(posisi.getIdStatus().getStatus());
+			posisi.setIdStatus(stat);
 			posisi.setUpdatedBy(userService.findById(
 						((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId()));
 

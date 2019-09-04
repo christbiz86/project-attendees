@@ -11,7 +11,7 @@ import com.attendee.attendee.model.Status;
 @Repository
 public class StatusDao extends ParentDao {
 	@SuppressWarnings("unchecked")
-//	@Transactional
+	@Transactional
 	public Status findByStatus(String status) {
 		List<Status> list = super.entityManager
                 .createQuery("from Status where status=:status")

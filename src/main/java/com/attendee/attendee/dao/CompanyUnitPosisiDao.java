@@ -53,7 +53,6 @@ public class CompanyUnitPosisiDao extends ParentDao{
 	}
 	
 	public boolean isExist(UUID id) {
-		System.out.println(id);
 		if(findById(id).getId()==null) {
 			return false;
 		}else {

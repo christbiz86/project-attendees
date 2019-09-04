@@ -9,11 +9,13 @@ import javax.transaction.Transactional;
 import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.attendee.attendee.dao.ShiftDao;
 import com.attendee.attendee.exception.InvalidDataException;
 import com.attendee.attendee.model.Shift;
+import com.attendee.attendee.model.UserPrinciple;
 
 @Service
 public class ShiftService {
@@ -90,6 +92,7 @@ public class ShiftService {
 	
 	@Transactional
 	public void save(Shift shift) throws Exception {
+		shift.setCreatedBy(((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserCompany().getIdUser());
 		shift.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 		valBkNotNull(shift);
 		valBkNotExist(shift);

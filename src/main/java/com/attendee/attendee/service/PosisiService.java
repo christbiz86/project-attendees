@@ -5,11 +5,13 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.attendee.attendee.dao.PosisiDao;
 import com.attendee.attendee.exception.ValidationException;
 import com.attendee.attendee.model.Posisi;
+import com.attendee.attendee.model.UserPrinciple;
 
 @Service
 public class PosisiService {
@@ -17,6 +19,8 @@ public class PosisiService {
 	@Autowired
 	private PosisiDao jabatanDao;
 	
+	@Autowired
+	private StatusService statusService;
 	
 	private void valIdExist(UUID id)throws ValidationException{
 		
@@ -79,7 +83,9 @@ public class PosisiService {
 	}
 	
 	public void save(Posisi jabatan)throws ValidationException{
+		jabatan.setCreatedBy(((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserCompany().getIdUser());
 		jabatan.setCreatedAt(getTime());
+		jabatan.setIdStatus(statusService.findByStatus("Active"));
 		jabatan.setUpdatedAt(null);
 		jabatan.setUpdatedBy(null);
 		
@@ -90,6 +96,7 @@ public class PosisiService {
 	}
 	
 	public void update(Posisi jabatan)throws ValidationException{
+		jabatan.setUpdatedBy(((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserCompany().getIdUser());
 		jabatan.setUpdatedAt(getTime());
 		
 		valCreatedNotChange(jabatan);

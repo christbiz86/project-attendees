@@ -12,20 +12,22 @@ import com.attendee.attendee.model.Notification;
 @Repository
 public class NotificationDao extends ParentDao {
 
+	@SuppressWarnings("unchecked")
 	@Transactional
-	public List<Notification> findByFilter(Notification notification) {
+	public List<Notification> findByFilterRequest(Notification notification) {
 		StringBuilder sb = new StringBuilder("from Notification where 1=1 ");
-		
-		if (notification.getRequest().getKode() != null) {
-			sb.append(" and request.kode like '%"+ notification.getRequest().getKode() +"%'");
-		}
-		if (notification.getRequest().getStatus() != null) {
-			sb.append(" and request.status like '%"+ notification.getRequest().getStatus().getStatus() +"%'");
+		if (notification.getRequest() != null) {
+			if (notification.getRequest().getKode() != null) {
+				sb.append(" and request.kode like '"+ notification.getRequest().getKode() +"'");
+			}
+			if (notification.getRequest().getStatus() != null) {
+				sb.append(" and request.status.status like '"+ notification.getRequest().getStatus().getStatus() +"'");
+			}
 		}
 		if(notification.getRequest().getUserCompany() != null) {
 			if (notification.getRequest().getUserCompany().getIdUser() != null) {
-				if (notification.getRequest().getUserCompany().getIdUser().getNama() != null) {
-					sb.append(" and request.userCompany.idUser.nama like '%"+ notification.getRequest().getUserCompany().getIdUser().getNama() +"%'");
+				if (notification.getRequest().getUserCompany().getIdUser().getId() != null) {
+					sb.append(" and request.userCompany.idUser.id = '"+ notification.getRequest().getUserCompany().getIdUser().getId() +"'");
 				}
 			}
 			if (notification.getRequest().getUserCompany().getIdCompanyUnitPosisi() != null) {
@@ -33,15 +35,60 @@ public class NotificationDao extends ParentDao {
 					sb.append(" and request.userCompany.idCompanyUnitPosisi.idCompany.nama like '"+ notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().getIdCompany().getNama() +"'");
 				}
 				if (notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().getIdUnit() != null) {
-					sb.append(" and request.userCompany.idCompanyUnitPosisi.idUnit.unit like '%"+ notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().getIdUnit().getUnit() +"%'");
+					sb.append(" and request.userCompany.idCompanyUnitPosisi.idUnit.unit like '"+ notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().getIdUnit().getUnit() +"'");
 				}
 				if (notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().getIdPosisi() != null) {
-					sb.append(" and request.userCompany.idCompanyUnitPosisi.idPosisi.posisi like '%"+ notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().getIdPosisi().getPosisi() +"%'");
+					sb.append(" and request.userCompany.idCompanyUnitPosisi.idPosisi.posisi like '"+ notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().getIdPosisi().getPosisi() +"'");
 				}
 			}
 		}
-		
-		List<Notification> list = super.entityManager.createQuery(sb.toString(), Notification.class)
+		if (notification.getStatus() != null) {
+			sb.append(" and status.status like '"+ notification.getStatus().getStatus() +"'");
+		}
+		List<Notification> list = super.entityManager.createQuery(sb.toString())
+				.getResultList();
+
+		if (list.size() == 0) {
+			return new ArrayList<Notification>();
+		} else {
+			return list;
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public List<Notification> findByFilterNotRequest(Notification notification) {
+		StringBuilder sb = new StringBuilder("from Notification where 1=1 ");
+		if (notification.getRequest() != null) {
+			if (notification.getRequest().getKode() != null) {
+				sb.append(" and request.kode like '"+ notification.getRequest().getKode() +"'");
+			}
+			if (notification.getRequest().getStatus() != null) {
+				sb.append(" and request.status.status not like '"+ notification.getRequest().getStatus().getStatus() +"'");
+			}
+		}
+		if(notification.getRequest().getUserCompany() != null) {
+			if (notification.getRequest().getUserCompany().getIdUser() != null) {
+				if (notification.getRequest().getUserCompany().getIdUser().getId() != null) {
+					sb.append(" and request.userCompany.idUser.id = '"+ notification.getRequest().getUserCompany().getIdUser().getId() +"'");
+				}
+			}
+			if (notification.getRequest().getUserCompany().getIdCompanyUnitPosisi() != null) {
+				if (notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().getIdCompany() != null) {
+					sb.append(" and request.userCompany.idCompanyUnitPosisi.idCompany.nama like '"+ notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().getIdCompany().getNama() +"'");
+				}
+				if (notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().getIdUnit() != null) {
+					sb.append(" and request.userCompany.idCompanyUnitPosisi.idUnit.unit like '"+ notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().getIdUnit().getUnit() +"'");
+				}
+				if (notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().getIdPosisi() != null) {
+					sb.append(" and request.userCompany.idCompanyUnitPosisi.idPosisi.posisi like '"+ notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().getIdPosisi().getPosisi() +"'");
+				}
+			}
+		}
+		if (notification.getStatus() != null) {
+			sb.append(" and status.status like '"+ notification.getStatus().getStatus() +"'");
+		}
+		List<Notification> list = super.entityManager.createQuery(sb.toString())
 				.getResultList();
 
 		if (list.size() == 0) {

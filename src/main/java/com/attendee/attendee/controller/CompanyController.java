@@ -1,6 +1,5 @@
 package com.attendee.attendee.controller;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,11 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.attendee.attendee.email.PasswordGenerator;
 import com.attendee.attendee.exception.MessageResponse;
-import com.attendee.attendee.exception.ValidationException;
 import com.attendee.attendee.model.Company;
 import com.attendee.attendee.model.CompanyUnitPosisi;
 import com.attendee.attendee.model.RegistrationForm;
-import com.attendee.attendee.model.Status;
 import com.attendee.attendee.model.TipeUser;
 import com.attendee.attendee.model.User;
 import com.attendee.attendee.model.UserCompany;
@@ -175,5 +172,4 @@ public class CompanyController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(mr);
 		}
 	}
-		
 }

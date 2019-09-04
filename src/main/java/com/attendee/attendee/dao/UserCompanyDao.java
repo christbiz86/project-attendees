@@ -131,7 +131,7 @@ public class UserCompanyDao extends ParentDao {
 	}
 
 	@SuppressWarnings("unchecked")
-//	@Transactional
+	@Transactional
 	public UserCompany findByUsername(String username) {
 		List<UserCompany> list = super.entityManager.createQuery("from UserCompany where idUser.username=:username")
 				.setParameter("username", username).getResultList();
@@ -144,7 +144,7 @@ public class UserCompanyDao extends ParentDao {
 	}
 
 	@SuppressWarnings("unchecked")
-//	@Transactional
+	@Transactional
 	public UserCompany findByEmail(String email) {
 		List<UserCompany> list = super.entityManager.createQuery("from UserCompany where idUser.email=:email")
 				.setParameter("email", email).getResultList();

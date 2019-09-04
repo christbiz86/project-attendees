@@ -11,7 +11,6 @@ import com.attendee.attendee.model.TipeUser;
 
 @Repository
 public class TipeUserDao extends ParentDao{
-	
 	@SuppressWarnings("unchecked")
 	@Transactional
 	public TipeUser findByTipe(String tipe) {

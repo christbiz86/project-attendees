@@ -38,16 +38,6 @@ public class AuthRestAPIs {
     private AuthenticationManager authenticationManager;
  
     @Autowired
-    private UserService userRepository;
- 
- 
-    @Autowired
-    private  PasswordEncoder encoder;
-    
-    @Autowired
-    private  Encoder Reiencoder;
- 
-    @Autowired
     private JwtProvider jwtProvider;
  
     @PostMapping("/signin")
@@ -65,39 +55,8 @@ public class AuthRestAPIs {
         String jwt = jwtProvider.generateJwtToken(authentication);
         UserPrinciple user = (UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         user.setToken(new JwtResponse(jwt));
-//        return ResponseEntity.ok(new JwtResponse(jwt));
         return ResponseEntity.ok(user);        
     }
- 
-//    @PostMapping("/signup")
-//    public ResponseEntity<?> registerUser(@Valid @RequestBody User signUpRequest) {
-//    	try {
-//			signUpRequest.setPassword(encoder.encode(signUpRequest.getPassword()));
-//	        
-//			userRepository.saveWithTipeUser(signUpRequest);
-////			userRepository.save(signUpRequest);
-////	        
-////	        UserCompany userCompany=new UserCompany();
-////	        TipeUser tu=tuService.findName("ROLE_SUPERADMIN");
-////	        userCompany.setIdUser(userRepository.findByBk(signUpRequest));
-////	        userCompany.setIdTipeUser(tu);
-////	        userCompanyRepository.save(userCompany);
-//			MessageResponse mg  = new MessageResponse("User registered successfully!");
-//			
-//			return ResponseEntity.ok(mg);
-//			
-//		}
-//		catch(ValidationException val) {
-//			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(val.getMessage());
-//			
-//		 }
-//		catch (Exception e) {
-//			 System.out.println(e);
-//
-//			MessageResponse mg = new MessageResponse("User registered failled" );
-//			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mg);
-//		}
-//    }
 
     @GetMapping(value="/logout")
     public ResponseEntity<?> logoutPage (HttpServletRequest request, HttpServletResponse response) {
