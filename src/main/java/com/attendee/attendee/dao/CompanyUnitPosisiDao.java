@@ -28,7 +28,7 @@ public class CompanyUnitPosisiDao extends ParentDao{
 	public CompanyUnitPosisi findById(UUID id) {	
 		
 		List<CompanyUnitPosisi> list = super.entityManager
-                .createQuery("from CompanyUnitPosisi where id=:id")
+                .createQuery("from CompanyUnitPosisi where id=:id ")
                 .setParameter("id", id)
                 .getResultList();
 
@@ -53,7 +53,7 @@ public class CompanyUnitPosisiDao extends ParentDao{
 	}
 	
 	public boolean isExist(UUID id) {
-		
+		System.out.println(id);
 		if(findById(id).getId()==null) {
 			return false;
 		}else {
@@ -99,13 +99,13 @@ public class CompanyUnitPosisiDao extends ParentDao{
 		sb.append(" WHERE 1=1 ");		
 
 		if(companyUnitPosisi.getIdCompany().getId()!=null) {
-			sb.append(" AND p.id_company LIKE '%"+companyUnitPosisi.getIdCompany().getId()+"%' ");
+			sb.append(" AND p.id_company = '"+companyUnitPosisi.getIdCompany().getId()+"' ");
 		}
 		if(companyUnitPosisi.getIdPosisi().getId()!=null) {
-			sb.append(" AND p.id_posisi LIKE '%"+companyUnitPosisi.getIdPosisi().getId()+"%' ");
+			sb.append(" AND p.id_posisi = '"+companyUnitPosisi.getIdPosisi().getId()+"' ");
 		}
 		if(companyUnitPosisi.getIdUnit().getId()!=null) {
-			sb.append(" AND p.id_unit LIKE '%"+companyUnitPosisi.getIdUnit().getId()+"%' ");
+			sb.append(" AND p.id_unit = '"+companyUnitPosisi.getIdUnit().getId()+"' ");
 		}
 		
 		List<CompanyUnitPosisi> list=super.entityManager.createNativeQuery(sb.toString(),CompanyUnitPosisi.class).getResultList();

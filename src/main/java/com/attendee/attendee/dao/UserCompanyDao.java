@@ -11,6 +11,7 @@ import com.attendee.attendee.model.UserCompany;
 
 @Repository
 public class UserCompanyDao extends ParentDao {
+	
 	@Transactional
 	public void save(UserCompany userCompany) {
 		super.entityManager.merge(userCompany);
@@ -130,7 +131,7 @@ public class UserCompanyDao extends ParentDao {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Transactional
+//	@Transactional
 	public UserCompany findByUsername(String username) {
 		List<UserCompany> list = super.entityManager.createQuery("from UserCompany where idUser.username=:username")
 				.setParameter("username", username).getResultList();
@@ -143,7 +144,7 @@ public class UserCompanyDao extends ParentDao {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Transactional
+//	@Transactional
 	public UserCompany findByEmail(String email) {
 		List<UserCompany> list = super.entityManager.createQuery("from UserCompany where idUser.email=:email")
 				.setParameter("email", email).getResultList();

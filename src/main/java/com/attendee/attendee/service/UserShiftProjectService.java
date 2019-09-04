@@ -119,7 +119,7 @@ public class UserShiftProjectService {
 		valIdExist(id);
 		userShiftProjectDao.delete(id);
 	}
-		
+
 	public UserShiftProject findByUser(UserShiftProject shiftProject) {
 		return userShiftProjectDao.findByUser(shiftProject.getUserCompany().getId());
 	}

@@ -96,7 +96,7 @@ public class UnitController {
 	{
 		 try 
 		 {
-			unit.setCreatedBy(userService.findById(
+			unit.setUpdatedBy(userService.findById(
 						((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId()));
 
 			 unitService.update(unit);

@@ -39,11 +39,11 @@ public class Posisi {
 	private Timestamp updatedAt;
 	
 	@JoinColumn(name = "created_by", referencedColumnName = "id")
-	@OneToOne(optional = false)
+	@OneToOne
 	private User createdBy;
 	
 	@JoinColumn(name = "updated_by", referencedColumnName = "id")
-	@OneToOne(optional = false)
+	@OneToOne
 	private User updatedBy;
 
 	public UUID getId() {

@@ -16,5 +16,4 @@ public class AnnualLeaveService {
 	public List<AnnualLeave> findByFilter(AnnualLeave annualLeave) {
 		return anLevDao.findByFilter(annualLeave.getIdCompany(),annualLeave.getId().getKode() );
 	}
-
 }

@@ -12,7 +12,6 @@ import com.attendee.attendee.model.Notification;
 @Repository
 public class NotificationDao extends ParentDao {
 
-	@SuppressWarnings("unchecked")
 	@Transactional
 	public List<Notification> findByFilter(Notification notification) {
 		StringBuilder sb = new StringBuilder("from Notification where 1=1 ");

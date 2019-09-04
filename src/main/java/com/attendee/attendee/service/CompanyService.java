@@ -98,7 +98,7 @@ public class CompanyService {
 		}	
 	}
 	
-	@Transactional
+//	@Transactional
 	public void insert(Company company) throws ValidationException {
 		company.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 		company.setIdStatus(staDao.findByStatus("Active"));
@@ -109,7 +109,7 @@ public class CompanyService {
 		companyDao.save(company);
 	}
 	
-	@Transactional
+//	@Transactional
 	public void update(Company company) throws ValidationException {
 		company.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
 		valIdNotNull(company);

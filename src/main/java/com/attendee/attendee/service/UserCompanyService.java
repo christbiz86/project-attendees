@@ -4,12 +4,16 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.attendee.attendee.dao.UserCompanyDao;
 import com.attendee.attendee.exception.ValidationException;
+import com.attendee.attendee.model.CompanyUnitPosisi;
+import com.attendee.attendee.model.PojoUser;
 import com.attendee.attendee.model.UserCompany;
+import com.attendee.attendee.model.UserPrinciple;
 
 @Service
 public class UserCompanyService {
@@ -17,6 +21,24 @@ public class UserCompanyService {
 	@Autowired
 	private UserCompanyDao userCompanyDao;
 	
+	@Autowired
+	private UserService userService;
+	
+	@Autowired
+	private CompanyUnitPosisiService cupService;
+	
+	@Autowired
+	private TipeUserService tuService;
+	
+	@Autowired
+	private UnitService unitService;
+	
+	@Autowired
+	private PosisiService posisiService;
+	
+	@Autowired
+	private CompanyService comService;
+			
 	
 	private void valIdExist(UUID id)throws ValidationException{
 		
@@ -59,8 +81,7 @@ public class UserCompanyService {
 	
 	private void valBkNotChange(UserCompany userCompany)throws ValidationException{
 		String s=findById(userCompany.getId()).getIdUser().getId().toString();
-		if(!userCompany.getIdUser().getId().toString().equals(s.toString())) {
-
+		if(!userCompany.getIdUser().getId().toString().equals(s)) {
 			throw new ValidationException("user tidak boleh berubah");
 		}
 	}
@@ -73,7 +94,7 @@ public class UserCompanyService {
 		}
 	}
 	
-	@Transactional
+//	@Transactional
 	public void save(UserCompany userCompany)throws ValidationException{
 		valBkNotNull(userCompany);
 		valBkNotExist(userCompany);
@@ -81,7 +102,7 @@ public class UserCompanyService {
 		userCompanyDao.save(userCompany);
 	}
 	
-	@Transactional
+//	@Transactional
 	public void update(UserCompany userCompany)throws ValidationException{
 		
 		valIdNotNull(userCompany);
@@ -120,4 +141,62 @@ public class UserCompanyService {
 	
 		return userCompanyDao.findByUsername(username);
 	}	
+	
+	public void saveWithCompanyUnitPosisi(PojoUser user)throws ValidationException {
+		try {
+
+			userService.save(user.getUser());
+			
+			UserCompany userCompany=new UserCompany();
+	        CompanyUnitPosisi companyUnitPosisi = new CompanyUnitPosisi();
+	        
+	    	companyUnitPosisi.setIdCompany(((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserCompany().getIdCompanyUnitPosisi().getIdCompany());
+	        companyUnitPosisi.setIdPosisi(posisiService.findById(user.getPosisi().getId()));
+	        companyUnitPosisi.setIdUnit(unitService.findById(user.getUnit().getId()));
+	        
+	        if(!cupService.isBkExist(companyUnitPosisi)){
+	        	cupService.insert(companyUnitPosisi);	        
+	        }
+	        
+	        userCompany.setIdUser(userService.findByBk(user.getUser()));
+	        userCompany.setIdTipeUser(tuService.findName("User"));
+	        userCompany.setIdCompanyUnitPosisi(cupService.findByBk(companyUnitPosisi.getIdCompany().getId(),companyUnitPosisi.getIdUnit().getId(),companyUnitPosisi.getIdPosisi().getId()));
+	        
+	        save(userCompany);
+	        
+		}catch (ValidationException e) {
+			System.out.println(e);
+			throw e;
+		}
+		catch (Exception e) {
+			System.out.println(e);
+			throw new ValidationException("error");
+		}
+	}
+	
+	@Transactional
+	public void updateWithCompanyUnitPosisi(UserCompany user)throws ValidationException {
+		try {
+
+			userService.update(user.getIdUser());
+			
+	        if(!cupService.isBkExist(user.getIdCompanyUnitPosisi())){
+	        	System.out.println("not exist");
+	        	user.getIdCompanyUnitPosisi().setId(null);
+	        	cupService.insert(user.getIdCompanyUnitPosisi());	        
+	        }
+
+	        user.setIdTipeUser(tuService.findById(user.getIdTipeUser().getId()));
+	        user.setIdCompanyUnitPosisi(cupService.findByBk(user.getIdCompanyUnitPosisi().getIdCompany().getId(),user.getIdCompanyUnitPosisi().getIdUnit().getId(),user.getIdCompanyUnitPosisi().getIdPosisi().getId()));
+	        update(user);
+	        
+		}catch (ValidationException e) {
+			System.out.println(e);
+			throw e;
+		}
+		catch (Exception e) {
+			System.out.println(e);
+			throw new ValidationException("error");
+		}
+	}
 }

@@ -34,13 +34,12 @@ public class AnnualLeaveRecapService {
 	
 	@Transactional
 	public byte[] generateReport(String company, Date startDate, Date endDate) throws Exception {
-
 		// Compile the Jasper report from .jrxml to .japser
 		JasperReport jasperReport = JasperCompileManager.compileReport(cloudService.loadReport("AnnLeaveRecapRpt"));
 		
 		// Get your data source
 		JRBeanCollectionDataSource jrBeanCollectionDataSource = new JRBeanCollectionDataSource(alrDao.getAllRecap(company, startDate, endDate));
-
+		
 		// Add parameters
 		Map<String, Object> parameters = new HashMap<>();
 
@@ -59,4 +58,5 @@ public class AnnualLeaveRecapService {
 
 		return pdf;
 	}
+	
 }

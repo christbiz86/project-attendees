@@ -17,8 +17,9 @@ public class CompanyUnitPosisiService {
 	@Autowired
 	private CompanyUnitPosisiDao companyUnitPosisiDao;
 
+
 	public void valIdExist(UUID id)throws ValidationException{
-		
+			System.out.println("validasi cup");
 		if(!companyUnitPosisiDao.isExist(id)) {
 			throw new ValidationException("Data tidak ada");
 		}
@@ -60,7 +61,7 @@ public class CompanyUnitPosisiService {
 		}
 	}	
 	
-	@Transactional
+//	@Transactional
 	public void insert(CompanyUnitPosisi companyUnitPosisi)throws ValidationException{
 		
 //		valBkNotExist(companyUnitPosisi);
@@ -68,12 +69,15 @@ public class CompanyUnitPosisiService {
 		companyUnitPosisiDao.save(companyUnitPosisi);
 	}
 	
-	@Transactional
+//	@Transactional
 	public void update(CompanyUnitPosisi companyUnitPosisi)throws ValidationException{
 		
 		valIdNotNull(companyUnitPosisi);
+
 		valIdExist(companyUnitPosisi.getId());
+
 		valNonBk(companyUnitPosisi);
+		
 		valBkNotExist(companyUnitPosisi);
 		companyUnitPosisiDao.save(companyUnitPosisi);
 	}
@@ -111,4 +115,9 @@ public class CompanyUnitPosisiService {
 		return companyUnitPosisiDao.findByIdCompany(idCompany);
 	
 	}
+	
+	public boolean isBkExist(CompanyUnitPosisi companyUnitPosisi)throws ValidationException{
+		return companyUnitPosisiDao.isBkExist(companyUnitPosisi.getIdCompany().getId(),companyUnitPosisi.getIdUnit().getId(),companyUnitPosisi.getIdPosisi().getId());
+			
+	}	
 }

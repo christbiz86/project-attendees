@@ -53,9 +53,11 @@ public class RequestService {
 		aprDao.save(request);
 		
 		Notification notif = new Notification();
-		notif.setRequest(request);
+		notif.setRequest(aprDao.findByBk(request.getKode()));
 		notif.setStatus(staDao.findByStatus("Unread"));
+		System.out.println(notif.getStatus().getId());
 		notifDao.save(notif);
+		System.out.println("saved");
 	}
 	
 	@Transactional

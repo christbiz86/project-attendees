@@ -20,10 +20,12 @@ public class CompanyUnitPosisi {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private UUID id;
 	
+
 	@JoinColumn(name = "id_company", referencedColumnName = "id")
 	@OneToOne
 	private Company idCompany;
 	
+
 	@JoinColumn(name = "id_unit", referencedColumnName = "id")
 	@OneToOne
 	private Unit idUnit;

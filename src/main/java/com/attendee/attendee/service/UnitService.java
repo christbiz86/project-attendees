@@ -17,6 +17,9 @@ public class UnitService {
 	@Autowired
 	private UnitDao divisiDao;
 	
+	@Autowired
+	private StatusService statusService;
+	
 	
 	public void valIdExist(UUID id)throws ValidationException{
 		
@@ -72,12 +75,14 @@ public class UnitService {
 	private void valCreatedNotChange(Unit unit)throws ValidationException {
 		Unit tempUnit=findById(unit.getId());
 			
-		if(tempUnit.getCreatedAt()!=unit.getCreatedAt() && tempUnit.getCreatedBy()!=unit.getCreatedBy()) {
+		if(tempUnit.getCreatedAt()!=unit.getCreatedAt() && tempUnit.getCreatedBy().getId()!=unit.getCreatedBy().getId()) {
+			
 			throw new ValidationException("created tidak boleh berubah");
 		}
 	}
 	
 	public void save(Unit divisi)throws ValidationException{
+		divisi.setIdStatus(statusService.findByStatus("Active"));
 		divisi.setCreatedAt(getTime());
 		divisi.setUpdatedAt(null);
 		divisi.setUpdatedBy(null);
@@ -89,7 +94,11 @@ public class UnitService {
 	}
 	
 	public void update(Unit divisi)throws ValidationException{
+		Unit tempUnit=findById(divisi.getId());
+		divisi.setCreatedAt(tempUnit.getCreatedAt());
+		divisi.setCreatedBy(tempUnit.getCreatedBy());
 		divisi.setUpdatedAt(getTime());
+		divisi.setIdStatus(statusService.findByStatus(divisi.getIdStatus().getStatus()));
 		valCreatedNotChange(divisi);
 		
 		valIdNotNull(divisi);
