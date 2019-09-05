@@ -7,6 +7,8 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Repository;
 
+import com.attendee.attendee.model.Project;
+import com.attendee.attendee.model.Shift;
 import com.attendee.attendee.model.ShiftProject;
 
 @Repository
@@ -86,5 +88,24 @@ public class ShiftProjectDao extends ParentDao {
 		}else {
 			return true;
 		}	 
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public ShiftProject findByShiftProject(Shift shift, Project pro) {
+		List<ShiftProject> list = super.entityManager.createNativeQuery("SELECT * "
+				+ "FROM shift_project "
+				+ "WHERE id_shift = :idShift "
+				+ "AND id_project = :idProject ", ShiftProject.class)
+				.setParameter("idShift", shift.getId())
+				.setParameter("idProject", pro.getId())
+				.getResultList();
+		
+		if (list.size() == 0) {
+			return new ShiftProject();
+		}
+		else {
+			return (ShiftProject)list.get(0);
+		}
 	}
 }

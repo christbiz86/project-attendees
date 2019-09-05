@@ -1,5 +1,6 @@
 package com.attendee.attendee.dao;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.attendee.attendee.model.Project;
+import com.attendee.attendee.model.Status;
 
 
 @Repository
@@ -103,5 +105,38 @@ public class ProjectDao extends ParentDao {
 		}else {
 			return true;
 		}	 
+	}
+	
+	@Transactional
+	public String countRows() {
+		BigInteger count = (BigInteger) super.entityManager
+				.createNativeQuery("SELECT count(*) FROM project").getSingleResult();
+		
+		int next = count.intValue() + 1;
+		String num = Integer.toString(next);
+		
+		if(num.length() == 1) {
+			return "00"+num;
+		} else if(num.length() == 2) {
+			return "0"+num;
+		} else {
+			return num;
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public Project findByProjectName(String namaProject) {
+		List<Project> list = super.entityManager
+                .createQuery("from Project where namaProject = :nama")
+                .setParameter("nama", namaProject)
+                .getResultList();
+
+		if (list.size() == 0) {
+			return new Project();
+		}
+		else {
+			return (Project)list.get(0);
+		}
 	}
 }

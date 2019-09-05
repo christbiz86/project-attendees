@@ -52,7 +52,7 @@ public class RequestService {
 		aprDao.save(request);
 		
 		Notification notif = new Notification();
-		notif.setRequest(request);
+		notif.setRequest(aprDao.findByBk(request.getKode()));
 		notif.setStatus(staDao.findByStatus("Unread"));
 		notifService.insert(notif);
 	}
@@ -63,6 +63,7 @@ public class RequestService {
 		aprDao.delete(request);
 	}
 	
+	@Transactional
 	public void proses(Request request, User user, String putusan) throws Exception{
 		if(!putusan.equals("Approved") && !putusan.equals("Rejected")) {
 

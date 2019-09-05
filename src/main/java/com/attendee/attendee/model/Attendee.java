@@ -27,14 +27,14 @@ public class Attendee {
 	@OneToOne
 	private UserShiftProject idUserShiftProject;	
 	
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="ASIA/JAKARTA")
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+7")
 	@Column(name = "masuk")
 	private Timestamp masuk;
 	
 	@Column(name="lokasi_masuk")
 	private String lokasiMasuk;
 	
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="ASIA/JAKARTA")
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+7")
 	@Column(name = "pulang")
 	private Timestamp pulang;
 	

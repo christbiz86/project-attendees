@@ -9,16 +9,23 @@ import javax.transaction.Transactional;
 import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.attendee.attendee.dao.ProjectDao;
+import com.attendee.attendee.dao.StatusDao;
 import com.attendee.attendee.exception.InvalidDataException;
 import com.attendee.attendee.model.Project;
+import com.attendee.attendee.model.Status;
+import com.attendee.attendee.model.UserPrinciple;
 
 @Service
 public class ProjectService {
 	@Autowired
 	private ProjectDao projectDao;
+	
+	@Autowired
+	private StatusDao stDao;
 	
 	public void valIdNotExist(UUID id) throws ValidationException {
 		if(projectDao.isExist(id)) {
@@ -112,7 +119,9 @@ public class ProjectService {
 	@Transactional
 	public void save(Project project) throws Exception {
 		project.setCreatedAt(new Timestamp(System.currentTimeMillis()));
-		
+		project.setStatus(stDao.findByStatus("Active"));
+		project.setKode(kodeProject());
+		project.setCreatedBy(((UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserCompany().getIdUser());
 		valBkNotNull(project);
 		valBkNotExist(project);
 		valNonBk(project);
@@ -123,6 +132,7 @@ public class ProjectService {
 	public void update(Project project) throws Exception {
 		project.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
 		
+		project.setUpdatedBy(((UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserCompany().getIdUser());
 		valIdNotNull(project);
 		valIdExist(project.getId());
 		valBkNotNull(project);
@@ -135,5 +145,14 @@ public class ProjectService {
 	public void delete(UUID id) throws ValidationException {
 		valIdExist(id);
 		projectDao.delete(id);
+	}
+	
+	public String kodeProject() {
+		return "PRO"+projectDao.countRows();
+	}
+	
+	@Transactional
+	public Project findByProjectName(String namaProject) {
+		return projectDao.findByProjectName(namaProject);
 	}
 }

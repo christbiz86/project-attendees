@@ -20,7 +20,7 @@ import com.attendee.attendee.exception.MessageResponse;
 import com.attendee.attendee.model.ShiftProject;
 import com.attendee.attendee.service.ShiftProjectService;
 
-@CrossOrigin(origins = "http://localhost:8080", maxAge = 3600)
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping({"/api"})
 @Controller
