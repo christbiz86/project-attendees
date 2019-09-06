@@ -10,8 +10,6 @@ target/*
 
 .project
 
-src/main/resources/*
-
 /target
-/
+
 WebContent/*
