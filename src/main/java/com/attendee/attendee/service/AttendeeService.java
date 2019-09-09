@@ -106,6 +106,10 @@ public class AttendeeService {
 		return attendeeDao.findAll();
 	}
 	
+	public List<Attendee> findByFilter(Attendee attendee) throws ValidationException {
+		return attendeeDao.findByFilter(attendee);
+	}
+	
 	public void saveAbsen(Absen absen,UserCompany uc) throws ValidationException {
 		
 		Attendee temp=attendeeDao.findByUserAndTime(uc.getIdUser().getId());
