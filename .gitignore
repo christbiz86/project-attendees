@@ -4,6 +4,5 @@ target/*
 .settings/*
 .classpath
 .project
-src/main/resources/*
 /target/
 WebContent/*
