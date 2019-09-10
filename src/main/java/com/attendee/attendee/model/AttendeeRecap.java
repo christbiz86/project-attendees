@@ -34,6 +34,9 @@ import javax.persistence.Table;
 @Entity
 public class AttendeeRecap{
 	@Id
+	@Column(name = "id")
+	private UUID id;
+	
 	@Column(name = "nama_user")
 	private String name;
 	
@@ -48,6 +51,14 @@ public class AttendeeRecap{
 	
 	@Column(name = "jml_masuk")
 	private Integer masuk;
+
+	public UUID getId() {
+		return id;
+	}
+
+	public void setId(UUID id) {
+		this.id = id;
+	}
 
 	public String getName() {
 		return name;

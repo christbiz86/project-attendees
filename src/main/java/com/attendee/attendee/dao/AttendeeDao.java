@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.attendee.attendee.model.Attendee;
 
@@ -174,6 +173,22 @@ public class AttendeeDao extends ParentDao{
 		}
 		else {
 			return (Attendee)list.get(0);
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Attendee> findByUSP(UUID usp) {
+		List<Attendee> list = super.entityManager
+				.createQuery("FROM Attendee "
+						+ "WHERE idUserShiftProject.id = :usp")
+				.setParameter("usp", usp)
+				.getResultList();
+		
+		if (list.size() == 0) {
+			return new ArrayList<Attendee>();
+		}
+		else {
+			return list;
 		}
 	}
 }
