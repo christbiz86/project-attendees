@@ -1,5 +1,7 @@
 package com.attendee.attendee.dao;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -63,8 +65,8 @@ public class LiburCompanyDao extends ParentDao {
 		}
 		
 		if (liburCompany.getCompany() != null) {
-			String company = liburCompany.getCompany().getNama();
-			sb.append(" AND company.nama='"+company+"'");
+			UUID company = liburCompany.getCompany().getId();
+			sb.append(" AND company.id='"+company+"'");
 		}
 
 		List<LiburCompany> list = super.entityManager
@@ -121,5 +123,33 @@ public class LiburCompanyDao extends ParentDao {
 		}else {
 			return true;
 		}	 
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public List<LiburCompany> findByTgl(LiburCompany liburCompany) {
+		
+		LocalDate localDate = liburCompany.getLibur().getTglMulai().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		int year  = localDate.getYear();
+		int month = localDate.getMonthValue();
+
+		StringBuilder sb = new StringBuilder();
+		sb.append(" SELECT lc.id, lc.id_libur, lc.id_company FROM LIBUR_COMPANY lc ");
+		sb.append(" JOIN LIBUR l ON lc.id_libur=l.id ");
+		sb.append(" WHERE lc.ID_COMPANY = '"+ liburCompany.getCompany().getId()+"' ");
+		sb.append(" AND EXTRACT(YEAR FROM l.tgl_mulai)= "+year+"  ");
+		sb.append(" AND EXTRACT(MONTH FROM l.tgl_mulai)= "+month+" ");
+
+		List<LiburCompany> list = super.entityManager
+                .createNativeQuery(sb.toString(),LiburCompany.class)
+                .getResultList();
+
+		if (list.size() == 0) {
+			List<LiburCompany> nullList = new ArrayList<LiburCompany>();
+			return nullList;
+		}
+		else {
+			return list;
+		}
 	}
 }

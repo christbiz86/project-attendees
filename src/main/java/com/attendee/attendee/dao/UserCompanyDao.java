@@ -117,6 +117,7 @@ public class UserCompanyDao extends ParentDao {
 				}
 			}
 		}
+		
 		List<UserCompany> list = super.entityManager.createQuery(sb.toString()).getResultList();
 
 		if (list.size() == 0) {
