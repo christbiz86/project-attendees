@@ -14,8 +14,8 @@ import com.aliyun.oss.OSSClient;
 public class CloudService {
 	private final String BUCKET_NAME = "attendee-storage";
 	private final String endpoint = "oss-ap-southeast-5.aliyuncs.com";
-	private final String accessKeyId = "LTAIgIip5nffvLF5";
-	private final String accessKeySecret = "HhLtxTftFss1tEevTDMQRmbxyFwJue";
+	private final String accessKeyId = "******";
+	private final String accessKeySecret = "********";
 	private OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
 	
 	@Transactional
