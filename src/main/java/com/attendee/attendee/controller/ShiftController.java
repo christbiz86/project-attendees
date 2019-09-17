@@ -55,13 +55,13 @@ public class ShiftController {
 	@Autowired
 	private ProjectService proServ;
 	
-	@GetMapping(value = "shift")
+	@GetMapping(value = "/shift")
 	public @ResponseBody List<Shift> getAllShift(){
 		List<Shift> shiftList = shiftService.findAll();
 		return shiftList;
 	}
 	
-	@GetMapping(value = "shift/{status}")
+	@GetMapping(value = "/shift/{status}")
 	public @ResponseBody List<Shift> getFilterShift(@PathVariable String status) throws Exception {
 		List<Shift> shiftList = shiftService.filterShift(status);
 		return shiftList;
@@ -112,7 +112,7 @@ public class ShiftController {
 		return usp;
 	}
 	
-	@PostMapping(value = "shift")
+	@PostMapping(value = "/shift")
 	public ResponseEntity<?> insertShift(@RequestBody PojoShift ps) throws Exception {
 		System.out.println(ps.getMasuk());
 		System.out.println(ps.getPulang());
@@ -174,7 +174,7 @@ public class ShiftController {
 		}
 	}
 	
-	@PutMapping(value = "shift")
+	@PutMapping(value = "/shift")
 	public ResponseEntity<?> updateShift(@RequestBody Shift shift) throws Exception {
 		List messagesFailed = new ArrayList();
 		List messagesSuccess = new ArrayList();
@@ -213,7 +213,7 @@ public class ShiftController {
 		}
 	}
 	
-	@PatchMapping(value = "shift/inactive")
+	@PatchMapping(value = "/shift/inactive")
 	public ResponseEntity<?> patchShift(@RequestBody Shift shift) throws Exception {
 		try {
 //			shiftService.delete(id);

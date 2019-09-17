@@ -4,7 +4,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Repository;
 
-import com.attendee.attendee.model.UserDescriptorPojo;
+import com.attendee.attendee.model.PojoUserDescriptor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -20,10 +20,10 @@ public class UserDescriptorDao extends ParentDao {
 	}
 	
 	@Transactional
-	public UserDescriptorPojo load(String id) throws JsonProcessingException {
+	public PojoUserDescriptor load(String id) throws JsonProcessingException {
 		String query = "SELECT descriptors FROM users_descriptors WHERE user_id LIKE '"+id+"'";
 		String json = super.entityManager.createNativeQuery(query).getSingleResult().toString();
-		UserDescriptorPojo output = gson.fromJson(json, UserDescriptorPojo.class);
+		PojoUserDescriptor output = gson.fromJson(json, PojoUserDescriptor.class);
 		return output;
 	}
 }

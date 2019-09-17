@@ -34,8 +34,10 @@ public class RequestService {
 		return aprDao.findAll();
 	}
 	
-	public List<Request> findByStatus(String status){
-		return aprDao.findByStatus(status);
+	public List<Request> findUserRequestByStatus(String status){
+		UUID userCompanyId = ((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal())
+				.getUserCompany().getId();
+		return aprDao.findUserRequestByStatus(status, userCompanyId);
 	} 
 	
 	@Transactional

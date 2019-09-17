@@ -2,7 +2,7 @@ package com.attendee.attendee.model;
 
 import java.util.List;
 
-public class UserDescriptorPojo {
+public class PojoUserDescriptor {
 	private String name;
 	private List<List<Double>> descriptors;
 	

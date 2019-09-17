@@ -143,6 +143,8 @@ public class UserService{
 		user.setCreatedAt(getTime());
 		user.setPassword(encoder.encode(user.getPassword()));
 		user.setKode(kodeUser());
+		user.setFoto(user.getKode() + user.getNama());
+		user.setFotoAttendee(user.getKode() + user.getNama()+"FACE");
 		user.setIdStatus(staDao.findByStatus("Active"));		
 		user.setUpdatedAt(null);
 		user.setUpdatedBy(null);

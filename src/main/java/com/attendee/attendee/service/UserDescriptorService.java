@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.attendee.attendee.dao.UserDescriptorDao;
-import com.attendee.attendee.model.UserDescriptorPojo;
+import com.attendee.attendee.model.PojoUserDescriptor;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -18,12 +18,12 @@ public class UserDescriptorService {
 	private UserDescriptorDao usdDao;
 
 	@Transactional
-	public void addJson(UserDescriptorPojo userDescriptor) throws Exception {
+	public void addJson(PojoUserDescriptor userDescriptor) throws Exception {
 		JsonObject inputObj  = gson.fromJson(gson.toJson(userDescriptor), JsonObject.class);
 		usdDao.save(userDescriptor.getName(), inputObj);
 	}
 	
-	public UserDescriptorPojo getDescriptor(String id) throws Exception {
+	public PojoUserDescriptor getDescriptor(String id) throws Exception {
 		return usdDao.load(id);
 	}
 }

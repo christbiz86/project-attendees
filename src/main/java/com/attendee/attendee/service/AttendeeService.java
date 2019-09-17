@@ -7,8 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.attendee.attendee.dao.AttendeeDao;
+import com.attendee.attendee.dao.UserShiftProjectDao;
 import com.attendee.attendee.exception.ValidationException;
-import com.attendee.attendee.model.Absen;
+import com.attendee.attendee.model.PojoAbsen;
 import com.attendee.attendee.model.Attendee;
 import com.attendee.attendee.model.UserCompany;
 import com.attendee.attendee.model.UserShiftProject;
@@ -18,6 +19,9 @@ public class AttendeeService {
 
 	@Autowired
 	private AttendeeDao attendeeDao;
+	
+	@Autowired
+	private UserShiftProjectDao uspDao;
 	
 	@Autowired
 	private UserShiftProjectService uspService;
@@ -106,10 +110,20 @@ public class AttendeeService {
 		return attendeeDao.findAll();
 	}
 	
-	public void saveAbsen(Absen absen,UserCompany uc) throws ValidationException {
+	private String valLokasi(List<String> listKode, UUID user) throws ValidationException {
+		UserShiftProject usp = uspDao.findByUser(user);
+		for (String code : listKode) {
+			if(code.equals(usp.getShiftProject().getProject().getGlobalCode())) {
+				return usp.getShiftProject().getProject().getLokasi();
+			}
+		}
+		throw new ValidationException("Harap Absen di Lokasi Projek");
+	}
+	
+	public void saveAbsen(PojoAbsen absen,UserCompany uc) throws ValidationException {
+		String lokasi = valLokasi(absen.getKode(), uc.getId());
 		
-		Attendee temp=attendeeDao.findByUserAndTime(uc.getIdUser().getId());
-		
+		Attendee temp=attendeeDao.findByUserAndKeterangan(uc.getIdUser().getId(), "masuk", absen.getJam());
 		if(temp.getId()==null) {
 			Attendee attendee=new Attendee();
 			UserShiftProject usp=new UserShiftProject();
@@ -120,14 +134,14 @@ public class AttendeeService {
 		
 			attendee.setIdUserShiftProject(usp);
 			attendee.setMasuk(absen.getJam());
-			attendee.setLokasiMasuk(absen.getLokasi());
+			attendee.setLokasiMasuk(lokasi);
 			attendee.setKeterangan("masuk");
 			
 			save(attendee);
 			
 		}else {
 			
-			temp.setLokasiPulang(absen.getLokasi());
+			temp.setLokasiPulang(lokasi);
 			temp.setPulang(absen.getJam());
 			temp.setKeterangan("pulang");
 			

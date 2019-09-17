@@ -23,6 +23,7 @@ import com.attendee.attendee.email.PasswordGenerator;
 import com.attendee.attendee.exception.MessageResponse;
 import com.attendee.attendee.exception.ValidationException;
 import com.attendee.attendee.model.PojoUser;
+import com.attendee.attendee.model.User;
 import com.attendee.attendee.model.UserCompany;
 import com.attendee.attendee.model.UserPrinciple;
 import com.attendee.attendee.service.CloudService;
@@ -91,7 +92,6 @@ public class UserCompanyController {
 		PojoUser user = objectMapper.readValue(pojoUser, PojoUser.class);
 		try {
 			String pass = pwGenerator.generatePassword(user.getUser());
-			user.getUser().setFoto(user.getUser().getKode() + user.getUser().getNama());
 			user.getUser().setPassword(pass);
 			user.getUser().setCreatedBy(userService.findById(
 					((UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId()));
@@ -100,7 +100,8 @@ public class UserCompanyController {
 					("Your email : " + user.getUser().getEmail() + "\n" + "password : " + pass + "\n Thank you "));
 
 			MessageResponse mg = new MessageResponse("Success submit");
-			cService.save(file, user.getUser().getKode() + user.getUser().getNama());
+			User saveFoto = userService.findUsername(user.getUser().getEmail());
+			cService.save(file, saveFoto.getKode() + saveFoto.getNama());
 			return ResponseEntity.ok(mg);
 			
 		} catch (ValidationException val) {

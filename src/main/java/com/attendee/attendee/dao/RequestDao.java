@@ -66,10 +66,11 @@ public class RequestDao extends ParentDao {
 	
 	@Transactional
 	@SuppressWarnings("unchecked")
-	public List<Request> findByStatus(String status) {
+	public List<Request> findUserRequestByStatus(String status, UUID userCompanyId) {
 		List<Request> list = super.entityManager
-                .createQuery("from Request where status.status=:status")
+                .createQuery("FROM Request WHERE status.status=:status AND userCompany.id=:userCompanyId")
                 .setParameter("status", status)
+                .setParameter("userCompanyId", userCompanyId)
                 .getResultList();
 		if (list.size() == 0)
 			return new ArrayList<Request>();

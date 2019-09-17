@@ -1,13 +1,14 @@
 package com.attendee.attendee.model;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-public class Absen {
+public class PojoAbsen {
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="ASIA/JAKARTA")
  	private Timestamp jam;
-	private String lokasi;
+	private List<String> kode;
 
 	public Timestamp getJam() {
 		return jam;
@@ -17,11 +18,11 @@ public class Absen {
 		this.jam = jam;
 	}
 
-	public String getLokasi() {
-		return lokasi;
+	public List<String> getKode() {
+		return kode;
 	}
 
-	public void setLokasi(String lokasi) {
-		this.lokasi = lokasi;
+	public void setKode(List<String> code) {
+		this.kode = code;
 	}
 }

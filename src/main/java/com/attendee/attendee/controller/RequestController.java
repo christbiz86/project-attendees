@@ -30,23 +30,6 @@ public class RequestController {
 	@Autowired
 	private RequestService aprServ;
 	
-//	static class ApprovalAndUser {
-//	    public List<Request> approvals;
-//	    public User user;
-//	}
-	
-//	@GetMapping
-//	public ResponseEntity<?> getAll() throws IOException {
-//		try {
-//			ApprovalAndUser aau = new ApprovalAndUser();
-//			aau.approvals = aprServ.findAll();
-//			aau.user = aau.approvals.get(0).getUser();
-//			return ResponseEntity.ok(aau);
-//		} catch (Exception e) {
-//			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-//		}
-//	}
-	
 	@GetMapping
 	public ResponseEntity<?> getAll() throws IOException {
 		try {
@@ -58,10 +41,10 @@ public class RequestController {
 	}
 	
 	@GetMapping(value = "/{status}")
-	public ResponseEntity<?> getByStatus(@PathVariable String status) throws IOException {
+	public ResponseEntity<?> findUserRequestByStatus(@PathVariable String status) throws IOException {
 		System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 		try {
-			List<Request> request = aprServ.findByStatus(status);
+			List<Request> request = aprServ.findUserRequestByStatus(status);
 			return ResponseEntity.ok(request);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());

@@ -17,6 +17,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="users",uniqueConstraints = {
@@ -53,21 +54,26 @@ public class User {
 	@Column(name="foto",unique=true)
 	private String foto;
 	
+//	@JsonIgnore
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="ASIA/JAKARTA")
 	@Column(name = "created_at")
  	private Timestamp createdAt;
 	
+//	@JsonIgnore
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="ASIA/JAKARTA")
 	@Column(name = "updated_at")
  	private Timestamp updatedAt;
 	
+//	@JsonIgnore
 	@JoinColumn(name = "created_by", referencedColumnName = "id")
 	@OneToOne
 	private User createdBy;
 	
+//	@JsonIgnore
 	@Column(name = "updated_by")
 	private UUID updatedBy;
 	
+//	@JsonIgnore
 	@JoinColumn(name = "id_status", referencedColumnName = "id")
 	@OneToOne
 	private Status idStatus;

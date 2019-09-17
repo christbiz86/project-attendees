@@ -125,13 +125,16 @@ public class AttendeeDao extends ParentDao{
 	
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Attendee findByUserAndTime(UUID idUser) {
+	public Attendee findByUserAndKeterangan(UUID idUser, String keterangan, Timestamp time) {
+		String masuk = time.toString();
 		List<Attendee> list = super.entityManager
 				.createQuery("FROM Attendee "
 						+ "WHERE idUserShiftProject.userCompany.idUser.id = :idUser "
-						+ "AND keterangan=:keterangan ")
+						+ "AND keterangan=:keterangan "
+						+ "AND to_char(masuk,'yyyy-mm-dd')=:masuk ")
 				.setParameter("idUser", idUser)
-				.setParameter("keterangan", "masuk")
+				.setParameter("keterangan", keterangan)
+				.setParameter("masuk", masuk.substring(0, masuk.indexOf(" ")))
 				.getResultList();
 		
 		if (list.size() == 0) {
