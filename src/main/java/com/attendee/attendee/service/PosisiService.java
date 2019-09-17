@@ -22,7 +22,6 @@ public class PosisiService {
 	@Autowired
 	private StatusService statusService;
 	
-	
 	private void valIdExist(UUID id)throws ValidationException{
 		
 		if(!jabatanDao.isExist(id)) {
@@ -89,6 +88,7 @@ public class PosisiService {
 		jabatan.setIdStatus(statusService.findByStatus("Active"));
 		jabatan.setUpdatedAt(null);
 		jabatan.setUpdatedBy(null);
+		jabatan.setIdStatus(statusService.findByStatus("Active"));
 		
 		valBkNotNull(jabatan);
 		valBkNotExist(jabatan);
@@ -97,10 +97,6 @@ public class PosisiService {
 	}
 	
 	public void update(Posisi jabatan)throws ValidationException{
-		Posisi tempPosisi = findById(jabatan.getId());
-		
-//		jabatan.setCreatedAt(tempPosisi.getCreatedAt());
-//		jabatan.setCreatedBy(tempPosisi.getCreatedBy());
 		jabatan.setUpdatedBy(((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserCompany().getIdUser());
 		jabatan.setUpdatedAt(getTime());
 		
@@ -132,6 +128,10 @@ public class PosisiService {
 	
 	public List<Posisi> findAll( )throws ValidationException{
 		return jabatanDao.findAll();
+	}
+	
+	public List<Posisi> findPaging(int pageNumber) throws ValidationException{
+		return jabatanDao.findPaging(pageNumber);
 	}
 	
 	public List<Posisi> findByFilter(Posisi posisi)throws ValidationException{

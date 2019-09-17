@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.attendee.attendee.dao.CompanyUnitPosisiDao;
 import com.attendee.attendee.exception.ValidationException;
@@ -17,8 +16,9 @@ public class CompanyUnitPosisiService {
 	@Autowired
 	private CompanyUnitPosisiDao companyUnitPosisiDao;
 
+
 	public void valIdExist(UUID id)throws ValidationException{
-		
+			System.out.println("validasi cup");
 		if(!companyUnitPosisiDao.isExist(id)) {
 			throw new ValidationException("Data tidak ada");
 		}
@@ -60,20 +60,20 @@ public class CompanyUnitPosisiService {
 		}
 	}	
 	
-	@Transactional
 	public void insert(CompanyUnitPosisi companyUnitPosisi)throws ValidationException{
 		
-//		valBkNotExist(companyUnitPosisi);
 		valNonBk(companyUnitPosisi);
 		companyUnitPosisiDao.save(companyUnitPosisi);
 	}
 	
-	@Transactional
 	public void update(CompanyUnitPosisi companyUnitPosisi)throws ValidationException{
 		
 		valIdNotNull(companyUnitPosisi);
+
 		valIdExist(companyUnitPosisi.getId());
+
 		valNonBk(companyUnitPosisi);
+		
 		valBkNotExist(companyUnitPosisi);
 		companyUnitPosisiDao.save(companyUnitPosisi);
 	}
@@ -111,4 +111,9 @@ public class CompanyUnitPosisiService {
 		return companyUnitPosisiDao.findByIdCompany(idCompany);
 	
 	}
+	
+	public boolean isBkExist(CompanyUnitPosisi companyUnitPosisi)throws ValidationException{
+		return companyUnitPosisiDao.isBkExist(companyUnitPosisi.getIdCompany().getId(),companyUnitPosisi.getIdUnit().getId(),companyUnitPosisi.getIdPosisi().getId());
+			
+	}	
 }

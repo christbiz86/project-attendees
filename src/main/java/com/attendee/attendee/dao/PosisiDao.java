@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import javax.persistence.Query;
+
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,6 +44,20 @@ public class PosisiDao extends ParentDao {
 	public List<Posisi> findAll() {
 
 		List<Posisi> list = super.entityManager.createQuery("from Posisi ").getResultList();
+
+		return list;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public List<Posisi> findPaging(int pageNumber) {
+//		int pageNumber = 2;
+		int pageSize = 5;
+		Query query = super.entityManager.createQuery("FROM Posisi");
+		query.setFirstResult((pageNumber-1) * pageSize);
+		query.setMaxResults(pageSize);
+		
+		List<Posisi> list = query.getResultList();
 
 		return list;
 	}
@@ -90,7 +106,7 @@ public class PosisiDao extends ParentDao {
 		if (posisi.getPosisi() != null) {
 			sb.append(" AND p.posisi LIKE '%" + posisi.getPosisi() + "%' ");
 		}
-		if (posisi.getIdStatus().getId() != null) {
+		if (posisi.getIdStatus() != null) {
 			sb.append(" AND p.id_status LIKE '%" + posisi.getIdStatus().getId() + "%' ");
 		}
 

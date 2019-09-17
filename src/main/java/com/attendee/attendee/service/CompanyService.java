@@ -4,9 +4,10 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.attendee.attendee.dao.CompanyDao;
 import com.attendee.attendee.dao.StatusDao;
@@ -119,5 +120,4 @@ public class CompanyService {
 		valNonBk(company);
 		companyDao.save(company);
 	}
-
 }

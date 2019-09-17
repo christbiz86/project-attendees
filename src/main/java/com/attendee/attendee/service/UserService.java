@@ -11,40 +11,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.attendee.attendee.dao.StatusDao;
 import com.attendee.attendee.dao.UserDao;
 import com.attendee.attendee.exception.ValidationException;
-import com.attendee.attendee.model.CompanyUnitPosisi;
-import com.attendee.attendee.model.PojoUser;
-import com.attendee.attendee.model.TipeUser;
 import com.attendee.attendee.model.User;
-import com.attendee.attendee.model.UserCompany;
 import com.attendee.attendee.model.UserPrinciple;
 
 @Service
 public class UserService{
 	@Autowired
 	private UserDao userDao;
-	
-	@Autowired
-	private UserCompanyService ucService;
-	
-	@Autowired
-	private TipeUserService tuService;
-	
-	@Autowired
-	private CompanyService comService;
-	
-	@Autowired
-	private UnitService unitService;
-	
-	@Autowired
-	private PosisiService posisiService;
-	
-	@Autowired
-	private CompanyUnitPosisiService cupService;
 	
 	@Autowired
 	private PasswordEncoder encoder;
@@ -155,16 +132,15 @@ public class UserService{
 	
 	private void valCreatedNotChange(User user)throws ValidationException {
 		User tempUser=findById(user.getId());
-			
-		if(tempUser.getCreatedAt()!=user.getCreatedAt() && tempUser.getCreatedBy()!=user.getCreatedBy()) {
+					System.out.println(tempUser.getCreatedAt());
+					System.out.println(user.getCreatedAt());
+		if(tempUser.getCreatedAt()!=user.getCreatedAt() && tempUser.getCreatedBy().getId()!=user.getCreatedBy().getId()) {
 			throw new ValidationException("created tidak boleh berubah");
 		}
 	}
 	
-	@Transactional
 	public void save(User user)throws ValidationException, NoSuchAlgorithmException{
 		user.setCreatedAt(getTime());
-//		user.setPassword(encoder.encode(generatePassword(user)));
 		user.setPassword(encoder.encode(user.getPassword()));
 		user.setKode(kodeUser());
 		user.setIdStatus(staDao.findByStatus("Active"));		
@@ -179,8 +155,10 @@ public class UserService{
 		userDao.save(user);
 	}
 	
-	@Transactional
 	public void update(User user)throws ValidationException{
+		User tempUser=findById(user.getId());
+		user.setCreatedAt(tempUser.getCreatedAt());
+		user.setCreatedBy(tempUser.getCreatedBy());
 		user.setUpdatedAt(getTime());
 		valCreatedNotChange(user);
 		
@@ -192,9 +170,13 @@ public class UserService{
 		userDao.save(user);
 	}
 	
-	public void delete(UUID id)throws ValidationException{
-		valIdExist(id);
-		userDao.delete(id);
+	public void delete(User user)throws ValidationException{
+		valIdExist(user.getId());
+		user.setUpdatedAt(getTime());
+		user.setUpdatedBy(((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId());
+		user.setIdStatus(staDao.findByStatus("Inactive"));
+		
+		userDao.save(user);
 	}
 	
 	public User findById(UUID id)throws ValidationException{
@@ -222,54 +204,6 @@ public class UserService{
 		return userDao.userLogin(username);
 	}
 
-	public void saveWithTipeUser(User signUpRequest) throws ValidationException{
-		try {
-			save(signUpRequest);
-	        UserCompany userCompany=new UserCompany();
-	        TipeUser tu=tuService.findName("ROLE_SUPERADMIN");
-	        userCompany.setIdUser(findByBk(signUpRequest));
-	        userCompany.setIdTipeUser(tu);
-	        ucService.save(userCompany);
-	      
-		}catch(Exception e) {
-			delete(findByBk(signUpRequest).getId());
-			throw new ValidationException("error");
-		}
-        		
-	}
-
-	@Transactional
-	public void saveWithCompanyUnitPosisi(PojoUser user)throws ValidationException {
-		try {
-			
-			save(user.getUser());
-			
-			UserCompany userCompany=new UserCompany();
-	        CompanyUnitPosisi companyUnitPosisi = new CompanyUnitPosisi();
-	        
-//	        companyUnitPosisi.setIdCompany(comService.findById(user.getCompany().getId()));
-	    	companyUnitPosisi.setIdCompany(((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserCompany().getIdCompanyUnitPosisi().getIdCompany());
-	        companyUnitPosisi.setIdPosisi(posisiService.findById(user.getPosisi().getId()));
-	        companyUnitPosisi.setIdUnit(unitService.findById(user.getUnit().getId()));
-	        
-	        cupService.insert(companyUnitPosisi);
-	        
-	        userCompany.setIdUser(findByBk(user.getUser()));
-	        userCompany.setIdTipeUser(user.getTipeUser());
-	        userCompany.setIdCompanyUnitPosisi(cupService.findByBk(companyUnitPosisi.getIdCompany().getId(),companyUnitPosisi.getIdUnit().getId(),companyUnitPosisi.getIdPosisi().getId()));
-	        
-	        ucService.save(userCompany);
-		}catch (ValidationException e) {
-			System.out.println(e);
-			throw e;
-		}
-		catch (Exception e) {
-			System.out.println(e);
-			delete(findByBk(user.getUser()).getId());
-			throw new ValidationException("error");
-		}
-	}
-	
 	private void valEmailNotExist(User user) throws ValidationException{
 		if(userDao.findByEmail(user).getId()!=null) {
 			System.out.println("email sudah digunakan");

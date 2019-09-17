@@ -30,9 +30,9 @@ public class LiburCompanyController {
 	
 	@PostMapping
 	public ResponseEntity<?> insertLiburCompany(@RequestBody List<LiburCompany> liburCompany) throws Exception {
-		List<MessageResponse> messagesSuccess = new ArrayList();
-		List<MessageResponse> messagesExist = new ArrayList();
-		List<MessageResponse> messagesException = new ArrayList();
+		List<MessageResponse> messagesSuccess = new ArrayList<MessageResponse>();
+		List<MessageResponse> messagesExist = new ArrayList<MessageResponse>();
+		List<MessageResponse> messagesException = new ArrayList<MessageResponse>();
 	    List allMessages =  new ArrayList();
 	    
 	    for (LiburCompany list : liburCompany) {

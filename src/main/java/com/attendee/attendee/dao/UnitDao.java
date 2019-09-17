@@ -99,7 +99,7 @@ public class UnitDao extends ParentDao{
 		if(unit.getUnit()!=null) {
 			sb.append(" AND u.unit LIKE '%"+unit.getUnit()+"%' ");
 		}
-		if(unit.getIdStatus().getStatus()!=null) {
+		if(unit.getIdStatus() !=null) {
 			sb.append(" AND u.id_status LIKE '%"+unit.getIdStatus().getStatus()+"%' ");
 		}
 					

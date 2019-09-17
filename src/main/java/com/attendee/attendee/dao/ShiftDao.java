@@ -1,27 +1,33 @@
 package com.attendee.attendee.dao;
 
+import java.math.BigInteger;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import javax.transaction.Transactional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.attendee.attendee.model.Shift;
 
 @Repository
 public class ShiftDao extends ParentDao {
+	@Autowired
+	private StatusDao stDao;
+	
 	@Transactional
 	public void save(Shift shift) {
 		super.entityManager.merge(shift);
 	}
 	
-	@Transactional
-	public void delete(UUID id) {
-		Shift shift = findById(id);
-		super.entityManager.remove(shift);
-	}
+//	@Transactional
+//	public void delete(UUID id) {
+//		Shift shift = findById(id);
+//		super.entityManager.remove(shift);
+//	}
 	
 	@SuppressWarnings("unchecked")
 	@Transactional
@@ -101,4 +107,47 @@ public class ShiftDao extends ParentDao {
 			return true;
 		}	 
 	}
+	
+	@Transactional
+	public String countRows() {
+		BigInteger count = (BigInteger) super.entityManager
+				.createNativeQuery("SELECT count(*) FROM shift").getSingleResult();
+		
+		int next = count.intValue() + 1;
+		String num = Integer.toString(next);
+		
+		if(num.length() == 1) {
+			return "00"+num;
+		} else if(num.length() == 2) {
+			return "0"+num;
+		} else {
+			return num;
+		}
+	}
+	
+	@Transactional
+	public void delete(UUID id) {
+		StringBuilder sb = new StringBuilder("UPDATE SET status = '"+stDao.findByStatus("Inactive")+"' ");
+		sb.append("WHERE id = "+id+"';");
+		
+		super.entityManager.createNativeQuery(sb.toString(), Shift.class);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public Shift findByNonBk(Time masuk, Time pulang) {
+		List<Shift> list = super.entityManager
+                .createQuery("FROM Shift WHERE masuk = :masuk AND pulang = :pulang")
+                .setParameter("masuk", masuk)
+                .setParameter("pulang", pulang)
+                .getResultList();
+
+		if (list.size() == 0) {
+			return new Shift();
+		}
+		else {
+			return (Shift)list.get(0);
+		}
+	}
+	
 }

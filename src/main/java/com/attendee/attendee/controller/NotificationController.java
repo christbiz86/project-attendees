@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,21 +39,10 @@ public class NotificationController {
 		}
 	}
 	
-//	@PostMapping(value = "/filter")
-//	public ResponseEntity<?> getByFilter(@RequestBody Notification notification) throws IOException {
-//		try {
-////			notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().setIdCompany(((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserCompany().getIdCompanyUnitPosisi().getIdCompany());
-//			List<Notification> notifList = notifService.findByFilter(notification);
-//			return ResponseEntity.ok(notifList);
-//		} catch (Exception e) {
-//			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-//		}
-//	}
-	
 	@PostMapping(value = "/request")
 	public ResponseEntity<?> getByFilterRequest(@RequestBody Notification notification) throws IOException {
 		try {
-//			notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().setIdCompany(((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserCompany().getIdCompanyUnitPosisi().getIdCompany());
+			notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().setIdCompany(((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserCompany().getIdCompanyUnitPosisi().getIdCompany());
 			List<Notification> notifList = notifService.findByFilterRequest(notification);
 			return ResponseEntity.ok(notifList);
 		} catch (Exception e) {
@@ -65,7 +53,7 @@ public class NotificationController {
 	@PostMapping(value = "/approval")
 	public ResponseEntity<?> getByFilterNotRequest(@RequestBody Notification notification) throws IOException {
 		try {
-//			notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().setIdCompany(((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserCompany().getIdCompanyUnitPosisi().getIdCompany());
+			notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().setIdCompany(((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserCompany().getIdCompanyUnitPosisi().getIdCompany());
 			List<Notification> notifList = notifService.findByFilterNotRequest(notification);
 			return ResponseEntity.ok(notifList);
 		} catch (Exception e) {

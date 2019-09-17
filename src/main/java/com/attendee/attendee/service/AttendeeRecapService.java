@@ -1,6 +1,5 @@
 package com.attendee.attendee.service;
 
-import java.nio.file.Paths;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -12,9 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.attendee.attendee.dao.AttendeeRecapDao;
 import com.attendee.attendee.model.AttendeeRecap;
-import com.attendee.attendee.storage.StorageProperties;
 
-import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -27,27 +24,27 @@ public class AttendeeRecapService {
 	@Autowired
 	private AttendeeRecapDao attendeeRecapDao;
 	
-	private StorageProperties properties;
+	@Autowired
+	private CloudService cloudService;
 	
 	@Transactional
-	public List<AttendeeRecap> getAll(Date startDate, Date endDate) {
-		List<AttendeeRecap> list = attendeeRecapDao.getAllRecap(startDate, endDate);
+	public List<AttendeeRecap> getAll(String company, Date startDate, Date endDate) {
+		List<AttendeeRecap> list = attendeeRecapDao.getAllRecap(company, startDate, endDate);
 		return list;
 	}
 	
 	@Transactional
-	public byte[] generateReport(Date startDate, Date endDate) throws JRException {
-		String reportPath = "src\\main\\resources\\report";
-		
+	public byte[] generateReport(String company, Date startDate, Date endDate) throws Exception {
 		// Compile the Jasper report from .jrxml to .japser
-		JasperReport jasperReport = JasperCompileManager.compileReport(reportPath + "\\att-recap-rpt.jrxml");
-		
-		// Get your data source
-		JRBeanCollectionDataSource jrBeanCollectionDataSource = new JRBeanCollectionDataSource(attendeeRecapDao.getAllRecap(startDate, endDate));
+		JasperReport jasperReport = JasperCompileManager.compileReport(cloudService.loadReport("AttRecapRpt"));
 
+		// Get your data source
+		JRBeanCollectionDataSource jrBeanCollectionDataSource = new JRBeanCollectionDataSource(attendeeRecapDao.getAllRecap(company, startDate, endDate));
+		
 		// Add parameters
 		Map<String, Object> parameters = new HashMap<>();
-
+		
+		parameters.put("company", company);
 		parameters.put("startDate", startDate);
 		parameters.put("endDate", endDate);
 
@@ -58,7 +55,6 @@ public class AttendeeRecapService {
 		// Export the report to a PDF file
 		byte[] pdf = JasperExportManager.exportReportToPdf(jasperPrint);
 
-//		return ("Report successfully generated @path= " + reportPath);
 		return pdf;
 	}
 }

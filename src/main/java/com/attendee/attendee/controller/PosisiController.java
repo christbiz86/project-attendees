@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -53,12 +54,29 @@ public class PosisiController {
 		 }
 	}
 	
-	@RequestMapping(value = "/posisi", method = RequestMethod.GET)
-	public ResponseEntity<?> retrieveAll() throws ValidationException
+//	@RequestMapping(value = "/posisi", method = RequestMethod.GET)
+//	public ResponseEntity<?> retrieveAll() throws ValidationException
+//	{
+//		 try 
+//		 {
+//			 List<Posisi> posisiList=posisiService.findAll();
+//
+//			 return ResponseEntity.ok(posisiList);
+//		 }
+//		 
+//		 catch(Exception ex) 
+//		 {
+//			 MessageResponse mg = new MessageResponse("Retrieve Failed" );
+//		     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mg);
+//		 }
+//	}
+	
+	@RequestMapping(value = "/posisi/{pageNumber}", method = RequestMethod.GET)
+	public ResponseEntity<?> retrievePaging(@PathVariable int pageNumber) throws ValidationException
 	{
 		 try 
 		 {
-			 List<Posisi> posisiList=posisiService.findAll();
+			 List<Posisi> posisiList=posisiService.findPaging(pageNumber);
 
 			 return ResponseEntity.ok(posisiList);
 		 }

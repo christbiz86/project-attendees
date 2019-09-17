@@ -38,7 +38,7 @@ public class AnnualLeaveRecapController {
 	}
 	
 	@GetMapping(value = "/start-date/{startDate}/end-date/{endDate}/report")
-	public ResponseEntity<?> generateReport(
+	public ResponseEntity<?> generateReport( 
 			@PathVariable @DateTimeFormat(pattern="yyyy-MM-dd") Date startDate, 
 			@PathVariable @DateTimeFormat(pattern="yyyy-MM-dd") Date endDate) throws Exception {
 		try {

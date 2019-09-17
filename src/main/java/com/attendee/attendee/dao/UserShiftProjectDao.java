@@ -114,4 +114,64 @@ public class UserShiftProjectDao extends ParentDao {
 			return (UserShiftProject) list.get(0);
 		}
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public List<UserShiftProject> findByFilter(UserShiftProject usp) {
+		StringBuilder sb = new StringBuilder("from UserShiftProject WHERE 1=1 ");
+		
+		if(usp.getUserCompany() != null) {
+			if(usp.getUserCompany().getIdUser() != null) {
+				if(usp.getUserCompany().getIdUser().getId() != null) {
+					sb.append("AND userCompany.idUser.id ='"+usp.getUserCompany().getIdUser().getId()+"' ");
+				}
+			}
+			if(usp.getUserCompany().getIdCompanyUnitPosisi() != null) {
+				if(usp.getUserCompany().getIdCompanyUnitPosisi().getIdCompany() != null) {
+					if(usp.getUserCompany().getIdCompanyUnitPosisi().getIdCompany().getId() != null) {
+						sb.append("AND userCompany.idCompanyUnitPosisi.idCompany.id = '"+usp.getUserCompany().getIdCompanyUnitPosisi().getIdCompany().getId()+"' ");
+					}
+				}
+			}
+		}
+		
+		if(usp.getShiftProject() != null) {
+			if(usp.getShiftProject().getShift() != null) {
+				if(usp.getShiftProject().getShift().getMasuk() != null) {
+					sb.append("AND shiftProject.shift.masuk = '"+usp.getShiftProject().getShift().getMasuk()+"' ");
+				}
+				if(usp.getShiftProject().getShift().getPulang() != null) {
+					sb.append("AND shiftProject.shift.keluar = '"+usp.getShiftProject().getShift().getPulang()+"' ");
+				}
+				if(usp.getShiftProject().getShift().getStatus().getStatus() != null) {
+					sb.append("AND shiftProject.shift.status.status = '"+usp.getShiftProject().getShift().getStatus().getStatus()+"' ");
+				}
+			}
+			if(usp.getShiftProject().getProject() != null) {
+				if(usp.getShiftProject().getProject().getNamaProject() != null) {
+					sb.append("AND shiftProject.project.namaProject LIKE '"+usp.getShiftProject().getProject().getNamaProject()+"' ");
+				}
+				if(usp.getShiftProject().getProject().getLokasi() != null) {
+					sb.append("AND shiftProject.project.lokasi LIKE '"+usp.getShiftProject().getProject().getLokasi()+"' ");
+				}
+				if(usp.getShiftProject().getProject().getStatus().getStatus() != null) {
+					sb.append("AND shiftProject.project.status.status = '"+usp.getShiftProject().getProject().getStatus().getStatus()+"' ");
+				}
+			}
+		}
+		
+		if(usp.getWorktime() != null) {
+			if(usp.getWorktime().getStatus() != null) {
+				sb.append("AND worktime.status LIKE '"+usp.getWorktime().getStatus()+"' ");
+			}
+		}
+		
+		List<UserShiftProject> list = super.entityManager.createQuery(sb.toString()).getResultList();
+		
+		if(list.size() == 0) {
+			return new ArrayList<UserShiftProject>();
+		} else {
+			return list;
+		}
+	}
 }

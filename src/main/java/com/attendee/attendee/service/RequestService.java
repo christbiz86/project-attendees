@@ -8,15 +8,16 @@ import java.util.UUID;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import com.attendee.attendee.dao.NotificationDao;
 import com.attendee.attendee.dao.RequestDao;
 import com.attendee.attendee.dao.StatusDao;
 import com.attendee.attendee.exception.InvalidDataException;
 import com.attendee.attendee.model.Notification;
 import com.attendee.attendee.model.Request;
 import com.attendee.attendee.model.User;
+import com.attendee.attendee.model.UserPrinciple;
 
 @Service
 public class RequestService {
@@ -39,7 +40,9 @@ public class RequestService {
 	
 	@Transactional
 	public void insert(Request request) throws Exception {
-		request.setCreatedBy(request.getUserCompany().getIdUser());
+		request.setCreatedBy(
+				((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal())
+				.getUserCompany().getIdUser());
 		request.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 		request.setStatus(staDao.findByStatus("Request"));
 		request.setKode("REQ"+aprDao.countRows());
@@ -49,7 +52,7 @@ public class RequestService {
 		aprDao.save(request);
 		
 		Notification notif = new Notification();
-		notif.setRequest(request);
+		notif.setRequest(aprDao.findByBk(request.getKode()));
 		notif.setStatus(staDao.findByStatus("Unread"));
 		notifService.insert(notif);
 	}
@@ -60,6 +63,7 @@ public class RequestService {
 		aprDao.delete(request);
 	}
 	
+	@Transactional
 	public void proses(Request request, User user, String putusan) throws Exception{
 		if(!putusan.equals("Approved") && !putusan.equals("Rejected")) {
 
@@ -79,7 +83,6 @@ public class RequestService {
 		aprDao.save(request);
 		
 		Notification notif = notifService.findByBk(request.getId());
-//		notif.setStatus(staDao.findByStatus("Unread"));
 		notifService.update(notif);
 	}
 	

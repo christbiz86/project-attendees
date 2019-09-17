@@ -1,6 +1,5 @@
 package com.attendee.attendee.service;
 
-import java.nio.file.Paths;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -12,9 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.attendee.attendee.dao.AnnualLeaveRecapDao;
 import com.attendee.attendee.model.AnnualLeaveRecap;
-import com.attendee.attendee.storage.StorageProperties;
 
-import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -27,7 +24,8 @@ public class AnnualLeaveRecapService {
 	@Autowired
 	private AnnualLeaveRecapDao alrDao;
 	
-	private StorageProperties properties;
+	@Autowired
+	private CloudService cloudService;
 	
 	public List<AnnualLeaveRecap> getAll(String company, Date startDate, Date endDate) {
 		List<AnnualLeaveRecap> list = alrDao.getAllRecap(company, startDate, endDate);
@@ -35,26 +33,26 @@ public class AnnualLeaveRecapService {
 	}
 	
 	@Transactional
-	public byte[] generateReport(String company, Date startDate, Date endDate) throws JRException {
-
+	public byte[] generateReport(String company, Date startDate, Date endDate) throws Exception {
 		// Compile the Jasper report from .jrxml to .japser
-		JasperReport jasperReport = JasperCompileManager.compileReport(Paths.get(properties.getReportPath()).resolve("ann-leave-recap-rpt.jrxml").toString());
-
+		JasperReport jasperReport = JasperCompileManager.compileReport(cloudService.loadReport("AnnLeaveRecapRpt"));
+		
 		// Get your data source
 		JRBeanCollectionDataSource jrBeanCollectionDataSource = new JRBeanCollectionDataSource(alrDao.getAllRecap(company, startDate, endDate));
-
+		
 		// Add parameters
 		Map<String, Object> parameters = new HashMap<>();
 
-		parameters.put("company", startDate);
+		parameters.put("company", company);
 		parameters.put("start_date", startDate);
 		parameters.put("end_date", endDate);
 
 		// Fill the report
-		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters,
+		JasperPrint jasperPrint = JasperFillManager.fillReport(
+				jasperReport, 
+				parameters,
 				jrBeanCollectionDataSource);
 
-		// Export the report to a PDF file
 		byte[] pdf = JasperExportManager.exportReportToPdf(jasperPrint);
 
 		return pdf;

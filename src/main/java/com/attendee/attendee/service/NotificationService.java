@@ -77,15 +77,6 @@ public class NotificationService {
 		notifDao.save(notification);
 	}
 	
-//	@Transactional
-//	public void update(Notification notification)throws ValidationException {
-//		valIdNotNull(notification);
-//		valIdExist(notification.getId());
-//		valBkNotNull(notification);
-//		valBkNotChange(notification);
-//		valNonBk(notification);
-//		notifDao.save(notification);
-//	}
 	@Transactional
 	public void update(Notification notification)throws ValidationException {
 		if(notification.getStatus().getStatus().equals("Unread") && 
@@ -119,10 +110,6 @@ public class NotificationService {
 	public List<Notification> findAll()throws ValidationException {
 		return notifDao.findAll();
 	}
-	
-//	public List<Notification> findByFilter(Notification notification )throws ValidationException{
-//		return notifDao.findByFilter(notification);
-//	}
 	
 	public List<Notification> findByFilterRequest(Notification notification )throws ValidationException{
 		return notifDao.findByFilterRequest(notification);

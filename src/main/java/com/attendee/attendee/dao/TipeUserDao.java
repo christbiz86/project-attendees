@@ -112,7 +112,7 @@ public class TipeUserDao extends ParentDao{
 		sb.append(" WHERE 1=1 ");		
 
 		if(tipeUser.getTipe()!=null) {
-			sb.append(" AND p.tipe LIKE '%"+tipeUser.getTipe()+"%' ");
+			sb.append(" AND p.tipe NOT LIKE '"+tipeUser.getTipe()+"' ");
 		}
 		
 		List<TipeUser> list=super.entityManager.createNativeQuery(sb.toString(),TipeUser.class).getResultList();

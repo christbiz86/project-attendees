@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,24 +16,27 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.attendee.attendee.exception.MessageResponse;
+import com.attendee.attendee.exception.ValidationException;
+import com.attendee.attendee.model.UserPrinciple;
 import com.attendee.attendee.model.UserShiftProject;
 import com.attendee.attendee.service.UserShiftProjectService;
 
-@CrossOrigin(origins = "http://localhost:8080", maxAge = 3600)
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping({"/api"})
 @Controller
 public class UserShiftProjectController {
 	@Autowired
-	private UserShiftProjectService userShiftProjectService;
+	private UserShiftProjectService uspService;
 	
 	@GetMapping(value = "user-shift-project")
 	public @ResponseBody List<UserShiftProject> getAllUserShiftProject(){
-		List<UserShiftProject> userShiftProjectList = userShiftProjectService.findAll();
+		List<UserShiftProject> userShiftProjectList = uspService.findAll();
 		return userShiftProjectList;
 	}
 	
@@ -50,7 +54,7 @@ public class UserShiftProjectController {
 		List allMessages = new ArrayList();
 		
 		try {
-			userShiftProjectService.save(userShiftProject);
+			uspService.save(userShiftProject);
 			MessageResponse mg = new MessageResponse("Insert Success with User " + userShiftProject.getUserCompany().getIdUser().getNama() + " And Project Code " + userShiftProject.getShiftProject().getProject().getKode());
 			messagesSuccess.add(mg);
 		} catch (Exception e) {
@@ -79,12 +83,30 @@ public class UserShiftProjectController {
 	@DeleteMapping(value = "user-shift-project/{id}")
 	public ResponseEntity<?> delete(@PathVariable UUID id) throws Exception {
 		try {
-			userShiftProjectService.delete(id);
+			uspService.delete(id);
 			MessageResponse mg = new MessageResponse("Delete Success");
 			return ResponseEntity.ok(mg);
 		} catch (Exception e) {
 			MessageResponse mg = new MessageResponse("Delete Failed");
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mg);
 		}
+	}
+	
+	@RequestMapping(value = "/shift/filter", method = RequestMethod.POST)
+	public ResponseEntity<?> retrieveByFilter(@RequestBody UserShiftProject usp) throws ValidationException
+	{
+		 try 
+		 {
+			 usp.getUserCompany().getIdCompanyUnitPosisi().setIdCompany(((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserCompany().getIdCompanyUnitPosisi().getIdCompany());
+			 List<UserShiftProject> list = uspService.findByFilter(usp);
+
+			 return ResponseEntity.ok(list);
+		 }
+		 
+		 catch(Exception ex) 
+		 {
+			 MessageResponse mg = new MessageResponse("Retrieve Failed" );
+		     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mg);
+		 }
 	}
 }

@@ -150,7 +150,6 @@ public class UserDao extends ParentDao {
 		}
 	}
 	
-	@Transactional
 	public String countRows() {
 		BigInteger count = (BigInteger) super.entityManager
 				.createNativeQuery("SELECT count(*) FROM users").getSingleResult();

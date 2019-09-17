@@ -32,19 +32,28 @@ public class NotificationDao extends ParentDao {
 			}
 			if (notification.getRequest().getUserCompany().getIdCompanyUnitPosisi() != null) {
 				if (notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().getIdCompany() != null) {
-					sb.append(" and request.userCompany.idCompanyUnitPosisi.idCompany.nama like '"+ notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().getIdCompany().getNama() +"'");
+					if (notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().getIdCompany().getId() != null) {
+						sb.append(" and request.userCompany.idCompanyUnitPosisi.idCompany.id = '"+ notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().getIdCompany().getId() +"'");
+					}
 				}
 				if (notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().getIdUnit() != null) {
-					sb.append(" and request.userCompany.idCompanyUnitPosisi.idUnit.unit like '"+ notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().getIdUnit().getUnit() +"'");
+					if (notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().getIdUnit().getUnit() != null) {
+						sb.append(" and request.userCompany.idCompanyUnitPosisi.idUnit.unit like '"+ notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().getIdUnit().getUnit() +"'");
+					}
 				}
 				if (notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().getIdPosisi() != null) {
-					sb.append(" and request.userCompany.idCompanyUnitPosisi.idPosisi.posisi like '"+ notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().getIdPosisi().getPosisi() +"'");
+					if (notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().getIdPosisi().getPosisi() != null) {
+						sb.append(" and request.userCompany.idCompanyUnitPosisi.idPosisi.posisi like '"+ notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().getIdPosisi().getPosisi() +"'");
+					}
 				}
 			}
 		}
 		if (notification.getStatus() != null) {
-			sb.append(" and status.status like '"+ notification.getStatus().getStatus() +"'");
+			if (notification.getStatus().getStatus() != null) {
+				sb.append(" and status.status like '"+ notification.getStatus().getStatus() +"'");
+			}
 		}
+		System.out.println(sb.toString());
 		List<Notification> list = super.entityManager.createQuery(sb.toString())
 				.getResultList();
 
@@ -75,19 +84,28 @@ public class NotificationDao extends ParentDao {
 			}
 			if (notification.getRequest().getUserCompany().getIdCompanyUnitPosisi() != null) {
 				if (notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().getIdCompany() != null) {
-					sb.append(" and request.userCompany.idCompanyUnitPosisi.idCompany.nama like '"+ notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().getIdCompany().getNama() +"'");
+					if (notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().getIdCompany().getId() != null) {
+						sb.append(" and request.userCompany.idCompanyUnitPosisi.idCompany.id = '"+ notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().getIdCompany().getId() +"'");
+					}
 				}
 				if (notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().getIdUnit() != null) {
-					sb.append(" and request.userCompany.idCompanyUnitPosisi.idUnit.unit like '"+ notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().getIdUnit().getUnit() +"'");
+					if (notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().getIdUnit().getUnit() != null) {
+						sb.append(" and request.userCompany.idCompanyUnitPosisi.idUnit.unit like '"+ notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().getIdUnit().getUnit() +"'");
+					}
 				}
 				if (notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().getIdPosisi() != null) {
-					sb.append(" and request.userCompany.idCompanyUnitPosisi.idPosisi.posisi like '"+ notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().getIdPosisi().getPosisi() +"'");
+					if (notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().getIdPosisi().getPosisi() != null) {
+						sb.append(" and request.userCompany.idCompanyUnitPosisi.idPosisi.posisi like '"+ notification.getRequest().getUserCompany().getIdCompanyUnitPosisi().getIdPosisi().getPosisi() +"'");
+					}
 				}
 			}
 		}
 		if (notification.getStatus() != null) {
-			sb.append(" and status.status like '"+ notification.getStatus().getStatus() +"'");
+			if (notification.getStatus().getStatus() != null) {
+				sb.append(" and status.status like '"+ notification.getStatus().getStatus() +"'");
+			}
 		}
+		System.out.println(sb.toString());
 		List<Notification> list = super.entityManager.createQuery(sb.toString())
 				.getResultList();
 

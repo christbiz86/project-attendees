@@ -119,8 +119,14 @@ public class UserShiftProjectService {
 		valIdExist(id);
 		userShiftProjectDao.delete(id);
 	}
-		
+	
+	@Transactional
 	public UserShiftProject findByUser(UserShiftProject shiftProject) {
 		return userShiftProjectDao.findByUser(shiftProject.getUserCompany().getId());
+	}
+	
+	@Transactional
+	public List<UserShiftProject> findByFilter(UserShiftProject usp) throws ValidationException {
+		return userShiftProjectDao.findByFilter(usp);	
 	}
 }
