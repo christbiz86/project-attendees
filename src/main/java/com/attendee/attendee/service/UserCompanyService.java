@@ -1,5 +1,6 @@
 package com.attendee.attendee.service;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.UUID;
 
@@ -129,6 +130,16 @@ public class UserCompanyService {
 	@Transactional
 	public List<UserCompany> findByFilter(UserCompany userCompany )throws ValidationException{
 		return userCompanyDao.findByFilter(userCompany);
+	}
+	
+	@Transactional
+	public List<UserCompany> findByLimit(UserCompany userCompany, int page, int jumlah)throws ValidationException{
+		return userCompanyDao.findLimit(userCompany, page, jumlah);
+	}
+	
+	@Transactional
+	public Integer countEmployee(UserCompany userCompany) {
+		return userCompanyDao.countEmployee(userCompany);
 	}
 
 	public UserCompany findByUsername(String username) {

@@ -22,9 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.attendee.attendee.exception.MessageResponse;
 import com.attendee.attendee.exception.ValidationException;
-import com.attendee.attendee.model.PojoShift;
-import com.attendee.attendee.model.Shift;
-import com.attendee.attendee.model.ShiftProject;
 import com.attendee.attendee.model.UserPrinciple;
 import com.attendee.attendee.model.UserShiftProject;
 import com.attendee.attendee.service.ShiftProjectService;

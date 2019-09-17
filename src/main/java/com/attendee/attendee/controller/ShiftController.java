@@ -24,7 +24,6 @@ import com.attendee.attendee.exception.MessageListResponse;
 import com.attendee.attendee.exception.MessageResponse;
 import com.attendee.attendee.exception.ValidationException;
 import com.attendee.attendee.model.PojoShift;
-import com.attendee.attendee.model.Project;
 import com.attendee.attendee.model.Shift;
 import com.attendee.attendee.model.ShiftProject;
 import com.attendee.attendee.model.UserPrinciple;

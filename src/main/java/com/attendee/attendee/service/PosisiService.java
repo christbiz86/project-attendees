@@ -130,6 +130,10 @@ public class PosisiService {
 		return jabatanDao.findAll();
 	}
 	
+	public List<Posisi> findPaging(int pageNumber) throws ValidationException{
+		return jabatanDao.findPaging(pageNumber);
+	}
+	
 	public List<Posisi> findByFilter(Posisi posisi)throws ValidationException{
 		return jabatanDao.findByFilter(posisi);
 	}

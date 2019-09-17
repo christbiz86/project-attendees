@@ -28,11 +28,11 @@ public class Libur {
 	@Column(name = "nama")
 	private String nama;
 	
-	@Temporal(TemporalType.DATE)
+	@JsonFormat(pattern= "yyyy-MM-dd HH:mm:ss", timezone="GMT+7")
 	@Column(name = "tgl_mulai")
 	private Date tglMulai;
 	
-	@Temporal(TemporalType.DATE)
+	@JsonFormat(pattern= "yyyy-MM-dd HH:mm:ss", timezone="GMT+7")
 	@Column(name = "tgl_akhir")
 	private Date tglAkhir;
 	
