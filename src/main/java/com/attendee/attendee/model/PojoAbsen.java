@@ -6,7 +6,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class PojoAbsen {
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="ASIA/JAKARTA")
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
  	private Timestamp jam;
 	private List<String> kode;
 
