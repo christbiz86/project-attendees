@@ -131,6 +131,11 @@ public class UserCompanyService {
 		return userCompanyDao.findByFilter(userCompany);
 	}
 
+	@Transactional
+	public List<UserCompany> findLimit(UserCompany userCompany,int page,int jumlah )throws ValidationException{
+		return userCompanyDao.findLimit(userCompany, page, jumlah);
+	}
+	
 	public UserCompany findByUsername(String username) {
 		return userCompanyDao.findByUsername(username);
 	}	

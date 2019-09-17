@@ -7,16 +7,22 @@ import java.util.UUID;
 import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.attendee.attendee.dao.LiburDao;
+import com.attendee.attendee.dao.StatusDao;
 import com.attendee.attendee.model.Libur;
+import com.attendee.attendee.model.UserPrinciple;
 
 @Service
 public class LiburService {
 
 	@Autowired
 	LiburDao liburDao;
+	
+	@Autowired
+	private StatusDao stDao;
 	
 	public void valIdNotExist(UUID id) throws ValidationException {
 		if(liburDao.isExist(id)) {
@@ -74,6 +80,8 @@ public class LiburService {
 		
 		libur.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 //		libur.setCreatedBy(createdBy);
+		libur.setStatus(stDao.findByStatus("Active"));
+		libur.setCreatedBy(((UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserCompany().getIdUser());
 		valNonBk(libur);
 		liburDao.save(libur);
 	}
@@ -84,6 +92,7 @@ public class LiburService {
 		valIdExist(libur.getId());
 		valNonBk(libur);
 		libur.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+		libur.setUpdatedBy(((UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserCompany().getIdUser());
 //		libur.setUpdatedBy();
 		liburDao.save(libur);
 	}

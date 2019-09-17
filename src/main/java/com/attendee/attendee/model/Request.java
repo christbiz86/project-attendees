@@ -39,6 +39,9 @@ public class Request {
 	@Column (name = "tgl_akhir")
 	private Date tglAkhir;
 	
+	@Column(name="total_hari")
+	private Integer totalHari;
+	
 	@Column(name="keterangan")
 	private String keterangan;
 	
@@ -149,4 +152,13 @@ public class Request {
 	public void setUpdatedBy(User updatedBy) {
 		this.updatedBy = updatedBy;
 	}
+
+	public Integer getTotalHari() {
+		return totalHari;
+	}
+
+	public void setTotalHari(Integer totalHari) {
+		this.totalHari = totalHari;
+	}
+	
 }

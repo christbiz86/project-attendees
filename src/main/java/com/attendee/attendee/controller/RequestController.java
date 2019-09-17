@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.attendee.attendee.exception.InvalidDataException;
+import com.attendee.attendee.exception.ValidationException;
 import com.attendee.attendee.model.Request;
 import com.attendee.attendee.model.UserPrinciple;
 import com.attendee.attendee.service.RequestService;
@@ -73,11 +74,14 @@ public class RequestController {
 		try {
 			aprServ.insert(request);
 			return ResponseEntity.status(HttpStatus.CREATED).body("Data Request Berhasil Disimpan");
-		}catch (InvalidDataException e) {
-			System.out.println(e);
-			System.out.println(e.getMessage());
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessages());
+		}catch (ValidationException val) {
+			System.out.println(val.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(val.getMessage());
+		}catch (InvalidDataException ex) {
+			System.out.println(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessages());
 		}catch (Exception e) {
+			System.out.println(e);
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
 	}

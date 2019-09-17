@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,9 +18,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.attendee.attendee.exception.MessageResponse;
 import com.attendee.attendee.model.Libur;
+import com.attendee.attendee.model.LiburCompany;
+import com.attendee.attendee.model.UserPrinciple;
+import com.attendee.attendee.service.LiburCompanyService;
 import com.attendee.attendee.service.LiburService;
+import com.attendee.attendee.service.StatusService;
 
-@CrossOrigin(origins= "*")
+@CrossOrigin(origins= "*",  allowedHeaders = "*")
 @Controller
 @RestController
 @RequestMapping("/attendees/libur")
@@ -28,23 +33,40 @@ public class LiburController {
 	@Autowired
 	private LiburService liburService;
 	
+	@Autowired
+	private LiburCompanyService lcServ;
+	
+	@Autowired
+	private StatusService stServ;
+	
 	@PostMapping
-	public ResponseEntity<?> insertLibur(@RequestBody List<Libur> libur) throws Exception {
+	public ResponseEntity<?> insertLibur(@RequestBody Libur libur) throws Exception {
 		List<MessageResponse> messagesSuccess = new ArrayList();
 		List<MessageResponse> messagesExist = new ArrayList();
 		List<MessageResponse> messagesException = new ArrayList();
 	    List allMessages =  new ArrayList();
 	    
-	    for (Libur list : libur) {
+		try {
+			liburService.save(libur);
 			try {
-				liburService.save(list);
-				MessageResponse mr = new MessageResponse("Insert success with libur name "+list.getNama());
+				libur = liburService.findByBk(libur);
+				LiburCompany lc = new LiburCompany();
+				lc.setLibur(libur);
+				lc.setCompany(((UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserCompany().getIdCompanyUnitPosisi().getIdCompany());
+				
+				lcServ.insert(lc);
+				
+				MessageResponse mr = new MessageResponse("Insert success with libur name "+libur.getNama());
 				messagesSuccess.add(mr);
 			} catch (Exception e) {
 				System.out.println(e);
-				MessageResponse mr = new MessageResponse("Insert failed!");
+				MessageResponse mr = new MessageResponse("Insert all failed!");
 				messagesException.add(mr);
 			}
+		} catch (Exception e) {
+			System.out.println(e);
+			MessageResponse mr = new MessageResponse("Insert libur failed!");
+			messagesException.add(mr);
 		}
 		
 		if (messagesSuccess.size() > 0 && messagesExist.size() > 0) {
@@ -65,22 +87,22 @@ public class LiburController {
 	}
 	
 	@PutMapping
-	public ResponseEntity<?> updateLibur(@RequestBody List<Libur> libur) throws Exception {
+	public ResponseEntity<?> updateLibur(@RequestBody Libur libur) throws Exception {
 		List<MessageResponse> messagesSuccess = new ArrayList();
 		List<MessageResponse> messagesExist = new ArrayList();
 		List<MessageResponse> messagesException = new ArrayList();
 	    List allMessages =  new ArrayList();
 	    
-	    for (Libur list : libur) {
-			try {
-				liburService.update(list);
-				MessageResponse mr = new MessageResponse("Update success with libur name "+list.getNama());
-				messagesSuccess.add(mr);
-			} catch (Exception e) {
-				MessageResponse mr = new MessageResponse("Update failed!");
-				messagesException.add(mr);
-			}
-	    }
+		try {
+			libur.setStatus(stServ.findByStatus(libur.getStatus().getStatus()));
+			
+			liburService.update(libur);
+			MessageResponse mr = new MessageResponse("Update success with libur name "+libur.getNama());
+			messagesSuccess.add(mr);
+		} catch (Exception e) {
+			MessageResponse mr = new MessageResponse("Update failed!");
+			messagesException.add(mr);
+		}
 		
 		if (messagesSuccess.size() > 0 && messagesExist.size() > 0) {
 			allMessages.add(messagesSuccess);

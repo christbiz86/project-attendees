@@ -1,6 +1,10 @@
 package com.attendee.attendee.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -100,6 +104,33 @@ public class UnitController {
 						((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId()));
 
 			 unitService.update(unit);
+			 MessageResponse mg = new MessageResponse("Success update");
+			 return ResponseEntity.ok(mg);
+		 }
+		 		 
+		 catch(ValidationException val) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(val.getMessage());
+				
+		 }
+		catch (Exception e) {
+			MessageResponse mg = new MessageResponse("Failed update" );
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mg);
+		}
+	}
+	
+	@Transactional
+	@RequestMapping(value =  "/units", method = RequestMethod.PUT)
+	public ResponseEntity<?> updates(@RequestBody HashMap<Integer,Unit> unit) throws Exception
+	{
+		 try 
+		 {
+			 for (Map.Entry<Integer, Unit> entry : unit.entrySet()) {
+				Unit u=entry.getValue();
+				u.setUpdatedBy(userService.findById(
+							((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId()));
+	
+				unitService.update(u);
+			 }
 			 MessageResponse mg = new MessageResponse("Success update");
 			 return ResponseEntity.ok(mg);
 		 }

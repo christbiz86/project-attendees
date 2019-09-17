@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.attendee.attendee.dao.ShiftProjectDao;
+import com.attendee.attendee.model.Project;
+import com.attendee.attendee.model.Shift;
 import com.attendee.attendee.model.ShiftProject;
 
 
@@ -86,5 +88,10 @@ public class ShiftProjectService {
 	public void delete(UUID id) throws ValidationException {
 		valIdExist(id);
 		shiftProjectDao.delete(id);
+	}
+	
+	@Transactional
+	public ShiftProject findByShiftProject(Shift shift, Project pro) {
+		return shiftProjectDao.findByShiftProject(shift, pro);
 	}
 }

@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,14 +54,14 @@ public class UserCompanyController {
 	@Autowired
 	private CloudService cService;
 
-	@RequestMapping(value = "/usercompany/filter", method = RequestMethod.POST)
-	public ResponseEntity<?> retrieveByFilter(@RequestBody UserCompany userCompany) throws ValidationException {
+	@RequestMapping(value = "/usercompany/filter/page/{page}/jumlah/{jumlah}", method = RequestMethod.POST)
+	public ResponseEntity<?> retrieveByFilter(@RequestBody UserCompany userCompany,@PathVariable int page,@PathVariable int jumlah ) throws ValidationException {
 		try {
 			System.out.println("get user");
 			userCompany.getIdCompanyUnitPosisi().setIdCompany(
 					((UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
 							.getUserCompany().getIdCompanyUnitPosisi().getIdCompany());
-			List<UserCompany> list = userCompanyService.findByFilter(userCompany);
+			List<UserCompany> list = userCompanyService.findLimit(userCompany,page, jumlah);
 			return ResponseEntity.ok(list);
 		}
 
