@@ -16,7 +16,6 @@ import com.attendee.attendee.dao.ProjectDao;
 import com.attendee.attendee.dao.StatusDao;
 import com.attendee.attendee.exception.InvalidDataException;
 import com.attendee.attendee.model.Project;
-import com.attendee.attendee.model.Status;
 import com.attendee.attendee.model.UserPrinciple;
 
 @Service
@@ -27,9 +26,12 @@ public class ProjectService {
 	@Autowired
 	private StatusDao stDao;
 	
+	@Autowired
+	private StatusService stService;
+	
 	public void valIdNotExist(UUID id) throws ValidationException {
 		if(projectDao.isExist(id)) {
-			throw new ValidationException("Data Sudah Ada");
+			throw new ValidationException("Data Project Sudah Ada");
 		}
 	}
 	
@@ -99,7 +101,7 @@ public class ProjectService {
 	
 	public void valBkNotExist(Project project) throws ValidationException {
 		if(projectDao.isBkExist(project.getKode())) {
-			throw new ValidationException("Data Sudah Ada");
+			throw new ValidationException("Data Project Sudah Ada");
 		}
 	}
 	
@@ -113,6 +115,14 @@ public class ProjectService {
 	public void valBkNotNull(Project project) throws ValidationException {
 		if(project.getKode().equals(null)) {
 			throw new ValidationException("Kode Project Tidak Boleh Kosong");
+		}
+	}
+	
+	private void valCreatedNotChange(Project pro)throws ValidationException {
+		Project tempPro = findById(pro.getId());
+		
+		if(tempPro.getCreatedAt() != pro.getCreatedAt() && tempPro.getCreatedBy().getId() != pro.getCreatedBy().getId()) {
+			throw new ValidationException("Created tidak boleh berubah!");
 		}
 	}
 	
@@ -130,9 +140,14 @@ public class ProjectService {
 	
 	@Transactional
 	public void update(Project project) throws Exception {
+		Project tempPro = findById(project.getId());
+		project.setCreatedAt(tempPro.getCreatedAt());
+		project.setCreatedBy(tempPro.getCreatedBy());
+		project.setStatus(stService.findByStatus(project.getStatus().getStatus()));
 		project.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
-		
 		project.setUpdatedBy(((UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserCompany().getIdUser());
+		valCreatedNotChange(project);
+		
 		valIdNotNull(project);
 		valIdExist(project.getId());
 		valBkNotNull(project);

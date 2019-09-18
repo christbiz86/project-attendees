@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.attendee.attendee.dao.LiburCompanyDao;
 import com.attendee.attendee.dao.RequestDao;
 import com.attendee.attendee.dao.StatusDao;
 import com.attendee.attendee.exception.InvalidDataException;
@@ -43,7 +44,7 @@ public class RequestService {
 	private AnnualLeaveService annleaveService;
 	
 	@Autowired
-	private LiburCompanyService lcService;
+	private LiburCompanyDao lcDao;
 	
 	public List<Request> findAll(){
 		return aprDao.findAll();
@@ -69,10 +70,10 @@ public class RequestService {
 		long diffInMillies = Math.abs(request.getTglAkhir().getTime() - request.getTglMulai().getTime());
 	    long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
 
-		List<LiburCompany> list=lcService.findByTgl(lc);
+		List<LiburCompany> list=lcDao.findByTgl(lc);
 		l.setTglMulai(request.getTglAkhir());
 		lc.setLibur(l);
-		List<LiburCompany> listend=lcService.findByTgl(lc);
+		List<LiburCompany> listend=lcDao.findByTgl(lc);
 		
 		List<Integer> cuti=new ArrayList<>();
 		List<Integer> weekend=new ArrayList<>();

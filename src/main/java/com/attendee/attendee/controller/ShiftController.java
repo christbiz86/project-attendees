@@ -1,7 +1,9 @@
 package com.attendee.attendee.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +17,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,18 +26,16 @@ import com.attendee.attendee.exception.MessageResponse;
 import com.attendee.attendee.exception.ValidationException;
 import com.attendee.attendee.model.PojoShift;
 import com.attendee.attendee.model.Shift;
-import com.attendee.attendee.model.ShiftProject;
 import com.attendee.attendee.model.UserPrinciple;
-import com.attendee.attendee.model.UserShiftProject;
-import com.attendee.attendee.service.ProjectService;
 import com.attendee.attendee.service.ShiftProjectService;
 import com.attendee.attendee.service.ShiftService;
 import com.attendee.attendee.service.StatusService;
+import com.attendee.attendee.service.UserCompanyService;
+import com.attendee.attendee.service.UserService;
 import com.attendee.attendee.service.UserShiftProjectService;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
-@RequestMapping({"/api"})
 @Controller
 public class ShiftController {
 	@Autowired
@@ -52,8 +51,11 @@ public class ShiftController {
 	private StatusService stServ;
 	
 	@Autowired
-	private ProjectService proServ;
+	private UserCompanyService ucServ;
 	
+	@Autowired
+	private UserService userService;
+		
 	@GetMapping(value = "/shift")
 	public @ResponseBody List<Shift> getAllShift(){
 		List<Shift> shiftList = shiftService.findAll();
@@ -66,94 +68,79 @@ public class ShiftController {
 		return shiftList;
 	}
 	
-	public Shift splitShift(PojoShift ps) throws Exception {
-		System.out.println("aaa");
-		Shift shiftDB = shiftService.findByNonBk(ps.getMasuk(), ps.getPulang());
-		if(shiftDB.getKode() == null) {
-			Shift shift = new Shift();
-			
-			shift.setMasuk(ps.getMasuk());
-			shift.setPulang(ps.getPulang());
-			
-			shiftService.save(shift);
-			
-			return shift;
-		} else {
-			return shiftDB;
-		}
-	}
-	
-	public ShiftProject splitShiftProject(PojoShift ps) throws ValidationException {
-		System.out.println("bbb");
-		Shift shift = shiftService.findByNonBk(ps.getMasuk(), ps.getPulang());
-		ShiftProject sp = new ShiftProject();
-		
-		sp.setShift(shift);
-		sp.setProject(ps.getProject());
-		spServ.save(sp);
-		
-		return sp;
-	}
-	
-	public UserShiftProject splitUserShiftProject(PojoShift ps) throws ValidationException {
-		System.out.println("ccc");
-		Shift shift = new Shift();
-		UserShiftProject usp = new UserShiftProject();
-		
-		ShiftProject sp = spServ.findByShiftProject(shiftService.findByNonBk(ps.getMasuk(), ps.getPulang()), ps.getProject());
-		System.out.println(sp);
-		
-		usp.setUserCompany(((UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserCompany());
-		usp.setShiftProject(sp);
-		usp.setWorktime(stServ.findByStatus(ps.getWorktime().getStatus()));
-		uspServ.save(usp);
-		
-		return usp;
-	}
+//	public Shift splitShift(PojoShift ps) throws Exception {
+//		Shift shiftDB = shiftService.findByNonBk(ps.getMasuk(), ps.getPulang());
+//		if(shiftDB.getKode() == null) {
+//			Shift shift = new Shift();
+//			
+//			shift.setMasuk(ps.getMasuk());
+//			shift.setPulang(ps.getPulang());
+//			
+//			shiftService.save(shift);
+//			
+//			return shift;
+//		} else {
+//			return shiftDB;
+//		}
+//	}
+//	
+//	public ShiftProject splitShiftProject(PojoShift ps) throws ValidationException {
+//		Shift shift = shiftService.findByNonBk(ps.getMasuk(), ps.getPulang());
+//		ShiftProject sp = new ShiftProject();
+//		
+//		sp.setShift(shift);
+//		sp.setProject(ps.getProject());
+//		spServ.save(sp);
+//		
+//		return sp;
+//	}
+//	
+//	public UserShiftProject splitUserShiftProject(PojoShift ps) throws ValidationException {
+//		UserShiftProject usp = new UserShiftProject();
+//		System.out.println(shiftService.findByNonBk(ps.getMasuk(), ps.getPulang()).getId());
+//		System.out.println(ps.getProject().getId());
+//		System.out.println(ps.getUc().getId());
+//		System.out.println(stServ.findByStatus(ps.getWorktime().getStatus()).getStatus());
+//		
+//		ShiftProject sp = spServ.findByShiftProject(shiftService.findByNonBk(ps.getMasuk(), ps.getPulang()), ps.getProject());
+//		
+////		usp.setUserCompany(ucServ.findByCup(ps.getCup()));
+//		usp.setUserCompany(ps.getUc());
+//		usp.setShiftProject(sp);
+//		usp.setWorktime(stServ.findByStatus(ps.getWorktime().getStatus()));
+//		uspServ.save(usp);
+//		
+//		return usp;
+//	}
 	
 	@PostMapping(value = "/shift")
-	public ResponseEntity<?> insertShift(@RequestBody PojoShift ps) throws Exception {
-		System.out.println(ps.getMasuk());
-		System.out.println(ps.getPulang());
-		System.out.println(ps.getProject().getId());
-		System.out.println(ps.getWorktime().getStatus());
-		
+	public ResponseEntity<?> insertShift(@RequestBody PojoShift ps) throws Exception {		
 		List messagesFailed = new ArrayList();
 		List messagesSuccess = new ArrayList();
 		List messagesException = new ArrayList();
 		List allMessages = new ArrayList();
 		
-		Shift shift = new Shift();
-		UserShiftProject usp = new UserShiftProject();
-		
-		splitShift(ps);
-		splitShiftProject(ps);
-		splitUserShiftProject(ps);
-		
-//		if(splitShift(ps) == null) {
-//			shiftService.save(splitShift(ps));
-//		}
-//		uspServ.save(splitUserShiftProject(ps));
-		
 		try {
-//			try {
-//				ShiftProject sp = new ShiftProject();
-//				
-//				sp.setShift(shiftService.findByBk(shift.getKode()));
-//				
-//				
-//			} catch (Exception e) {
-//				
-//			}
-//			shiftService.save(shift);
 //			splitShift(ps);
-//			splitShiftProject(ps);
-//			splitUserShiftProject(ps);
 			
-			MessageResponse mg = new MessageResponse("Insert Success with clock in " +splitShift(ps).getMasuk()+ " and clock out " +splitShift(ps).getPulang());
-			messagesSuccess.add(mg);
+			try {
+//				splitShiftProject(ps);
+				
+				try {
+//					splitUserShiftProject(ps);
+					
+//					MessageResponse mg = new MessageResponse("Insert Success with clock in " +splitShift(ps).getMasuk()+ " and clock out " +splitShift(ps).getPulang()+ " and worktime " +splitUserShiftProject(ps).getWorktime().getStatus());
+//					messagesSuccess.add(mg);
+				} catch (Exception e) {
+					MessageResponse mg = new MessageResponse("Insert all failed");
+					messagesException.add(mg);
+				}
+			} catch (Exception e) {
+				MessageResponse mg = new MessageResponse("Insert shift project failed");
+				messagesException.add(mg);
+			}
 		} catch (Exception e) {
-			MessageResponse mg = new MessageResponse("Insert Failed");
+			MessageResponse mg = new MessageResponse("Insert shift failed");
 			messagesException.add(mg);
 		}
 		
@@ -222,6 +209,29 @@ public class ShiftController {
 		} catch (Exception e) {
 			MessageResponse mr = new MessageResponse("Delete failed with id " + shift.getId());
 		    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mr);
+		}
+	}
+	
+	@PutMapping(value = "shifts")
+	public ResponseEntity<?> submitUpdates(@RequestBody HashMap<Integer, Shift> shift) throws Exception {
+		try {
+			for (Map.Entry<Integer, Shift> entry : shift.entrySet()) {
+				Shift s = entry.getValue();
+				s.setUpdatedBy(userService.findById(((UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId()));
+				
+				shiftService.update(s);
+			}
+			
+			MessageResponse mg = new MessageResponse("Update Success!");
+			return ResponseEntity.ok(mg);
+		} 
+		
+		catch (ValidationException val) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(val.getMessage());
+		}
+		catch (Exception e) {
+			MessageResponse mg = new MessageResponse("Update failed!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mg);
 		}
 	}
 	

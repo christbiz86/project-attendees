@@ -31,7 +31,6 @@ import com.attendee.attendee.service.UserShiftProjectService;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
-@RequestMapping({"/api"})
 @Controller
 public class UserShiftProjectController {
 	@Autowired
@@ -65,7 +64,7 @@ public class UserShiftProjectController {
 		List messagesException = new ArrayList();
 		List allMessages = new ArrayList();
 		
-//		try {			
+//		try {
 //			Shift shift = shiftService.findByNonBk(usp.getShiftProject().getShift().getMasuk(), usp.getShiftProject().getShift().getPulang());
 //			if(shift.getKode() == null) {
 //				shift = new Shift();

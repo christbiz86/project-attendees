@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.attendee.attendee.dao.LiburDao;
 import com.attendee.attendee.dao.StatusDao;
 import com.attendee.attendee.model.Libur;
+import com.attendee.attendee.model.Project;
 import com.attendee.attendee.model.UserPrinciple;
 
 @Service
@@ -23,6 +24,9 @@ public class LiburService {
 	
 	@Autowired
 	private StatusDao stDao;
+	
+	@Autowired
+	private StatusService stService;
 	
 	public void valIdNotExist(UUID id) throws ValidationException {
 		if(liburDao.isExist(id)) {
@@ -76,6 +80,14 @@ public class LiburService {
 		}
 	}
 	
+	private void valCreatedNotChange(Libur libur)throws ValidationException {
+		Libur tempLibur = findById(libur);
+		
+		if(tempLibur.getCreatedAt() != libur.getCreatedAt() && tempLibur.getCreatedBy().getId() != libur.getCreatedBy().getId()) {
+			throw new ValidationException("Created tidak boleh berubah!");
+		}
+	}
+	
 	public void save(Libur libur)throws ValidationException{
 		
 		libur.setCreatedAt(new Timestamp(System.currentTimeMillis()));
@@ -87,13 +99,16 @@ public class LiburService {
 	}
 	
 	public void update(Libur libur)throws ValidationException{
-		
+		Libur tempLibur = findById(libur);
+		libur.setCreatedAt(tempLibur.getCreatedAt());
+		libur.setCreatedBy(tempLibur.getCreatedBy());
+		libur.setStatus(stService.findByStatus(libur.getStatus().getStatus()));
+		libur.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+		libur.setUpdatedBy(((UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserCompany().getIdUser());
+		valCreatedNotChange(libur);
 		valIdNotNull(libur);
 		valIdExist(libur.getId());
 		valNonBk(libur);
-		libur.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
-		libur.setUpdatedBy(((UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserCompany().getIdUser());
-//		libur.setUpdatedBy();
 		liburDao.save(libur);
 	}
 	

@@ -86,9 +86,4 @@ public class LiburCompanyService {
 	public List<LiburCompany> findAll() {
 		return liburCompanyDao.findAll();
 	}
-	
-	public List<LiburCompany> findByTgl(LiburCompany liburCompany) {
-		return liburCompanyDao.findByTgl(liburCompany);
-	}
-
 }

@@ -135,11 +135,12 @@ public class ShiftDao extends ParentDao {
 	
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Shift findByNonBk(Time masuk, Time pulang) {
+	public Shift findByNonBk(Time masuk, Time pulang, String status) {
 		List<Shift> list = super.entityManager
-                .createQuery("FROM Shift WHERE masuk = :masuk AND pulang = :pulang")
+                .createQuery("FROM Shift WHERE masuk = :masuk AND pulang = :pulang AND status.status = :status")
                 .setParameter("masuk", masuk)
                 .setParameter("pulang", pulang)
+                .setParameter("status", status)
                 .getResultList();
 
 		if (list.size() == 0) {

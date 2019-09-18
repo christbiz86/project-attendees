@@ -94,4 +94,5 @@ public class ShiftProjectService {
 	public ShiftProject findByShiftProject(Shift shift, Project pro) {
 		return shiftProjectDao.findByShiftProject(shift, pro);
 	}
+	
 }

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.attendee.attendee.dao.ShiftDao;
 import com.attendee.attendee.dao.StatusDao;
 import com.attendee.attendee.exception.InvalidDataException;
+import com.attendee.attendee.model.Project;
 import com.attendee.attendee.model.Shift;
 import com.attendee.attendee.model.User;
 import com.attendee.attendee.model.UserPrinciple;
@@ -27,9 +28,12 @@ public class ShiftService {
 	@Autowired
 	private StatusDao stDao;
 	
+	@Autowired
+	private StatusService stService;
+	
 	public void valIdNotExist(UUID id) throws ValidationException {
 		if(shiftDao.isExist(id)) {
-			throw new ValidationException("Data Sudah Ada");
+			throw new ValidationException("Data Shift Sudah Ada");
 		}
 	}
 	
@@ -40,7 +44,7 @@ public class ShiftService {
 	}
 	
 	public void valIdNotNull(Shift shift)throws ValidationException {	
-		if(shift.getId()==null) {
+		if(shift.getId() == null) {
 			throw new ValidationException("Id tidak boleh kosong");
 		}
 	}
@@ -78,7 +82,7 @@ public class ShiftService {
 	
 	public void valBkNotExist(Shift shift) throws ValidationException {
 		if(shiftDao.isBkExist(shift.getKode())) {
-			throw new ValidationException("Data Sudah Ada");
+			throw new ValidationException("Data Project Sudah Ada");
 		}
 	}
 	
@@ -95,6 +99,14 @@ public class ShiftService {
 		}
 	}
 	
+	private void valCreatedNotChange(Shift shift)throws ValidationException {
+		Shift tempShift = findById(shift.getId());
+		
+		if(tempShift.getCreatedAt() != shift.getCreatedAt() && tempShift.getCreatedBy().getId() != shift.getCreatedBy().getId()) {
+			throw new ValidationException("Created tidak boleh berubah!");
+		}
+	}
+	
 	public void save(Shift shift) throws Exception {
 		shift.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 		shift.setStatus(stDao.findByStatus("Active"));
@@ -107,11 +119,14 @@ public class ShiftService {
 	}
 	
 	public void update(Shift shift) throws Exception {
-		System.out.println(shift.getStatus().getStatus());
-		System.out.println(shift.getId());
+		Shift tempShift = findById(shift.getId());
+		shift.setCreatedAt(tempShift.getCreatedAt());
+		shift.setCreatedBy(tempShift.getCreatedBy());
+		shift.setStatus(stService.findByStatus(shift.getStatus().getStatus()));
 		shift.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
-//		shift.setStatus(stDao.findByStatus("Inactive"));
 		shift.setUpdatedBy(((UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserCompany().getIdUser());
+		valCreatedNotChange(shift);
+		
 		valIdNotNull(shift);
 		valIdExist(shift.getId());
 		valBkNotNull(shift);
@@ -158,7 +173,7 @@ public class ShiftService {
 		shiftDao.save(shift);
 	}
 	
-	public Shift findByNonBk(Time masuk, Time pulang) throws ValidationException {
-		return shiftDao.findByNonBk(masuk, pulang);
+	public Shift findByNonBk(Time masuk, Time pulang, String status) throws ValidationException {
+		return shiftDao.findByNonBk(masuk, pulang, status);
 	}
 }

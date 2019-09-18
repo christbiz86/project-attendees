@@ -12,21 +12,28 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.attendee.attendee.exception.MessageResponse;
+import com.attendee.attendee.model.Shift;
 import com.attendee.attendee.model.ShiftProject;
 import com.attendee.attendee.service.ShiftProjectService;
+import com.attendee.attendee.service.ShiftService;
+import com.attendee.attendee.service.StatusService;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
-@RequestMapping({"/api"})
 @Controller
 public class ShiftProjectController {
 	@Autowired
 	private ShiftProjectService shiftProjectService;
+	
+	@Autowired
+	private ShiftService shiftService;
+	
+	@Autowired
+	private StatusService stServ;
 	
 	@GetMapping(value = "shift-project")
 	public @ResponseBody List<ShiftProject> getAllShiftProject(){
@@ -35,18 +42,69 @@ public class ShiftProjectController {
 	}
 	
 	@PostMapping(value = "shift-project")
-	public ResponseEntity<?> insertShiftProject(@RequestBody ShiftProject shiftProject) throws Exception {
+	public ResponseEntity<?> insertShiftProject(@RequestBody ShiftProject sp) throws Exception {
 		List messagesFailed = new ArrayList();
 		List messagesSuccess = new ArrayList();
 		List messagesException = new ArrayList();
 		List allMessages = new ArrayList();
 		
-		try {
-			shiftProjectService.save(shiftProject);
-			MessageResponse mg = new MessageResponse("Insert Success");
-			messagesSuccess.add(mg);
+//		try {
+//			shiftProjectService.save(shiftProject);
+//			MessageResponse mg = new MessageResponse("Insert Success");
+//			messagesSuccess.add(mg);
+//		} catch (Exception e) {
+//			MessageResponse mg = new MessageResponse("Insert Failed");
+//			messagesException.add(mg);
+//		}
+		
+		try {			
+			Shift shift = shiftService.findByNonBk(sp.getShift().getMasuk(), sp.getShift().getPulang(), sp.getShift().getStatus().getStatus());
+			System.out.println(sp.getShift().getMasuk());
+			System.out.println(sp.getShift().getPulang());
+			System.out.println(sp.getShift().getStatus().getStatus());
+			if(shift.getKode() == null) {
+				shift = new Shift();
+				
+				shift.setMasuk(sp.getShift().getMasuk());
+				shift.setPulang(sp.getShift().getPulang());
+				shift.setStatus(stServ.findByStatus(sp.getShift().getStatus().getStatus()));
+				
+				shiftService.save(shift);
+			} 
+			
+			try {
+				System.out.println("masuk "+sp.getShift().getMasuk());
+				System.out.println("pulang "+sp.getShift().getPulang());
+				System.out.println("project "+sp.getProject().getId());
+				
+				ShiftProject findSp = shiftProjectService.findByShiftProject(shiftService.findByNonBk(sp.getShift().getMasuk(), sp.getShift().getPulang(), sp.getShift().getStatus().getStatus()), sp.getProject());
+				
+				if(findSp.getId() == null) {
+					ShiftProject newSp = new ShiftProject();
+					
+					System.out.println(shift.getId());
+					newSp.setShift(shift);
+					newSp.setProject(sp.getProject());
+//					System.out.println(newSp.getShift().getId());
+//					System.out.println(newSp.getProject().getId());
+					
+					shiftProjectService.save(newSp);
+					
+					MessageResponse mg = new MessageResponse("Insert Success with clock in " +sp.getShift().getMasuk()+ " and clock out " +sp.getShift().getPulang());
+					messagesSuccess.add(mg);
+					
+				} else {
+					MessageResponse mg = new MessageResponse("Data shift project sudah ada!");
+					messagesSuccess.add(mg);
+				}
+				
+			} catch (Exception e) {
+				MessageResponse mg = new MessageResponse("Insert shift project failed");
+				messagesException.add(mg);
+			}
+			
 		} catch (Exception e) {
-			MessageResponse mg = new MessageResponse("Insert Failed");
+			MessageResponse mg = new MessageResponse("Insert shift failed");
 			messagesException.add(mg);
 		}
 		
