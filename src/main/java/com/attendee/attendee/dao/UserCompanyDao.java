@@ -169,7 +169,7 @@ public class UserCompanyDao extends ParentDao {
 		StringBuilder sb = new StringBuilder("SELECT COUNT(*) FROM UserCompany where 1=1 ");
 		if (userCompany.getIdUser() != null) {
 			if (userCompany.getIdUser().getNama() != null) {
-				sb.append(" AND idUser.nama LIKE '%" + userCompany.getIdUser().getNama() + "%' ");
+				sb.append(" AND LOWER(idUser.nama) LIKE '%" + userCompany.getIdUser().getNama().toLowerCase() + "%' ");
 			}
 			if (userCompany.getIdUser().getAlamat() != null) {
 				sb.append(" AND idUser.alamat LIKE '%" + userCompany.getIdUser().getAlamat() + "%' ");
@@ -201,14 +201,14 @@ public class UserCompanyDao extends ParentDao {
 			}
 			if (userCompany.getIdCompanyUnitPosisi().getIdUnit() != null) {
 				if (userCompany.getIdCompanyUnitPosisi().getIdUnit().getUnit() != null) {
-					sb.append(" AND idCompanyUnitPosisi.idUnit.unit LIKE '%"
-							+ userCompany.getIdCompanyUnitPosisi().getIdUnit().getUnit() + "%' ");
+					sb.append(" AND LOWER(idCompanyUnitPosisi.idUnit.unit) LIKE '%"
+							+ userCompany.getIdCompanyUnitPosisi().getIdUnit().getUnit().toLowerCase() + "%' ");
 				}
 			}
 			if (userCompany.getIdCompanyUnitPosisi().getIdPosisi() != null) {
 				if (userCompany.getIdCompanyUnitPosisi().getIdPosisi().getPosisi() != null) {
-					sb.append(" AND idCompanyUnitPosisi.idPosisi.posisi LIKE '%"
-							+ userCompany.getIdCompanyUnitPosisi().getIdPosisi().getPosisi() + "%' ");
+					sb.append(" AND LOWER(idCompanyUnitPosisi.idPosisi.posisi) LIKE '%"
+							+ userCompany.getIdCompanyUnitPosisi().getIdPosisi().getPosisi().toLowerCase() + "%' ");
 				}
 			}
 		}
@@ -292,4 +292,5 @@ public class UserCompanyDao extends ParentDao {
 			return list;
 		}
 	}
+
 }

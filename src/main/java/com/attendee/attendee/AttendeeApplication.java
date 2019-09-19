@@ -1,7 +1,5 @@
 package com.attendee.attendee;
 
-import java.util.TimeZone;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,7 +16,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class AttendeeApplication extends SpringBootServletInitializer {
 	
 	public static void main(String[] args) {
-		TimeZone.setDefault(TimeZone.getTimeZone("ASIA/JAKARTA"));
 		SpringApplication.run(AttendeeApplication.class, args);
 	}
 

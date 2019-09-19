@@ -1,5 +1,6 @@
 package com.attendee.attendee.service;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
 
@@ -9,8 +10,8 @@ import org.springframework.stereotype.Service;
 import com.attendee.attendee.dao.AttendeeDao;
 import com.attendee.attendee.dao.UserShiftProjectDao;
 import com.attendee.attendee.exception.ValidationException;
-import com.attendee.attendee.model.PojoAbsen;
 import com.attendee.attendee.model.Attendee;
+import com.attendee.attendee.model.PojoAbsen;
 import com.attendee.attendee.model.UserCompany;
 import com.attendee.attendee.model.UserShiftProject;
 
@@ -123,7 +124,8 @@ public class AttendeeService {
 	public void saveAbsen(PojoAbsen absen,UserCompany uc) throws ValidationException {
 		String lokasi = valLokasi(absen.getKode(), uc.getId());
 		
-		Attendee temp=attendeeDao.findByUserAndKeterangan(uc.getIdUser().getId(), "masuk", absen.getJam());
+		Attendee temp=attendeeDao.findByUserAndKeterangan(uc.getIdUser().getId(), 
+				"masuk", new Timestamp(System.currentTimeMillis()));
 		if(temp.getId()==null) {
 			Attendee attendee=new Attendee();
 			UserShiftProject usp=new UserShiftProject();
@@ -133,7 +135,7 @@ public class AttendeeService {
 			usp=uspService.findByUser(attendee.getIdUserShiftProject());
 		
 			attendee.setIdUserShiftProject(usp);
-			attendee.setMasuk(absen.getJam());
+			attendee.setMasuk(new Timestamp(System.currentTimeMillis()));
 			attendee.setLokasiMasuk(lokasi);
 			attendee.setKeterangan("masuk");
 			
@@ -142,7 +144,7 @@ public class AttendeeService {
 		}else {
 			
 			temp.setLokasiPulang(lokasi);
-			temp.setPulang(absen.getJam());
+			temp.setPulang(new Timestamp(System.currentTimeMillis()));
 			temp.setKeterangan("pulang");
 			
 			update(temp);
