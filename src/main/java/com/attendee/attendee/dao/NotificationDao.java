@@ -53,7 +53,7 @@ public class NotificationDao extends ParentDao {
 				sb.append(" and status.status like '"+ notification.getStatus().getStatus() +"'");
 			}
 		}
-		System.out.println(sb.toString());
+
 		List<Notification> list = super.entityManager.createQuery(sb.toString())
 				.getResultList();
 
@@ -105,7 +105,7 @@ public class NotificationDao extends ParentDao {
 				sb.append(" and status.status like '"+ notification.getStatus().getStatus() +"'");
 			}
 		}
-		System.out.println(sb.toString());
+
 		List<Notification> list = super.entityManager.createQuery(sb.toString())
 				.getResultList();
 

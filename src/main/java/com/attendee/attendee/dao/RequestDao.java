@@ -2,6 +2,7 @@ package com.attendee.attendee.dao;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -119,6 +120,22 @@ public class RequestDao extends ParentDao {
 						+ " and status.status=:status ")
 				.setParameter("id", id)
 				.setParameter("status", status)
+				.getResultList();
+		
+		if (list.size() == 0)
+			return new ArrayList<Request>();
+		else {
+			return list;
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Request> findByUserCompanyAndDate(UUID id, Date start, Date end) {
+		List<Request> list = super.entityManager
+				.createQuery("FROM Request WHERE userCompany.idUser.id=:id and tglMulai >= :start and tglAkhir <= :end")
+				.setParameter("id", id)
+				.setParameter("start", start)
+				.setParameter("end", end)
 				.getResultList();
 		
 		if (list.size() == 0)

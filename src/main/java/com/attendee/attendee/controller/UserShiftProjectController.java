@@ -28,7 +28,7 @@ import com.attendee.attendee.service.UserShiftProjectService;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
-@RequestMapping({"/api"})
+@RequestMapping
 @Controller
 public class UserShiftProjectController {
 	@Autowired

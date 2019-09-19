@@ -119,11 +119,30 @@ public class UserShiftProjectDao extends ParentDao {
 	@Transactional
 	public List<UserShiftProject> findByFilter(UserShiftProject usp) {
 		StringBuilder sb = new StringBuilder("from UserShiftProject WHERE 1=1 ");
-		
 		if(usp.getUserCompany() != null) {
 			if(usp.getUserCompany().getIdUser() != null) {
 				if(usp.getUserCompany().getIdUser().getId() != null) {
 					sb.append("AND userCompany.idUser.id ='"+usp.getUserCompany().getIdUser().getId()+"' ");
+				}
+				if (usp.getUserCompany().getIdUser().getNama() != null) {
+					sb.append(" AND userCompany.idUser.nama LIKE '%" + usp.getUserCompany().getIdUser().getNama() + "%' ");
+				}
+				if (usp.getUserCompany().getIdUser().getAlamat() != null) {
+					sb.append(" AND userCompany.idUser.alamat LIKE '%" + usp.getUserCompany().getIdUser().getAlamat() + "%' ");
+				}
+				if (usp.getUserCompany().getIdUser().getEmail() != null) {
+					sb.append(" AND userCompany.idUser.email LIKE '" + usp.getUserCompany().getIdUser().getEmail() + "' ");
+				}
+				if (usp.getUserCompany().getIdUser().getTglLahir() != null) {
+					sb.append(" AND userCompany.idUser.tglLahir LIKE '" + usp.getUserCompany().getIdUser().getTglLahir() + "' ");
+				}
+				if (usp.getUserCompany().getIdUser().getTelp() != null) {
+					sb.append(" AND userCompany.idUser.telp LIKE '" + usp.getUserCompany().getIdUser().getTelp() + "' ");
+				}
+				if (usp.getUserCompany().getIdUser().getIdStatus() != null) {
+					if (usp.getUserCompany().getIdUser().getIdStatus().getStatus() != null) {
+						sb.append(" AND userCompany.idUser.idStatus.status LIKE '" + usp.getUserCompany().getIdUser().getIdStatus().getStatus() + "' ");
+					}
 				}
 			}
 			if(usp.getUserCompany().getIdCompanyUnitPosisi() != null) {
@@ -131,6 +150,24 @@ public class UserShiftProjectDao extends ParentDao {
 					if(usp.getUserCompany().getIdCompanyUnitPosisi().getIdCompany().getId() != null) {
 						sb.append("AND userCompany.idCompanyUnitPosisi.idCompany.id = '"+usp.getUserCompany().getIdCompanyUnitPosisi().getIdCompany().getId()+"' ");
 					}
+				}
+				if (usp.getUserCompany().getIdCompanyUnitPosisi().getIdUnit() != null) {
+					if (usp.getUserCompany().getIdCompanyUnitPosisi().getIdUnit().getUnit() != null) {
+						sb.append(" AND userCompany.idCompanyUnitPosisi.idUnit.unit LIKE '"
+								+ usp.getUserCompany().getIdCompanyUnitPosisi().getIdUnit().getUnit() + "' ");
+					}
+				}
+				if (usp.getUserCompany().getIdCompanyUnitPosisi().getIdPosisi() != null) {
+					if (usp.getUserCompany().getIdCompanyUnitPosisi().getIdPosisi().getPosisi() != null) {
+						sb.append(" AND userCompany.idCompanyUnitPosisi.idPosisi.posisi LIKE '"
+								+ usp.getUserCompany().getIdCompanyUnitPosisi().getIdPosisi().getPosisi() + "' ");
+					}
+				}
+
+			}
+			if (usp.getUserCompany().getIdTipeUser().getTipe() != null) {
+				if (usp.getUserCompany().getIdTipeUser().getTipe() != null) {
+					sb.append(" AND userCompany.idTipeUser.tipe LIKE '" + usp.getUserCompany().getIdTipeUser().getTipe() + "' ");
 				}
 			}
 		}

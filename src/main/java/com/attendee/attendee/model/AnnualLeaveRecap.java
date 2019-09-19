@@ -1,6 +1,7 @@
 package com.attendee.attendee.model;
 
 import java.util.Date;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -35,6 +36,9 @@ import javax.persistence.StoredProcedureParameter;
 @Entity
 public class AnnualLeaveRecap {
 	@Id
+	@Column(name = "id")
+	private UUID id;
+	
 	@Column(name = "nama_user")
 	private String namaUser;
 	
@@ -49,6 +53,14 @@ public class AnnualLeaveRecap {
 	
 	@Column(name = "tahun")
 	private Integer tahun;
+	
+	public UUID getId() {
+		return id;
+	}
+
+	public void setId(UUID id) {
+		this.id = id;
+	}
 
 	public String getNamaUser() {
 		return namaUser;

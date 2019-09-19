@@ -1,6 +1,5 @@
 package com.attendee.attendee.controller;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -52,11 +51,11 @@ public class AttendeeRecapController {
 		}
 	}
 
-	@GetMapping(value = "/recap/start-date/{startDate}/end-date/{endDate}/report")
+	@GetMapping(value = "/recap/start-date/{startDate}/end-date/{endDate}/report/pdf")
 	public ResponseEntity<?> generateReport(@PathVariable @DateTimeFormat(pattern="yyyy-MM-dd") Date startDate, 
 			@PathVariable @DateTimeFormat(pattern="yyyy-MM-dd") Date endDate) throws Exception {
 		try {
-			byte[] pdf = attendeeRecapService.generateReport(((UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
+			byte[] pdf = attendeeRecapService.generateReportPdf(((UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
 					.getUserCompany().getIdCompanyUnitPosisi().getIdCompany().getNama(), startDate, endDate);
 			return ResponseEntity.ok(pdf);
 		} catch (Exception e) {
@@ -66,46 +65,41 @@ public class AttendeeRecapController {
 		}
 	}
 	
-//	@GetMapping(value = "/recap/jxl")
-//	public ResponseEntity<?> generateJxl() throws Exception {
-//		try {
-//			attendeeRecapService.writeExcel();
-//			MessageResponse mr = new MessageResponse("Report making success!");
-//			return ResponseEntity.ok(mr);
-//		} catch (Exception e) {
-//			System.out.println(e);
-//			MessageResponse mr = new MessageResponse("Report making failed!");
-//			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mr);
-//		}
-//	}
-	
-//	@GetMapping(value = "/recap/poi")
-//	public ResponseEntity<?> generatePOI() throws Exception {
-//		try {
-//			attendeeRecapService.writeReport();
-//			MessageResponse mr = new MessageResponse("Report making success!");
-//			return ResponseEntity.ok(mr);
-//		} catch (Exception e) {
-//			System.out.println(e);
-//			MessageResponse mr = new MessageResponse("Report making failed!");
-//			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mr);
-//		}
-//	}
-	
-	@GetMapping(value = "/recap/poi-format")
-	public ResponseEntity<?> generatePOIFormat() throws Exception {
+	@GetMapping(value = "/recap/start-date/{startDate}/end-date/{endDate}/report/excel")
+	public ResponseEntity<?> generateReportXls(@PathVariable @DateTimeFormat(pattern="yyyy-MM-dd") Date startDate, 
+			@PathVariable @DateTimeFormat(pattern="yyyy-MM-dd") Date endDate) throws Exception {
 		try {
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-			Date startDate = dateFormat.parse("2019-01-01");
-			Date endDate = dateFormat.parse("2020-12-31");
-
-			System.out.println(startDate);
-			System.out.println(endDate);
-			List<AttendeeRecap> attendeeList = getAll(startDate, endDate);
-			attendeeRecapService.writePOI(((UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
+			byte[] excel = attendeeRecapService.generateReportXls(((UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
 					.getUserCompany().getIdCompanyUnitPosisi().getIdCompany().getNama(), startDate, endDate);
-			MessageResponse mr = new MessageResponse("Report making success!");
-			return ResponseEntity.ok(attendeeList);
+			return ResponseEntity.ok(excel);
+		} catch (Exception e) {
+			System.out.println(e);
+			MessageResponse mr = new MessageResponse("Report making failed!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mr);
+		}
+	}
+	
+	@GetMapping(value = "/recap/detail/start-date/{startDate}/end-date/{endDate}/report/pdf")
+	public ResponseEntity<?> generateReportDetail(@PathVariable @DateTimeFormat(pattern="yyyy-MM-dd") Date startDate, 
+			@PathVariable @DateTimeFormat(pattern="yyyy-MM-dd") Date endDate) throws Exception {
+		try {
+			byte[] pdf = attendeeRecapService.generateReportDtlPdf(((UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
+					.getUserCompany().getIdCompanyUnitPosisi().getIdCompany().getNama(), startDate, endDate);
+			return ResponseEntity.ok(pdf);
+		} catch (Exception e) {
+			System.out.println(e);
+			MessageResponse mr = new MessageResponse("Report making failed!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mr);
+		}
+	}
+	
+	@GetMapping(value = "/recap/detail/start-date/{startDate}/end-date/{endDate}/report/excel")
+	public ResponseEntity<?> generateReportDetailXls(@PathVariable @DateTimeFormat(pattern="yyyy-MM-dd") Date startDate, 
+			@PathVariable @DateTimeFormat(pattern="yyyy-MM-dd") Date endDate) throws Exception {
+		try {
+			byte[] excel = attendeeRecapService.generateReportDtlXls(((UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
+					.getUserCompany().getIdCompanyUnitPosisi().getIdCompany().getNama(), startDate, endDate);
+			return ResponseEntity.ok(excel);
 		} catch (Exception e) {
 			System.out.println(e);
 			MessageResponse mr = new MessageResponse("Report making failed!");

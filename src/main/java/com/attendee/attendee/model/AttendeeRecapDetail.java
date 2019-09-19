@@ -1,5 +1,6 @@
 package com.attendee.attendee.model;
 
+import java.sql.Time;
 import java.util.Date;
 import java.util.UUID;
 
@@ -10,12 +11,14 @@ import javax.persistence.NamedStoredProcedureQueries;
 import javax.persistence.NamedStoredProcedureQuery;
 import javax.persistence.ParameterMode;
 import javax.persistence.StoredProcedureParameter;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @NamedStoredProcedureQueries({
 	@NamedStoredProcedureQuery(
-	    name = "getAttendeeRecap", 
-	    procedureName = "attendee_recap", 
-	    resultClasses = { AttendeeRecap.class },
+	    name = "getAttendeeRecapDetail", 
+	    procedureName = "attendee_recap_detail", 
+	    resultClasses = { AttendeeRecapDetail.class },
 	    parameters = {
 	            @StoredProcedureParameter(
 	                    mode = ParameterMode.IN, 
@@ -30,28 +33,26 @@ import javax.persistence.StoredProcedureParameter;
 })
 
 @Entity
-public class AttendeeRecap{
+public class AttendeeRecapDetail {
 	@Id
 	@Column(name = "id")
 	private UUID id;
 	
+	@Column(name = "kode")
+	private String kode;
+	
 	@Column(name = "nama_user")
 	private String name;
 	
-	@Column(name = "unit")
-	private String unit;
+	@Temporal(TemporalType.DATE)
+	@Column(name = "tanggal")
+	private Date tanggal;
 	
-	@Column(name = "posisi")
-	private String posisi;
+	@Column(name = "clock_in")
+	private Time clockIn;
 	
-	@Column(name = "hari_kerja")
-	private Integer hariKerja;
-	
-	@Column(name = "jml_masuk")
-	private Integer masuk;
-	
-	@Column(name = "jml_terlambat")
-	private Integer terlambat;
+	@Column(name = "clock_out")
+	private Time clockOut;
 
 	public UUID getId() {
 		return id;
@@ -59,6 +60,14 @@ public class AttendeeRecap{
 
 	public void setId(UUID id) {
 		this.id = id;
+	}
+	
+	public String getKode() {
+		return kode;
+	}
+
+	public void setKode(String kode) {
+		this.kode = kode;
 	}
 
 	public String getName() {
@@ -69,43 +78,27 @@ public class AttendeeRecap{
 		this.name = name;
 	}
 
-	public String getUnit() {
-		return unit;
+	public Date getTanggal() {
+		return tanggal;
 	}
 
-	public void setUnit(String unit) {
-		this.unit = unit;
+	public void setTanggal(Date tanggal) {
+		this.tanggal = tanggal;
 	}
 
-	public String getPosisi() {
-		return posisi;
+	public Time getClockIn() {
+		return clockIn;
 	}
 
-	public void setPosisi(String posisi) {
-		this.posisi = posisi;
+	public void setClockIn(Time clockIn) {
+		this.clockIn = clockIn;
 	}
 
-	public Integer getHariKerja() {
-		return hariKerja;
+	public Time getClockOut() {
+		return clockOut;
 	}
 
-	public void setHariKerja(Integer hariKerja) {
-		this.hariKerja = hariKerja;
-	}
-
-	public Integer getTerlambat() {
-		return terlambat;
-	}
-
-	public void setTerlambat(Integer terlambat) {
-		this.terlambat = terlambat;
-	}
-
-	public Integer getMasuk() {
-		return masuk;
-	}
-
-	public void setMasuk(Integer masuk) {
-		this.masuk = masuk;
-	}
+	public void setClockOut(Time clockOut) {
+		this.clockOut = clockOut;
+	}	
 }

@@ -1,7 +1,6 @@
 package com.attendee.attendee.model;
 
 import java.sql.Time;
-import java.util.UUID;
 
 public class PojoShift {
 	private Project project;

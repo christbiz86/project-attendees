@@ -1,5 +1,6 @@
 package com.attendee.attendee.dao;
 
+import java.util.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -83,8 +84,7 @@ public class AttendeeDao extends ParentDao{
 				}
 			}
 		}
-		
-		System.out.println(sb.toString());
+
 		List<Attendee> list = super.entityManager.createQuery(sb.toString()).getResultList();
 		
 		if (list.size() == 0) {
@@ -177,11 +177,14 @@ public class AttendeeDao extends ParentDao{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Attendee> findByUSP(UUID usp) {
+	public List<Attendee> findByUSP(UUID id, Date start, Date end) {
+		
 		List<Attendee> list = super.entityManager
 				.createQuery("FROM Attendee "
-						+ "WHERE idUserShiftProject.id = :usp")
-				.setParameter("usp", usp)
+						+ "WHERE idUserShiftProject.userCompany.idUser.id = :id and masuk >= :start and masuk <= :end")
+				.setParameter("id", id)
+				.setParameter("start", start)
+				.setParameter("end", end)
 				.getResultList();
 		
 		if (list.size() == 0) {

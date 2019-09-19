@@ -83,18 +83,19 @@ public class PosisiDao extends ParentDao {
 	@Transactional
 	public List<Posisi> findByFilter(Posisi posisi) {
 
-		StringBuilder sb = new StringBuilder("SELECT * ");
-		sb.append("FROM posisi p ");
+		StringBuilder sb = new StringBuilder("FROM Posisi");
 		sb.append(" WHERE 1=1 ");
 
 		if (posisi.getPosisi() != null) {
-			sb.append(" AND p.posisi LIKE '%" + posisi.getPosisi() + "%' ");
+			sb.append(" AND posisi LIKE '" + posisi.getPosisi() + "' ");
 		}
 		if (posisi.getIdStatus() != null) {
-			sb.append(" AND p.id_status LIKE '%" + posisi.getIdStatus().getId() + "%' ");
+			if (posisi.getIdStatus().getStatus() != null) {
+				sb.append(" AND idStatus.status LIKE '" + posisi.getIdStatus().getStatus() + "' ");
+			}
 		}
 
-		List<Posisi> list = super.entityManager.createNativeQuery(sb.toString(), Posisi.class).getResultList();
+		List<Posisi> list = super.entityManager.createQuery(sb.toString()).getResultList();
 
 		if (list.size() == 0) {
 			return new ArrayList<Posisi>();

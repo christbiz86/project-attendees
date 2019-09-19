@@ -1,20 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="att-recap-rpt" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5eed6ce4-2878-48f3-b89a-8654a1c9e4a0">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="att-recap-dtl-rpt" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Empty" uuid="5eed6ce4-2878-48f3-b89a-8654a1c9e4a0">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="company" class="java.lang.String"/>
 	<parameter name="startDate" class="java.util.Date"/>
 	<parameter name="endDate" class="java.util.Date"/>
-	<queryString language="SQL">
-		<![CDATA[]]>
-	</queryString>
+	<field name="kode" class="java.lang.String"/>
 	<field name="name" class="java.lang.String"/>
-	<field name="unit" class="java.lang.String"/>
-	<field name="posisi" class="java.lang.String"/>
-	<field name="hariKerja" class="java.lang.Integer"/>
-	<field name="terlambat" class="java.lang.Integer"/>
-	<field name="masuk" class="java.lang.Integer"/>
+	<field name="tanggal" class="java.util.Date"/>
+	<field name="clockIn" class="java.sql.Time"/>
+	<field name="clockOut" class="java.sql.Time"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -25,14 +21,14 @@
 				<textElement textAlignment="Center">
 					<font size="20" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Attendee Recap Report]]></text>
+				<text><![CDATA[Attendee Detail Recap Report]]></text>
 			</staticText>
 		</band>
 	</title>
 	<columnHeader>
 		<band height="61" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="41" width="92" height="20" uuid="3180d618-8429-4eb4-9c33-f0505d0a2fc5"/>
+				<reportElement x="111" y="41" width="111" height="20" uuid="3180d618-8429-4eb4-9c33-f0505d0a2fc5"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -46,7 +42,7 @@
 				<text><![CDATA[Nama User]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="92" y="41" width="92" height="20" uuid="e0b6dfec-a38b-46ca-8f6f-557880110bb5"/>
+				<reportElement x="222" y="41" width="111" height="20" uuid="e0b6dfec-a38b-46ca-8f6f-557880110bb5"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -57,10 +53,10 @@
 				<textElement textAlignment="Center">
 					<font size="12" isBold="true" isItalic="false"/>
 				</textElement>
-				<text><![CDATA[Unit]]></text>
+				<text><![CDATA[Tanggal]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="184" y="41" width="92" height="20" uuid="12b2f47b-353a-4d27-8690-1f32ee917140"/>
+				<reportElement x="333" y="41" width="111" height="20" uuid="12b2f47b-353a-4d27-8690-1f32ee917140"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -71,10 +67,10 @@
 				<textElement textAlignment="Center">
 					<font size="12" isBold="true" isItalic="false"/>
 				</textElement>
-				<text><![CDATA[Posisi]]></text>
+				<text><![CDATA[Clock In]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="368" y="41" width="92" height="20" uuid="4e305730-7f01-46b9-860e-d7d0a15a6c96"/>
+				<reportElement x="444" y="41" width="111" height="20" uuid="4e305730-7f01-46b9-860e-d7d0a15a6c96"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -85,21 +81,7 @@
 				<textElement textAlignment="Center">
 					<font size="12" isBold="true" isItalic="false"/>
 				</textElement>
-				<text><![CDATA[Terlambat]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="460" y="41" width="92" height="20" uuid="00c3c587-d706-43e9-846d-7720e6b72a56"/>
-				<box>
-					<pen lineWidth="0.25"/>
-					<topPen lineWidth="0.25"/>
-					<leftPen lineWidth="0.25"/>
-					<bottomPen lineWidth="0.25"/>
-					<rightPen lineWidth="0.25"/>
-				</box>
-				<textElement textAlignment="Center">
-					<font size="12" isBold="true" isItalic="false"/>
-				</textElement>
-				<text><![CDATA[Masuk]]></text>
+				<text><![CDATA[Clock Out]]></text>
 			</staticText>
 			<textField pattern="yyyy/MM/dd">
 				<reportElement x="424" y="21" width="63" height="20" uuid="a9994c54-610f-4ee3-9046-dfcaa8f331f1"/>
@@ -127,7 +109,7 @@
 				<textFieldExpression><![CDATA[$P{company}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="276" y="41" width="92" height="20" uuid="d325c0d7-7ede-440c-8e1b-5a5e195bb8b9"/>
+				<reportElement x="0" y="41" width="111" height="20" uuid="256cd212-2b4e-41f0-b9c1-67ec70999aae"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -138,14 +120,14 @@
 				<textElement textAlignment="Center">
 					<font size="12" isBold="true" isItalic="false"/>
 				</textElement>
-				<text><![CDATA[Hari Kerja]]></text>
+				<text><![CDATA[Kode User]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="20" splitType="Stretch">
-			<textField>
-				<reportElement x="0" y="0" width="92" height="20" uuid="15d2c39f-6256-4ddd-a65b-74bb2c7cbf7a"/>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement x="111" y="0" width="111" height="20" uuid="15d2c39f-6256-4ddd-a65b-74bb2c7cbf7a"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -156,8 +138,8 @@
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="92" y="0" width="92" height="20" uuid="046b6313-ce9c-4d26-8e37-dc8518d09a6d"/>
+			<textField pattern="yyyy/MM/dd" isBlankWhenNull="true">
+				<reportElement x="222" y="0" width="111" height="20" uuid="046b6313-ce9c-4d26-8e37-dc8518d09a6d"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -166,10 +148,10 @@
 					<rightPen lineWidth="0.25"/>
 				</box>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression><![CDATA[$F{unit}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{tanggal}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="184" y="0" width="92" height="20" uuid="f28bea3c-98bf-4c7e-838f-e6b5143ed4eb"/>
+			<textField pattern="HH:mm:ss" isBlankWhenNull="true">
+				<reportElement x="333" y="0" width="111" height="20" uuid="f28bea3c-98bf-4c7e-838f-e6b5143ed4eb"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -178,10 +160,10 @@
 					<rightPen lineWidth="0.25"/>
 				</box>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression><![CDATA[$F{posisi}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{clockIn}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="368" y="0" width="92" height="20" uuid="c388e8ce-b0a2-459f-8ca1-425b6678d6d6"/>
+			<textField pattern="HH:mm:ss" isBlankWhenNull="true">
+				<reportElement x="444" y="0" width="111" height="20" uuid="c388e8ce-b0a2-459f-8ca1-425b6678d6d6"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -190,10 +172,10 @@
 					<rightPen lineWidth="0.25"/>
 				</box>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression><![CDATA[$F{terlambat}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{clockOut}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="460" y="0" width="92" height="20" uuid="533aadde-6cfd-4d87-b4c5-c058a590bcd5"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="111" height="20" uuid="ef0d8b48-c33e-4bf4-a300-695700d78b25"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -202,19 +184,7 @@
 					<rightPen lineWidth="0.25"/>
 				</box>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression><![CDATA[$F{masuk}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="276" y="0" width="92" height="20" uuid="205c8b81-3454-43c4-bc3f-1031a253f106"/>
-				<box>
-					<pen lineWidth="0.25"/>
-					<topPen lineWidth="0.25"/>
-					<leftPen lineWidth="0.25"/>
-					<bottomPen lineWidth="0.25"/>
-					<rightPen lineWidth="0.25"/>
-				</box>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression><![CDATA[$F{hariKerja}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{kode}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
