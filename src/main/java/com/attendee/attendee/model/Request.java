@@ -61,6 +61,9 @@ public class Request {
 	@JoinColumn(name = "updated_by", referencedColumnName = "id")
 	@OneToOne
 	private User updatedBy;
+	
+	@Column(name = "total_hari")
+	private Integer totalHari;
 
 	public UUID getId() {
 		return id;
@@ -148,5 +151,13 @@ public class Request {
 
 	public void setUpdatedBy(User updatedBy) {
 		this.updatedBy = updatedBy;
+	}
+
+	public Integer getTotalHari() {
+		return totalHari;
+	}
+
+	public void setTotalHari(Integer totalHari) {
+		this.totalHari = totalHari;
 	}
 }

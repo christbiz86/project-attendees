@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,7 @@ import com.attendee.attendee.email.PasswordGenerator;
 import com.attendee.attendee.exception.MessageResponse;
 import com.attendee.attendee.exception.ValidationException;
 import com.attendee.attendee.model.PojoUser;
+import com.attendee.attendee.model.User;
 import com.attendee.attendee.model.UserCompany;
 import com.attendee.attendee.model.UserPrinciple;
 import com.attendee.attendee.service.CloudService;
@@ -53,15 +55,49 @@ public class UserCompanyController {
 	@Autowired
 	private CloudService cService;
 
-	@RequestMapping(value = "/usercompany/filter", method = RequestMethod.POST)
-	public ResponseEntity<?> retrieveByFilter(@RequestBody UserCompany userCompany) throws ValidationException {
+	@RequestMapping(value = "/usercompany/filter/page/{page}/jumlah/{jumlah}", method = RequestMethod.POST)
+	public ResponseEntity<?> retrieveByFilter(@RequestBody UserCompany userCompany,@PathVariable int page,@PathVariable int jumlah ) throws ValidationException {
 		try {
 			System.out.println("get user");
 			userCompany.getIdCompanyUnitPosisi().setIdCompany(
 					((UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
 							.getUserCompany().getIdCompanyUnitPosisi().getIdCompany());
-			List<UserCompany> list = userCompanyService.findByFilter(userCompany);
+			List<UserCompany> list = userCompanyService.findLimit(userCompany,page, jumlah);
 			return ResponseEntity.ok(list);
+		}
+
+		catch (Exception ex) {
+			System.out.println(ex);
+			MessageResponse mg = new MessageResponse("Retrieve Failed");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mg);
+		}
+	}
+	
+	@RequestMapping(value = "/usercompany/filter/{page}/jumlah/{jumlah}", method = RequestMethod.POST)
+	public ResponseEntity<?> retrieveByLimit(@RequestBody UserCompany userCompany, @PathVariable int page, @PathVariable int jumlah) throws ValidationException {
+		try {
+			userCompany.getIdCompanyUnitPosisi().setIdCompany(
+					((UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
+							.getUserCompany().getIdCompanyUnitPosisi().getIdCompany());
+			List<UserCompany> list = userCompanyService.findByLimit(userCompany, page, jumlah);
+			return ResponseEntity.ok(list);
+		}
+
+		catch (Exception ex) {
+			System.out.println(ex);
+			MessageResponse mg = new MessageResponse("Retrieve Failed");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mg);
+		}
+	}
+	
+	@RequestMapping(value = "/usercompany/count", method = RequestMethod.POST)
+	public ResponseEntity<?> countEmployee(@RequestBody UserCompany userCompany) throws ValidationException {
+		try {
+			userCompany.getIdCompanyUnitPosisi().setIdCompany(
+					((UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
+							.getUserCompany().getIdCompanyUnitPosisi().getIdCompany());
+			Integer countEmployee = userCompanyService.countEmployee(userCompany);
+			return ResponseEntity.ok(countEmployee);
 		}
 
 		catch (Exception ex) {
@@ -100,7 +136,8 @@ public class UserCompanyController {
 					("Your email : " + user.getUser().getEmail() + "\n" + "password : " + pass + "\n Thank you "));
 
 			MessageResponse mg = new MessageResponse("Success submit");
-			cService.save(file, user.getUser().getKode() + user.getUser().getNama());
+			User saveFoto = userService.findUsername(user.getUser().getEmail());
+			cService.save(file, saveFoto.getKode() + saveFoto.getNama());
 			return ResponseEntity.ok(mg);
 			
 		} catch (ValidationException val) {

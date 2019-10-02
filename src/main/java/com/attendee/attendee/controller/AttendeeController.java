@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.attendee.attendee.exception.ValidationException;
-import com.attendee.attendee.model.Absen;
 import com.attendee.attendee.model.Attendee;
+import com.attendee.attendee.model.PojoAbsen;
 import com.attendee.attendee.model.UserPrinciple;
 import com.attendee.attendee.service.AttendeeService;
 
@@ -30,7 +30,7 @@ public class AttendeeController {
 	
 	@Transactional
 	@PostMapping(value = "/absen")
-	public ResponseEntity<?> absen(@RequestBody Absen absen) throws Exception {
+	public ResponseEntity<?> absen(@RequestBody PojoAbsen absen) throws Exception {
 		try {
 			attendeeService.saveAbsen(absen, ((UserPrinciple)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserCompany());
 			return ResponseEntity.ok("berhasil");

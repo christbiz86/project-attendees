@@ -31,6 +31,9 @@ public class Project {
 	@Column(name = "lokasi")
 	private String lokasi;
 	
+	@Column(name = "global_code")
+	private String globalCode;
+	
 	@Column(name = "created_at")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+7")
 	private Timestamp createdAt;
@@ -81,6 +84,14 @@ public class Project {
 
 	public void setLokasi(String lokasi) {
 		this.lokasi = lokasi;
+	}
+
+	public String getGlobalCode() {
+		return globalCode;
+	}
+
+	public void setGlobalCode(String globalCode) {
+		this.globalCode = globalCode;
 	}
 
 	public Timestamp getCreatedAt() {

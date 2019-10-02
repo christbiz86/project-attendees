@@ -117,6 +117,7 @@ public class UserCompanyDao extends ParentDao {
 				}
 			}
 		}
+		
 		List<UserCompany> list = super.entityManager.createQuery(sb.toString()).getResultList();
 
 		System.out.println(sb.toString());
@@ -164,4 +165,133 @@ public class UserCompanyDao extends ParentDao {
 			return list;
 		}
 	}
+	
+	public Integer countEmployee(UserCompany userCompany) {
+		StringBuilder sb = new StringBuilder("SELECT COUNT(*) FROM UserCompany where 1=1 ");
+		if (userCompany.getIdUser() != null) {
+			if (userCompany.getIdUser().getNama() != null) {
+				sb.append(" AND LOWER(idUser.nama) LIKE '%" + userCompany.getIdUser().getNama().toLowerCase() + "%' ");
+			}
+			if (userCompany.getIdUser().getAlamat() != null) {
+				sb.append(" AND idUser.alamat LIKE '%" + userCompany.getIdUser().getAlamat() + "%' ");
+			}
+			if (userCompany.getIdUser().getEmail() != null) {
+				sb.append(" AND idUser.email LIKE '" + userCompany.getIdUser().getEmail() + "' ");
+			}
+			if (userCompany.getIdUser().getTglLahir() != null) {
+				sb.append(" AND idUser.tglLahir LIKE '" + userCompany.getIdUser().getTglLahir() + "' ");
+			}
+			if (userCompany.getIdUser().getTelp() != null) {
+				sb.append(" AND idUser.telp LIKE '" + userCompany.getIdUser().getTelp() + "' ");
+			}
+			if (userCompany.getIdUser().getIdStatus().getStatus() != null) {
+				sb.append(" AND idUser.idStatus.status LIKE '" + userCompany.getIdUser().getIdStatus().getStatus() + "' ");
+			}
+		}
+		if (userCompany.getIdTipeUser().getTipe() != null) {
+			if (userCompany.getIdTipeUser().getTipe() != null) {
+				sb.append(" AND idTipeUser.tipe LIKE '" + userCompany.getIdTipeUser().getTipe() + "' ");
+			}
+		}
+		if (userCompany.getIdCompanyUnitPosisi() != null) {
+			if (userCompany.getIdCompanyUnitPosisi().getIdCompany() != null) {
+				if (userCompany.getIdCompanyUnitPosisi().getIdCompany().getId() != null) {
+					sb.append(" AND idCompanyUnitPosisi.idCompany.id = '"
+							+ userCompany.getIdCompanyUnitPosisi().getIdCompany().getId() + "' ");
+				}
+			}
+			if (userCompany.getIdCompanyUnitPosisi().getIdUnit() != null) {
+				if (userCompany.getIdCompanyUnitPosisi().getIdUnit().getUnit() != null) {
+					sb.append(" AND LOWER(idCompanyUnitPosisi.idUnit.unit) LIKE '%"
+							+ userCompany.getIdCompanyUnitPosisi().getIdUnit().getUnit().toLowerCase() + "%' ");
+				}
+			}
+			if (userCompany.getIdCompanyUnitPosisi().getIdPosisi() != null) {
+				if (userCompany.getIdCompanyUnitPosisi().getIdPosisi().getPosisi() != null) {
+					sb.append(" AND LOWER(idCompanyUnitPosisi.idPosisi.posisi) LIKE '%"
+							+ userCompany.getIdCompanyUnitPosisi().getIdPosisi().getPosisi().toLowerCase() + "%' ");
+				}
+			}
+		}
+		System.out.println(sb.toString());
+		Long countEmployee = (Long)super.entityManager.createQuery(sb.toString()).getSingleResult();
+		System.out.println(countEmployee);
+		Integer count = countEmployee.intValue();
+		System.out.println(count);
+		return count;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<UserCompany> findLimit(UserCompany userCompany,int page,int jumlah) {
+		
+		StringBuilder sb = new StringBuilder(" SELECT uc.id,uc.id_user,uc.id_company_unit_posisi,uc.id_tipe_user FROM user_company uc ");
+		sb.append(" RIGHT JOIN users u ON uc.id_user=u.id ");
+		sb.append(" LEFT JOIN status s ON u.id_status=s.id ");
+		sb.append(" LEFT JOIN company_unit_posisi cup ON uc.id_company_unit_posisi=cup.id ");
+		sb.append(" LEFT JOIN company c ON cup.id_company=c.id ");
+		sb.append(" LEFT JOIN posisi p ON cup.id_posisi=p.id ");
+		sb.append(" LEFT JOIN unit un ON cup.id_unit=un.id ");
+		sb.append(" LEFT JOIN tipe_user tu ON uc.id_tipe_user=tu.id ");
+		sb.append(" WHERE 1=1 ");
+		
+		if (userCompany.getIdUser() != null) {
+			if (userCompany.getIdUser().getNama() != null) {
+				sb.append(" AND LOWER(u.nama) LIKE LOWER('%" + userCompany.getIdUser().getNama() + "%') ");
+			}
+			if (userCompany.getIdUser().getAlamat() != null) {
+				sb.append(" AND u.alamat LIKE '%" + userCompany.getIdUser().getAlamat() + "%' ");
+			}
+			if (userCompany.getIdUser().getEmail() != null) {
+				sb.append(" AND u.email LIKE '" + userCompany.getIdUser().getEmail() + "' ");
+			}
+			if (userCompany.getIdUser().getTglLahir() != null) {
+				sb.append(" AND u.tglLahir LIKE '" + userCompany.getIdUser().getTglLahir() + "' ");
+			}
+			if (userCompany.getIdUser().getTelp() != null) {
+				sb.append(" AND u.telp LIKE '" + userCompany.getIdUser().getTelp() + "' ");
+			}
+			if (userCompany.getIdUser().getIdStatus().getStatus() != null) {
+				sb.append(" AND s.status LIKE '" + userCompany.getIdUser().getIdStatus().getStatus() + "' ");
+			}
+		}
+		if (userCompany.getIdTipeUser().getTipe() != null) {
+			if (userCompany.getIdTipeUser().getTipe() != null) {
+				sb.append(" AND tu.tipe LIKE '" + userCompany.getIdTipeUser().getTipe() + "' ");
+			}
+		}
+		if (userCompany.getIdCompanyUnitPosisi() != null) {
+			if (userCompany.getIdCompanyUnitPosisi().getIdUnit() != null) {
+				if (userCompany.getIdCompanyUnitPosisi().getIdUnit().getUnit() != null) {
+					sb.append(" AND LOWER(un.unit) LIKE LOWER('%"
+							+ userCompany.getIdCompanyUnitPosisi().getIdUnit().getUnit() + "%') ");
+				}
+			}
+			if (userCompany.getIdCompanyUnitPosisi().getIdPosisi() != null) {
+				if (userCompany.getIdCompanyUnitPosisi().getIdPosisi().getPosisi() != null) {
+					sb.append(" AND LOWER(p.posisi) LIKE LOWER('%"
+							+ userCompany.getIdCompanyUnitPosisi().getIdPosisi().getPosisi() + "%') ");
+				}
+			}
+			if (userCompany.getIdCompanyUnitPosisi().getIdCompany() != null) {
+				if (userCompany.getIdCompanyUnitPosisi().getIdCompany().getId() != null) {
+					sb.append(" AND c.id = '"
+							+ userCompany.getIdCompanyUnitPosisi().getIdCompany().getId() + "' ");
+				}
+			}
+		}
+		
+		sb.append(" ORDER BY u.nama ASC LIMIT ");
+		sb.append(String.valueOf(jumlah));
+		sb.append(" OFFSET ");
+		sb.append(String.valueOf(((page-1)*jumlah)));
+		
+		List<UserCompany> list = super.entityManager.createNativeQuery(sb.toString(),UserCompany.class).getResultList();
+
+		if (list.size() == 0) {
+			return new ArrayList<UserCompany>();
+		} else {
+			return list;
+		}
+	}
+
 }

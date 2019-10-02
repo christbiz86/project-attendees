@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.attendee.attendee.model.UserDescriptorPojo;
+import com.attendee.attendee.model.PojoUserDescriptor;
 import com.attendee.attendee.service.CloudService;
 import com.attendee.attendee.service.UserDescriptorService;
 
@@ -30,7 +30,7 @@ public class UserDescriptorController {
 	private CloudService cloudService;
 	
 	@PostMapping(value = "/descriptor/register/json")
-	public ResponseEntity<?> registerJson(@RequestBody UserDescriptorPojo userDescriptor) throws Exception {
+	public ResponseEntity<?> registerJson(@RequestBody PojoUserDescriptor userDescriptor) throws Exception {
 		try {
 			usdServ.addJson(userDescriptor);
 			return ResponseEntity.ok("berhasil");

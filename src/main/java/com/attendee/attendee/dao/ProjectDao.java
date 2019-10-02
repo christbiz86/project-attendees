@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.attendee.attendee.model.Project;
 import com.attendee.attendee.model.Status;
 
-
 @Repository
 public class ProjectDao extends ParentDao {
 	@Transactional
@@ -45,9 +44,10 @@ public class ProjectDao extends ParentDao {
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public List<Project> findAll() {	
+	public List<Project> findAll() {
 		List<Project> list = super.entityManager
-                .createQuery("FROM Project ")
+                .createQuery("FROM Project "
+                		+ "ORDER BY kode ASC ")
                 .getResultList();
 
 		return list;
